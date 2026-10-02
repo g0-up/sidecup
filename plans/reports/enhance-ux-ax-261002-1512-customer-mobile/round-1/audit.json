@@ -1,0 +1,592 @@
+{
+  "mobile-menu-loaded": {
+    "title": "Gọi nước tại bàn",
+    "overflowX": 0,
+    "height": 812,
+    "small": [],
+    "inputs": []
+  },
+  "mobile-menu-product-sheet": {
+    "title": "Gọi nước tại bàn",
+    "overflowX": 0,
+    "height": 812,
+    "small": [
+      {
+        "tag": "button",
+        "label": "Đóng",
+        "w": 32,
+        "h": 32
+      },
+      {
+        "tag": "button",
+        "label": "Bớt một ly",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "tag": "button",
+        "label": "Thêm một ly",
+        "w": 36,
+        "h": 36
+      }
+    ],
+    "inputs": []
+  },
+  "mobile-menu-cart-bar": {
+    "title": "Gọi nước tại bàn",
+    "overflowX": 0,
+    "height": 812,
+    "small": [],
+    "inputs": []
+  },
+  "mobile-cart-sheet": {
+    "title": "Gọi nước tại bàn",
+    "overflowX": 0,
+    "height": 812,
+    "small": [
+      {
+        "tag": "button",
+        "label": "Đóng",
+        "w": 32,
+        "h": 32
+      },
+      {
+        "tag": "button",
+        "label": "Bớt một ly",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "tag": "button",
+        "label": "Thêm một ly",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "tag": "button",
+        "label": "Bỏ",
+        "w": 60,
+        "h": 32
+      },
+      {
+        "tag": "button",
+        "label": "Bớt một ly",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "tag": "button",
+        "label": "Thêm một ly",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "tag": "button",
+        "label": "Bỏ",
+        "w": 60,
+        "h": 32
+      },
+      {
+        "tag": "input",
+        "label": "09xx xxx xxx",
+        "w": 343,
+        "h": 36
+      }
+    ],
+    "inputs": [
+      {
+        "id": "note",
+        "fontPx": 16,
+        "h": 64
+      },
+      {
+        "id": "phone",
+        "fontPx": 16,
+        "h": 36
+      }
+    ]
+  },
+  "mobile-cart-sheet-invalid-phone": {
+    "title": "Gọi nước tại bàn",
+    "overflowX": 0,
+    "height": 812,
+    "small": [
+      {
+        "tag": "button",
+        "label": "Đóng",
+        "w": 32,
+        "h": 32
+      },
+      {
+        "tag": "button",
+        "label": "Bớt một ly",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "tag": "button",
+        "label": "Thêm một ly",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "tag": "button",
+        "label": "Bỏ",
+        "w": 60,
+        "h": 32
+      },
+      {
+        "tag": "button",
+        "label": "Bớt một ly",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "tag": "button",
+        "label": "Thêm một ly",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "tag": "button",
+        "label": "Bỏ",
+        "w": 60,
+        "h": 32
+      },
+      {
+        "tag": "input",
+        "label": "09xx xxx xxx",
+        "w": 343,
+        "h": 36
+      }
+    ],
+    "inputs": [
+      {
+        "id": "note",
+        "fontPx": 16,
+        "h": 64
+      },
+      {
+        "id": "phone",
+        "fontPx": 16,
+        "h": 36
+      }
+    ]
+  },
+  "mobile-order-sent": {
+    "title": "Gọi nước tại bàn",
+    "overflowX": 0,
+    "height": 812,
+    "small": [],
+    "inputs": []
+  },
+  "mobile-order-unconfirmed": {
+    "title": "Gọi nước tại bàn",
+    "overflowX": 0,
+    "height": 812,
+    "small": [
+      {
+        "tag": "button",
+        "label": "Chờ thêm",
+        "w": 151,
+        "h": 40
+      },
+      {
+        "tag": "button",
+        "label": "Huỷ đơn",
+        "w": 151,
+        "h": 40
+      }
+    ],
+    "inputs": []
+  },
+  "transition-accepted": 200,
+  "mobile-order-accepted": {
+    "title": "Gọi nước tại bàn",
+    "overflowX": 0,
+    "height": 812,
+    "small": [],
+    "inputs": []
+  },
+  "mobile-menu-with-my-orders": {
+    "title": "Gọi nước tại bàn",
+    "overflowX": 0,
+    "height": 812,
+    "small": [
+      {
+        "tag": "a",
+        "label": "#8PVP7XQuán đã nhận, đang pha",
+        "w": 341,
+        "h": 42
+      }
+    ],
+    "inputs": []
+  },
+  "transition-delivering": 200,
+  "mobile-order-delivering": {
+    "title": "Gọi nước tại bàn",
+    "overflowX": 0,
+    "height": 812,
+    "small": [],
+    "inputs": []
+  },
+  "transition-paid": 200,
+  "mobile-order-paid": {
+    "title": "Gọi nước tại bàn",
+    "overflowX": 0,
+    "height": 812,
+    "small": [],
+    "inputs": []
+  },
+  "pause": 200,
+  "mobile-menu-paused": {
+    "title": "Gọi nước tại bàn",
+    "overflowX": 0,
+    "height": 812,
+    "small": [
+      {
+        "tag": "a",
+        "label": "#8PVP7XĐã nhận nước",
+        "w": 341,
+        "h": 42
+      }
+    ],
+    "inputs": []
+  },
+  "mobile-cart-sheet-paused": {
+    "title": "Gọi nước tại bàn",
+    "overflowX": 0,
+    "height": 812,
+    "small": [
+      {
+        "tag": "a",
+        "label": "#8PVP7XĐã nhận nước",
+        "w": 341,
+        "h": 42
+      },
+      {
+        "tag": "button",
+        "label": "Đóng",
+        "w": 32,
+        "h": 32
+      },
+      {
+        "tag": "button",
+        "label": "Bớt một ly",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "tag": "button",
+        "label": "Thêm một ly",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "tag": "button",
+        "label": "Bỏ",
+        "w": 60,
+        "h": 32
+      },
+      {
+        "tag": "input",
+        "label": "09xx xxx xxx",
+        "w": 343,
+        "h": 36
+      }
+    ],
+    "inputs": [
+      {
+        "id": "note",
+        "fontPx": 16,
+        "h": 64
+      },
+      {
+        "id": "phone",
+        "fontPx": 16,
+        "h": 36
+      }
+    ]
+  },
+  "mobile-home": {
+    "title": "Gọi nước tại bàn",
+    "overflowX": 0,
+    "height": 812,
+    "small": [],
+    "inputs": []
+  },
+  "mobile-qr-not-found": {
+    "title": "Gọi nước tại bàn",
+    "overflowX": 0,
+    "height": 812,
+    "small": [],
+    "inputs": []
+  },
+  "mobile-revoked": {
+    "title": "Gọi nước tại bàn",
+    "overflowX": 0,
+    "height": 812,
+    "small": [],
+    "inputs": []
+  },
+  "mobile-order-not-found": {
+    "title": "Gọi nước tại bàn",
+    "overflowX": 0,
+    "height": 812,
+    "small": [],
+    "inputs": []
+  },
+  "mobile-404": {
+    "title": "Gọi nước tại bàn",
+    "overflowX": 0,
+    "height": 812,
+    "small": [],
+    "inputs": []
+  },
+  "narrow320-menu-loaded": {
+    "title": "Gọi nước tại bàn",
+    "overflowX": 0,
+    "height": 663,
+    "small": [],
+    "inputs": []
+  },
+  "narrow320-menu-product-sheet": {
+    "title": "Gọi nước tại bàn",
+    "overflowX": 0,
+    "height": 663,
+    "small": [
+      {
+        "tag": "button",
+        "label": "Đóng",
+        "w": 32,
+        "h": 32
+      },
+      {
+        "tag": "button",
+        "label": "Bớt một ly",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "tag": "button",
+        "label": "Thêm một ly",
+        "w": 36,
+        "h": 36
+      }
+    ],
+    "inputs": []
+  },
+  "narrow320-cart-sheet": {
+    "title": "Gọi nước tại bàn",
+    "overflowX": 0,
+    "height": 663,
+    "small": [
+      {
+        "tag": "button",
+        "label": "Đóng",
+        "w": 32,
+        "h": 32
+      },
+      {
+        "tag": "button",
+        "label": "Bớt một ly",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "tag": "button",
+        "label": "Thêm một ly",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "tag": "button",
+        "label": "Bỏ",
+        "w": 60,
+        "h": 32
+      },
+      {
+        "tag": "input",
+        "label": "09xx xxx xxx",
+        "w": 288,
+        "h": 36
+      }
+    ],
+    "inputs": [
+      {
+        "id": "note",
+        "fontPx": 16,
+        "h": 64
+      },
+      {
+        "id": "phone",
+        "fontPx": 16,
+        "h": 36
+      }
+    ]
+  },
+  "tablet-menu-loaded": {
+    "title": "Gọi nước tại bàn",
+    "overflowX": 0,
+    "height": 1024,
+    "small": [],
+    "inputs": []
+  },
+  "tablet-menu-product-sheet": {
+    "title": "Gọi nước tại bàn",
+    "overflowX": 0,
+    "height": 1024,
+    "small": [
+      {
+        "tag": "button",
+        "label": "Đóng",
+        "w": 32,
+        "h": 32
+      },
+      {
+        "tag": "button",
+        "label": "Bớt một ly",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "tag": "button",
+        "label": "Thêm một ly",
+        "w": 36,
+        "h": 36
+      }
+    ],
+    "inputs": []
+  },
+  "tablet-cart-sheet": {
+    "title": "Gọi nước tại bàn",
+    "overflowX": 0,
+    "height": 1024,
+    "small": [
+      {
+        "tag": "button",
+        "label": "Đóng",
+        "w": 32,
+        "h": 32
+      },
+      {
+        "tag": "button",
+        "label": "Bớt một ly",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "tag": "button",
+        "label": "Thêm một ly",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "tag": "button",
+        "label": "Bỏ",
+        "w": 60,
+        "h": 32
+      },
+      {
+        "tag": "input",
+        "label": "09xx xxx xxx",
+        "w": 416,
+        "h": 36
+      }
+    ],
+    "inputs": [
+      {
+        "id": "note",
+        "fontPx": 14,
+        "h": 64
+      },
+      {
+        "id": "phone",
+        "fontPx": 14,
+        "h": 36
+      }
+    ]
+  },
+  "desktop-menu-loaded": {
+    "title": "Gọi nước tại bàn",
+    "overflowX": 0,
+    "height": 900,
+    "small": [],
+    "inputs": []
+  },
+  "desktop-menu-product-sheet": {
+    "title": "Gọi nước tại bàn",
+    "overflowX": 0,
+    "height": 900,
+    "small": [
+      {
+        "tag": "button",
+        "label": "Đóng",
+        "w": 32,
+        "h": 32
+      },
+      {
+        "tag": "button",
+        "label": "Bớt một ly",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "tag": "button",
+        "label": "Thêm một ly",
+        "w": 36,
+        "h": 36
+      }
+    ],
+    "inputs": []
+  },
+  "desktop-cart-sheet": {
+    "title": "Gọi nước tại bàn",
+    "overflowX": 0,
+    "height": 900,
+    "small": [
+      {
+        "tag": "button",
+        "label": "Đóng",
+        "w": 32,
+        "h": 32
+      },
+      {
+        "tag": "button",
+        "label": "Bớt một ly",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "tag": "button",
+        "label": "Thêm một ly",
+        "w": 36,
+        "h": 36
+      },
+      {
+        "tag": "button",
+        "label": "Bỏ",
+        "w": 60,
+        "h": 32
+      },
+      {
+        "tag": "input",
+        "label": "09xx xxx xxx",
+        "w": 416,
+        "h": 36
+      }
+    ],
+    "inputs": [
+      {
+        "id": "note",
+        "fontPx": 14,
+        "h": 64
+      },
+      {
+        "id": "phone",
+        "fontPx": 14,
+        "h": 36
+      }
+    ]
+  }
+}

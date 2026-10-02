@@ -1,0 +1,23 @@
+Discovery surfaces for http://127.0.0.1:5173: 0 URL(s) in sitemap, 1 page(s) checked
+
+ERROR (4)
+- [robots] http://127.0.0.1:5173/robots.txt: robots.txt not served as text (status 200)
+- [sitemap] http://127.0.0.1:5173/sitemap.xml: sitemap missing or not XML (status 200)
+- [meta-description] http://127.0.0.1:5173/: missing meta description
+- [open-graph] http://127.0.0.1:5173/: missing og:image
+
+WARN (10)
+- [llms-txt] http://127.0.0.1:5173/llms.txt: llms.txt missing (status 200)
+- [llms-full-txt] http://127.0.0.1:5173/llms-full.txt: llms-full.txt missing (status 200); expected when the site has docs or long-form content
+- [canonical] http://127.0.0.1:5173/: missing canonical link
+- [open-graph] http://127.0.0.1:5173/: missing og:title
+- [open-graph] http://127.0.0.1:5173/: missing og:description
+- [open-graph] http://127.0.0.1:5173/: missing og:url
+- [twitter-card] http://127.0.0.1:5173/: missing twitter:card
+- [json-ld] http://127.0.0.1:5173/: no JSON-LD structured data
+- [server-render] http://127.0.0.1:5173/: server HTML has under 200 characters of text; crawlers that skip JavaScript see an empty page
+- [markdown-variant] http://127.0.0.1:5173/index.html.md: markdown twin returns HTML
+
+INFO (2)
+- [markdown-alternate] http://127.0.0.1:5173/: no <link rel="alternate" type="text/markdown">
+- [content-negotiation] http://127.0.0.1:5173/: no markdown for Accept: text/markdown (optional)

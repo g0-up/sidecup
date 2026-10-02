@@ -1,0 +1,69 @@
+[
+  {
+    "viewport": "375x812",
+    "screenshot": "/home/cesc/Documents/personal-workspace/sidecup/plans/reports/enhance-ux-ax-261002-1512-customer-mobile/round-1/render-menu/375x812.png",
+    "outline": [
+      "div#root \"Quán test Bàn 1 Giao trong khoảng 7 phút\" @ x0 y0 375x812",
+      "  div.mx-auto.min-h-dvh \"Quán test Bàn 1 Giao trong khoảng 7 p @ x0 y0 375x812",
+      "    header.space-y-2.px-4 \"Quán test Bàn 1 Giao trong khoảng 7 p @ x0 y0 375x144",
+      "      div.flex.flex-col \"Giao trong khoảng 7 phút Trả tiền khi nh\" @ x16 y88 343x44",
+      "    ul.divide-y \"Cà phê sữa đá 25.000đ Thêm Bạc xỉu 29.00\" @ x0 y144 375x323",
+      "      li \"Cà phê sữa đá 25.000đ Thêm\" @ x0 y144 375x81",
+      "      li \"Bạc xỉu 29.000đ Thêm\" @ x0 y225 375x81",
+      "      li \"Nước suối 10.000đ Thêm\" @ x0 y306 375x81",
+      "      li \"Trà đào cam sả Hết món\" @ x0 y387 375x80",
+      "    footer.px-4.py-6 \"Đồ uống do Anh Tùng pha và giao, không p\" @ x0 y467 375x64"
+    ],
+    "findings": [
+      {
+        "severity": "error",
+        "type": "runtime-error",
+        "target": "",
+        "message": "WebSocket connection to 'ws://127.0.0.1:5173/ws/customer?client_id=8b5d8b3d-d9cc-4d86-9b90-f00cb314c609&token=DEVTEST001' failed: Connection closed before receiving a handshake response (http://127.0.0.1:5173/node_modules/.vite/deps/msw_browser.js?v=84a11313)"
+      }
+    ],
+    "height": 812
+  },
+  {
+    "viewport": "768x1024",
+    "screenshot": "/home/cesc/Documents/personal-workspace/sidecup/plans/reports/enhance-ux-ax-261002-1512-customer-mobile/round-1/render-menu/768x1024.png",
+    "outline": [
+      "div#root \"Quán test Bàn 1 Giao trong khoảng 7 phút\" @ x0 y0 768x1024",
+      "  div.mx-auto.min-h-dvh \"Quán test Bàn 1 Giao trong khoảng 7 p @ x160 y0 448x1024",
+      "    header.space-y-2.px-4 \"Quán test Bàn 1 Giao trong khoảng 7 p @ x160 y0 448x144",
+      "    ul.divide-y \"Cà phê sữa đá 25.000đ Thêm Bạc xỉu 29.00\" @ x160 y144 448x323",
+      "      li \"Cà phê sữa đá 25.000đ Thêm\" @ x160 y144 448x81",
+      "      li \"Bạc xỉu 29.000đ Thêm\" @ x160 y225 448x81",
+      "      li \"Nước suối 10.000đ Thêm\" @ x160 y306 448x81",
+      "      li \"Trà đào cam sả Hết món\" @ x160 y387 448x80"
+    ],
+    "findings": [
+      {
+        "severity": "error",
+        "type": "runtime-error",
+        "target": "",
+        "message": "WebSocket connection to 'ws://127.0.0.1:5173/ws/customer?client_id=8b5d8b3d-d9cc-4d86-9b90-f00cb314c609&token=DEVTEST001' failed: Connection closed before receiving a handshake response (http://127.0.0.1:5173/node_modules/.vite/deps/msw_browser.js?v=84a11313)"
+      }
+    ],
+    "height": 1024
+  },
+  {
+    "viewport": "1440x900",
+    "screenshot": "/home/cesc/Documents/personal-workspace/sidecup/plans/reports/enhance-ux-ax-261002-1512-customer-mobile/round-1/render-menu/1440x900.png",
+    "outline": [
+      "div#root \"Quán test Bàn 1 Giao trong khoảng 7 phút\" @ x0 y0 1440x900",
+      "  div.mx-auto.min-h-dvh \"Quán test Bàn 1 Giao trong khoảng 7 p @ x496 y0 448x900",
+      "    header.space-y-2.px-4 \"Quán test Bàn 1 Giao trong khoảng 7 p @ x496 y0 448x144",
+      "    ul.divide-y \"Cà phê sữa đá 25.000đ Thêm Bạc xỉu 29.00\" @ x496 y144 448x323"
+    ],
+    "findings": [
+      {
+        "severity": "error",
+        "type": "runtime-error",
+        "target": "",
+        "message": "WebSocket connection to 'ws://127.0.0.1:5173/ws/customer?client_id=8b5d8b3d-d9cc-4d86-9b90-f00cb314c609&token=DEVTEST001' failed: Connection closed before receiving a handshake response (http://127.0.0.1:5173/node_modules/.vite/deps/msw_browser.js?v=84a11313)"
+      }
+    ],
+    "height": 900
+  }
+]

@@ -1,0 +1,107 @@
+[
+ {
+  "name": "motion: animations on (control)",
+  "pass": true,
+  "detail": {
+   "pulse": "pulse",
+   "motionSafePulse": "pulse",
+   "bump": "count-bump"
+  }
+ },
+ {
+  "name": "motion: sheet transitions (control)",
+  "pass": true,
+  "detail": "0.22s"
+ },
+ {
+  "name": "motion: sheet slides out before unmount",
+  "pass": true,
+  "detail": "191ms"
+ },
+ {
+  "name": "reduce: animations off",
+  "pass": true,
+  "detail": {
+   "pulse": "none",
+   "motionSafePulse": "none",
+   "bump": "none"
+  }
+ },
+ {
+  "name": "reduce: sheet has no transition",
+  "pass": true,
+  "detail": "0s"
+ },
+ {
+  "name": "reduce: sheet closes at once (<50ms)",
+  "pass": true,
+  "detail": "0ms"
+ },
+ {
+  "name": "kbd: Tab reaches product row",
+  "pass": true,
+  "detail": "Cà phê sữa đá25.000đThêm"
+ },
+ {
+  "name": "kbd: focus never reaches page content behind product sheet (20 Tabs; body = browser chrome)",
+  "pass": true,
+  "detail": [
+   "Ít ngọtÍt ngọt",
+   "VừaVừa",
+   "NgọtNgọt",
+   "Không đáKhông đá",
+   "Ít đáÍt đá",
+   "Đá bình thườngĐá bình thường",
+   "Thêm một ly",
+   "Thêm vào giỏ · 25.000đ",
+   "người bán· Quán testBàn 1 Giao trong kho",
+   "Đóng"
+  ]
+ },
+ {
+  "name": "kbd: Esc closes product sheet, focus returns to row",
+  "pass": true,
+  "detail": "Cà phê sữa đá25.000đThêm"
+ },
+ {
+  "name": "kbd: Tab reaches Xem giỏ",
+  "pass": true,
+  "detail": "Xem giỏ · 1 ly25.000đ"
+ },
+ {
+  "name": "kbd: focus never reaches page content behind cart sheet (25 Tabs; body = browser chrome)",
+  "pass": true
+ },
+ {
+  "name": "kbd: Esc closes cart, focus returns to Xem giỏ",
+  "pass": true,
+  "detail": "Xem giỏ · 1 ly25.000đ"
+ },
+ {
+  "name": "kbd: Tab reaches Huỷ đơn",
+  "pass": true
+ },
+ {
+  "name": "kbd: first Enter asks to confirm, does not cancel",
+  "pass": true,
+  "detail": "focus on: Không huỷ"
+ },
+ {
+  "name": "kbd: confirm step focuses Không huỷ (in the Huỷ đơn spot)",
+  "pass": true,
+  "detail": "focus on: Không huỷ"
+ },
+ {
+  "name": "kbd: second Enter on the same spot keeps the order",
+  "pass": true
+ },
+ {
+  "name": "kbd: Shift+Tab reaches Xác nhận huỷ",
+  "pass": true,
+  "detail": "focus on: Xác nhận huỷ"
+ },
+ {
+  "name": "kbd: Enter on Xác nhận huỷ cancels",
+  "pass": true
+ }
+]

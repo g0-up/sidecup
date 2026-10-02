@@ -1,0 +1,50 @@
+[
+  {
+    "url": "http://localhost:8081/t/DEVTEST001",
+    "lighthouse": "12.8.2",
+    "formFactor": "mobile",
+    "performance": 0.89,
+    "accessibility": 1,
+    "bestPractices": 1,
+    "seo": 0.58,
+    "lcp": "3.0 s",
+    "fcp": "1.4 s",
+    "cls": 0.00006234668415645825,
+    "tbt": "250 ms",
+    "failingSeo": [
+      "is-crawlable",
+      "canonical"
+    ]
+  },
+  {
+    "url": "http://localhost:8081/o/04448709-b146-4bca-8cba-fa142abad9c8",
+    "lighthouse": "12.8.2",
+    "formFactor": "mobile",
+    "performance": 0.92,
+    "accessibility": 1,
+    "bestPractices": 1,
+    "seo": 0.58,
+    "lcp": "2.9 s",
+    "fcp": "1.4 s",
+    "cls": 0,
+    "tbt": "170 ms",
+    "failingSeo": [
+      "is-crawlable",
+      "canonical"
+    ]
+  },
+  {
+    "url": "http://localhost:8081/",
+    "lighthouse": "12.8.2",
+    "formFactor": "mobile",
+    "performance": 0.97,
+    "accessibility": 1,
+    "bestPractices": 1,
+    "seo": 1,
+    "lcp": "2.4 s",
+    "fcp": "1.4 s",
+    "cls": 0.0006023759129718078,
+    "tbt": "50 ms",
+    "failingSeo": []
+  }
+]

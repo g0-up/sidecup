@@ -1,0 +1,18 @@
+Discovery surfaces for http://localhost:8081: 0 URL(s) in sitemap, 1 page(s) checked
+
+ERROR (1)
+- [sitemap] https://localhost/sitemap.xml: sitemap missing or not XML (status 0)
+
+WARN (5)
+- [llms-txt] http://localhost:8081/llms.txt: llms.txt missing (status 200)
+- [llms-full-txt] http://localhost:8081/llms-full.txt: llms-full.txt missing (status 200); expected when the site has docs or long-form content
+- [json-ld] http://localhost:8081/: no JSON-LD structured data
+- [server-render] http://localhost:8081/: server HTML has under 200 characters of text; crawlers that skip JavaScript see an empty page
+- [markdown-variant] http://localhost:8081/index.html.md: markdown twin returns HTML
+
+INFO (5)
+- [robots] http://localhost:8081/robots.txt: Sitemap: https://localhost/sitemap.xml is on another origin
+- [ai-crawlers] http://localhost:8081/robots.txt: no training or user-fetch AI token is blocked site-wide
+- [open-graph] http://localhost:8081/: missing og:image:alt
+- [markdown-alternate] http://localhost:8081/: no <link rel="alternate" type="text/markdown">
+- [content-negotiation] http://localhost:8081/: no markdown for Accept: text/markdown (optional)
