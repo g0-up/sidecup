@@ -1,0 +1,22 @@
+# env
+.env
+.env.*
+!.env.example
+
+# deps & output
+node_modules/
+dist/
+bin/
+coverage/
+*.tsbuildinfo
+
+# test artifacts
+apps/web/test-results/
+apps/web/playwright-report/
+apps/web/blob-report/
+
+# os / editor
+.DS_Store
+.idea/
+.vscode/
+*.log

@@ -1,0 +1,12 @@
+title = "sidecup"
+
+[extend]
+useDefault = true
+
+# Giá trị giả cố ý nằm trong code: secret của test Go và cấu hình E2E (profile "full"), không dùng ở production.
+[allowlist]
+description = "Fixture test và E2E"
+paths = [
+  '''apps/api/internal/.*_test\.go''',
+  '''infra/docker-compose\.yml''',
+]
