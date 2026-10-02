@@ -53,6 +53,12 @@ Các bước:
 
 Cập nhật, lùi phiên bản, sao lưu, xem log: như các mục dưới, thay `make prod-up` bằng `make homelab-up` và thêm `-f infra/docker-compose.homelab.yml` sau `-f infra/docker-compose.prod.yml` trong lệnh `docker compose`. Luôn sao lưu trước `make homelab-up` khi bản mới có migration.
 
+## Bot tìm kiếm và thẻ chia sẻ
+
+- nginx của web trả `/robots.txt` (cho phép tất cả, kèm `Sitemap:`) và `/sitemap.xml` (chỉ trang `/`), dùng hostname của request. Không `Disallow` `/t/` hay `/o/`, để bot đọc được header `X-Robots-Tag: noindex, nofollow` mà nginx gửi trên `/t/*`, `/o/*`, `/seller*` và `/revoked`. Trang chủ và `/assets/` không có header này. Kiểm: `curl -sI https://<DOMAIN>/t/<mã> | grep -i x-robots-tag`.
+- `og:url`, `og:image` và `canonical` cần URL tuyệt đối nên lấy từ biến build `VITE_PUBLIC_ORIGIN`. Compose production đặt `https://${DOMAIN}`; bỏ trống (dev, E2E) thì không chèn các thẻ đó (kể cả kích thước và `og:image:alt`). Đổi hostname = build lại web.
+- Ảnh chia sẻ `apps/web/public/og-image.png` (1200×630) vẽ từ token màu, không chứa tên người bán. Đổi màu hoặc chữ: sửa `apps/web/scripts/render-og-image.mjs`, chạy `node scripts/render-og-image.mjs` trong `apps/web` (cần Chromium của Playwright), commit cả script và ảnh. Zalo và Facebook giữ bản xem trước cũ trong cache một thời gian; repo không xoá được cache đó.
+
 ## Cập nhật phiên bản
 
 ```sh

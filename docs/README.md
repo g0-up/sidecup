@@ -7,6 +7,8 @@ Khách quét mã QR trên bàn, đặt nước trên web; người bán nhận v
 | [api.md](./api.md) | Hợp đồng REST, WebSocket, kết nối Zalo gửi tin cho khách, API nội bộ cho notifier |
 | [runbook.md](./runbook.md) | Deploy, sao lưu, mật khẩu, xoay khoá, sự cố |
 | [acceptance-p0.md](./acceptance-p0.md) | Đối chiếu từng tiêu chí P0 với test tự động hoặc bước kiểm tay |
+| [design.md](./design.md) | Quy tắc giao diện khách: màu, CTA gradient, đích chạm 44 px, ô nhập 16 px, chuyển động, sheet, giọng văn |
+| [review.md](./review.md) | Thang chấm UX/AX, khung nhìn, script chụp và đo, quét bề mặt khám phá, `noindex` route theo token |
 
 ## Cấu trúc
 
@@ -58,3 +60,10 @@ make seed       # Quán test, bàn DEVTEST001..003 (menu mặc định có từ 
 Integration test Go cần Postgres: mỗi package tự tạo database riêng từ `TEST_DATABASE_URL` (ví dụ `postgres://sidecup:sidecup@localhost:5432/sidecup_test?sslmode=disable`).
 
 E2E chạy được với stack bất kỳ: `E2E_BASE_URL` (mặc định `http://localhost:5173`), `E2E_SELLER_PASSWORD`, `E2E_DATABASE_URL` (để `psql` lùi tuổi đơn trong spec "quá 60 giây").
+
+## Quy tắc cho agent
+
+- Đọc [design.md](./design.md) trước khi sửa giao diện khách hoặc component dùng chung trong `apps/web/src/shared/ui/`.
+- Thêm hoặc đổi route khách: cập nhật `robots.txt`, sitemap và `X-Robots-Tag` trong `apps/web/nginx.conf` cùng lúc, theo [review.md](./review.md#không-lập-chỉ-mục-route-theo-token).
+- Đổi code route khách (`customer-*`, `shared/`, `app/router.tsx`, dependency của web): chạy `make size` và giữ mỗi route khách ≤ 120 KB gzip JS.
+- Trước khi merge thay đổi giao diện khách: rà theo [review.md](./review.md).

@@ -87,9 +87,14 @@ View công khai (không có SĐT, không có `client_id`):
   "note": null, "total": 58000, "partner_name": "Quán test", "table_label": "Bàn 1",
   "cancel_reason": null, "payment_method": null,
   "created_at": "…", "accepted_at": null, "delivering_at": null, "paid_at": null, "closed_at": null, "updated_at": "…",
+  "menu_path": "/t/AbC123", "eta_minutes": 7, "notify_zalo": true,
   "server_time": "…"
 }
 ```
+
+- `menu_path`: đường tương đối về menu của bàn (`/t/` + token đã mã hoá URL) cho nút "Gọi thêm nước"; origin web tự ghép nên chạy được khi web và API khác host. Luôn có, kể cả khi mã đã thu hồi (trang menu khi đó chuyển sang `/revoked`).
+- `eta_minutes`: cài đặt thời gian pha hiện tại của người bán, đọc lúc trả hoặc phát tin.
+- `notify_zalo`: `true` chỉ khi đơn có SĐT **và** Zalo đang liên kết, phiên chưa hết hạn. Chỉ lộ cờ này, không bao giờ lộ SĐT; SĐT bị xoá khi purge người nhận nên đơn cũ thành `false`.
 
 Huỷ chỉ khi `X-Client-Id` trùng máy đặt (`403 NOT_OWNER`) và đơn còn `sent` (`409 INVALID_TRANSITION`).
 
@@ -103,7 +108,7 @@ Cookie HttpOnly, SameSite=Lax, Secure khi `PUBLIC_BASE_URL` là https, hạn 30 
 | POST | `/api/seller/logout` | 204, xoá cookie |
 | GET | `/api/seller/me` | `{authenticated, expires_at}` |
 | GET | `/api/seller/orders?scope=open\|closed&updated_after=<rfc3339>` | `{orders, server_time}`. `open`: sent/accepted/delivering, cũ trước. `closed`: đóng từ đầu ngày. Không có `scope` + `updated_after`: mọi đơn đổi sau mốc, mới nhất trước. Tối đa 300 đơn. Mã hoá URL tham số thời gian (`+07:00`). |
-| GET | `/api/seller/orders/{id}` | View người bán: view công khai + `partner_id, qr_token, customer_phone, commission_rate, commission_amount` |
+| GET | `/api/seller/orders/{id}` | View người bán: view công khai trừ `eta_minutes, notify_zalo`, thêm `partner_id, qr_token, customer_phone, commission_rate, commission_amount` |
 | POST | `/api/seller/orders/{id}/transition` | `{to, expected_from, payment_method?, reason?}`; `payment_method ∈ {cash, transfer}` bắt buộc khi `to=paid`, cấm khi khác |
 | GET | `/api/seller/orders/{id}/vietqr` | `{payload, amount, purpose, bank_bin, bank_account, bank_account_name}` |
 | GET / PUT | `/api/seller/settings` | `{accepting_orders, eta_minutes, bank_bin, bank_account, bank_account_name, updated_at}`. PUT cập nhật từng phần; chuỗi rỗng xoá thông tin ngân hàng |
