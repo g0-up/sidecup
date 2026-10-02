@@ -46,7 +46,7 @@ function SheetDialog({ onOpenChange, title, description, children, className }: 
         if (e.target === e.currentTarget) onOpenChange(false);
       }}
       className={cn(
-        "fixed inset-x-0 bottom-0 top-auto m-0 mx-auto max-h-[92dvh] w-full max-w-md overflow-y-auto rounded-t-2xl border bg-background p-0 text-foreground shadow-lg backdrop:bg-black/50",
+        "fixed inset-x-0 bottom-0 top-auto m-0 mx-auto max-h-[92dvh] w-full max-w-md overflow-y-auto rounded-t-md bg-background p-0 text-foreground shadow-float backdrop:bg-primary/70",
         "pb-[env(safe-area-inset-bottom)]",
         className,
       )}

@@ -18,7 +18,7 @@ export function SoundToggle({ wanted, unlocked, onEnable, onDisable }: Props) {
     );
   }
   return (
-    <Button variant={wanted ? "default" : "outline"} size="sm" onClick={onEnable} className={wanted ? "animate-pulse" : ""}>
+    <Button variant={wanted ? "secondary" : "outline"} size="sm" onClick={onEnable} className={wanted ? "animate-pulse" : ""}>
       {wanted ? <Bell /> : <BellOff />} {wanted ? "Chạm để bật lại âm" : "Bật âm báo"}
     </Button>
   );

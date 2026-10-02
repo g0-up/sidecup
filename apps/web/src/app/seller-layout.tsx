@@ -54,13 +54,13 @@ function Shell() {
   }
 
   return (
-    <div className="min-h-dvh bg-muted/30">
-      <header className="no-print sticky top-0 z-30 border-b bg-background">
+    <div className="min-h-dvh bg-muted/40">
+      <header className="no-print sticky top-0 z-30 bg-primary text-primary-foreground shadow-card">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-2 px-4 py-2">
-          <Button variant="ghost" size="icon" className="md:hidden" aria-label="Mở menu" onClick={() => setNavOpen((v) => !v)}>
+          <Button variant="ghost" size="icon" className="text-primary-foreground hover:bg-white/10 hover:text-primary-foreground md:hidden" aria-label="Mở menu" onClick={() => setNavOpen((v) => !v)}>
             <MenuIcon />
           </Button>
-          <span className="font-semibold">Gọi nước</span>
+          <span className="font-semibold tracking-tight">Gọi nước</span>
           <nav className={cn("order-last w-full gap-1 md:order-none md:flex md:w-auto", navOpen ? "flex flex-col" : "hidden")}>
             {NAV.map((n) => (
               <NavLink
@@ -69,7 +69,7 @@ function Shell() {
                 end={n.end}
                 onClick={() => setNavOpen(false)}
                 className={({ isActive }) =>
-                  cn("rounded-md px-3 py-1.5 text-sm", isActive ? "bg-secondary font-medium" : "text-muted-foreground hover:text-foreground")
+                  cn("rounded-md px-3 py-1.5 text-sm font-medium", isActive ? "bg-white/15 text-white" : "text-white/80 hover:bg-white/10 hover:text-white")
                 }
               >
                 {n.label}
@@ -79,7 +79,7 @@ function Shell() {
           <div className="ml-auto flex flex-wrap items-center gap-2">
             <PauseSwitch />
             <SoundToggle wanted={sound.wanted} unlocked={sound.unlocked} onEnable={() => void sound.enable()} onDisable={sound.disable} />
-            <Button variant="ghost" size="icon" aria-label="Đăng xuất" onClick={() => void onLogout()}>
+            <Button variant="ghost" size="icon" className="text-primary-foreground hover:bg-white/10 hover:text-primary-foreground" aria-label="Đăng xuất" onClick={() => void onLogout()}>
               <LogOut />
             </Button>
           </div>

@@ -20,7 +20,7 @@ export function PauseSwitch() {
     <label
       className={cn(
         "inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-medium",
-        accepting ? "bg-success/15 text-success" : "bg-destructive/15 text-destructive",
+        accepting ? "bg-white text-success" : "bg-white text-destructive",
       )}
     >
       <Switch checked={accepting} disabled={!data || m.isPending} onCheckedChange={(v) => m.mutate(v)} />

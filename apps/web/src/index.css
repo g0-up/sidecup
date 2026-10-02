@@ -4,35 +4,54 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --radius: 0.75rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  /* Màu thương hiệu: cam cà phê sữa, đủ tương phản cho chữ trắng (WCAG AA). */
-  --primary: oklch(0.52 0.15 45);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0.01 70);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.48 0 0);
-  --accent: oklch(0.96 0.02 70);
-  --accent-foreground: oklch(0.205 0 0);
+  /* Bảng màu UpNext: navy là màu chính, cam→đỏ chỉ dành cho nút hành động chính của mỗi màn. */
+  --navy-900: #0a0d53;
+  --navy-700: #233c65;
+  --navy-deep: #001a2d;
+  --accent-orange: #f45d29;
+  --accent-crimson: #f2295b;
+  --gray-600: #555555;
+  --gray-200: #d8d8d8;
+  --surface-100: #f2f2f2;
+  --surface-blue-50: #e8edf7;
+
+  --background: #ffffff;
+  --foreground: var(--navy-900);
+  --card: #ffffff;
+  --card-foreground: var(--navy-900);
+  --popover: #ffffff;
+  --popover-foreground: var(--navy-900);
+  --primary: var(--navy-700);
+  --primary-foreground: #ffffff;
+  --secondary: var(--surface-blue-50);
+  --secondary-foreground: var(--navy-700);
+  --muted: var(--surface-100);
+  /* UpNext dùng #777 cho chữ thân (4.48:1, hụt AA); nâng lên #555 (7.5:1). */
+  --muted-foreground: var(--gray-600);
+  --accent: var(--surface-blue-50);
+  --accent-foreground: var(--navy-900);
   --destructive: oklch(0.577 0.245 27.325);
   --success: oklch(0.55 0.14 150);
   --warning: oklch(0.8 0.15 85);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.52 0.15 45);
+  --border: var(--gray-200);
+  /* Viền ô nhập UpNext #c4c4c4 chỉ 1.74:1; #8a8a8a đạt 3.4:1 cho thành phần giao diện. */
+  --input: #8a8a8a;
+  --ring: var(--navy-700);
+  --gradient-accent: linear-gradient(260deg, var(--accent-orange) 0%, var(--accent-crimson) 100%);
 }
 
 @theme inline {
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  /* Góc gần như vuông; chỉ nút là hình viên thuốc (rounded-full). */
+  --radius-xs: 2px;
+  --radius-sm: 2px;
+  --radius-md: 3px;
+  --radius-lg: 3px;
+  --radius-xl: 3px;
+  --radius-2xl: 3px;
+  --font-sans: "Inter Tight Variable", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --shadow-card: 0 0 7px 0 rgb(0 0 0 / 0.15);
+  --shadow-card-strong: 0 0 7px 0 rgb(0 0 0 / 0.2);
+  --shadow-float: 0 5px 15px 0 rgb(0 0 0 / 0.15);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -53,6 +72,8 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  --color-navy-900: var(--navy-900);
+  --color-navy-deep: var(--navy-deep);
 }
 
 @layer base {
@@ -64,15 +85,9 @@
   }
   body {
     @apply bg-background text-foreground antialiased;
-    /* Font hệ thống: không tải web font để giữ trang khách nhẹ trên 4G. */
-    font-family:
-      system-ui,
-      -apple-system,
-      "Segoe UI",
-      Roboto,
-      "Helvetica Neue",
-      Arial,
-      sans-serif;
+    /* Inter Tight tự host, font-display swap; trình duyệt chỉ tải tập ký tự latin/vietnamese mà trang dùng. */
+    font-family: var(--font-sans);
+    letter-spacing: 0.5px;
   }
 }
 

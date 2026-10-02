@@ -45,8 +45,8 @@ function ProductForm({ product, onAdd }: { product: MenuProduct; onAdd: (line: C
       </div>
       <div className="px-4">
         <Button
-          size="lg"
-          className="h-12 w-full text-base"
+          variant="cta"
+          className="w-full"
           onClick={() =>
             onAdd({
               productId: product.id,
