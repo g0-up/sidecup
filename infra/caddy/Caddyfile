@@ -1,0 +1,40 @@
+{
+	email {$ACME_EMAIL}
+}
+
+{$DOMAIN} {
+	encode zstd gzip
+
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		X-Frame-Options "DENY"
+		Permissions-Policy "camera=(), microphone=(), geolocation=()"
+		# SPA không dùng script/style ngoài; ảnh món có thể từ https bất kỳ; QR vẽ bằng canvas/SVG (data:, blob:).
+		Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' https: data: blob:; connect-src 'self' wss://{$DOMAIN}; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
+		-Server
+	}
+
+	# API nội bộ cho notifier Zalo không bao giờ mở ra Internet.
+	handle /internal/* {
+		respond 404
+	}
+
+	# WebSocket: Caddy tự nâng cấp; bỏ timeout đọc để kết nối dài (màn người bán mở cả buổi) không bị cắt.
+	handle /ws/* {
+		reverse_proxy api:8080 {
+			transport http {
+				read_timeout 0
+			}
+		}
+	}
+
+	handle /api/* {
+		reverse_proxy api:8080
+	}
+
+	handle {
+		reverse_proxy web:80
+	}
+}

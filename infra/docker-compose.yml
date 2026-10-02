@@ -1,0 +1,57 @@
+name: sidecup
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: sidecup
+      POSTGRES_USER: sidecup
+      POSTGRES_PASSWORD: sidecup
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sidecup -d sidecup"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  # Profile "full": api + web chạy trong container cho E2E. Giá trị bên dưới CHỈ dành cho E2E trên máy dev/CI,
+  # không dùng ở production (production đọc infra/.env, xem docs/runbook.md).
+  api:
+    profiles: ["full"]
+    build:
+      context: ../apps/api
+    environment:
+      APP_ENV: e2e
+      DATABASE_URL: postgres://sidecup:sidecup@postgres:5432/sidecup?sslmode=disable
+      HTTP_ADDR: ":8080"
+      MIGRATE_ON_START: "true"
+      PUBLIC_BASE_URL: http://localhost:8081
+      APP_TZ: Asia/Ho_Chi_Minh
+      # md5("e2e-password-not-for-production")
+      SELLER_PASSWORD_HASH: 2a12b045230ad265c665502a8d0cfeeb
+      SESSION_SECRET: e2e-session-secret-not-for-production-0000
+      NOTIFIER_TOKEN: e2e-notifier-token-not-for-production
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "/api", "healthcheck"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  web:
+    profiles: ["full"]
+    build:
+      context: ../apps/web
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "8081:80"
+
+volumes:
+  pgdata:
