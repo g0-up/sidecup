@@ -1,0 +1,37 @@
+version: "2"
+
+run:
+  timeout: 5m
+  build-tags:
+    - integration
+
+linters:
+  default: standard
+  enable:
+    - bodyclose
+    - errorlint
+    - gosec
+    - misspell
+    - noctx
+    - rowserrcheck
+    - sqlclosecheck
+    - unconvert
+  settings:
+    gosec:
+      excludes:
+        # Định dạng SQL chỉ ghép tên cột từ allowlist cố định (orders.Writer); giá trị luôn là tham số.
+        - G201
+        - G202
+  exclusions:
+    rules:
+      - path: _test\.go
+        linters:
+          - gosec
+          - noctx
+          # websocket.Dial trả *http.Response mà thư viện tự đóng body.
+          - bodyclose
+
+formatters:
+  enable:
+    - gofmt
+    - goimports

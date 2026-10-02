@@ -1,0 +1,11 @@
+DROP TABLE IF EXISTS notifier_heartbeat;
+DROP TABLE IF EXISTS notification_outbox;
+DROP TABLE IF EXISTS settings;
+DROP TABLE IF EXISTS page_views;
+DROP TABLE IF EXISTS adjustments;
+DROP TABLE IF EXISTS order_events;
+DROP TABLE IF EXISTS orders;
+DROP TABLE IF EXISTS qr_codes;
+DROP TABLE IF EXISTS partner_hidden_products;
+DROP TABLE IF EXISTS products;
+DROP TABLE IF EXISTS partners;
