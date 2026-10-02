@@ -1,12 +1,34 @@
 import path from "node:path";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
-import { defineConfig } from "vite";
+import { defineConfig, loadEnv, type Plugin } from "vite";
 
 const apiTarget = process.env.VITE_API_PROXY ?? "http://localhost:8080";
 
-export default defineConfig({
-  plugins: [react(), tailwindcss()],
+// Thẻ chia sẻ cần URL tuyệt đối, mà hostname khác nhau theo nơi deploy: lấy từ VITE_PUBLIC_ORIGIN lúc build.
+// Bỏ trống (dev, E2E) thì không chèn og:url, og:image và canonical.
+function publicOriginTags(origin: string): Plugin {
+  const base = origin.trim().replace(/\/+$/, "");
+  return {
+    name: "public-origin-tags",
+    transformIndexHtml() {
+      if (!base) return [];
+      const meta = (property: string, content: string) => ({ tag: "meta", attrs: { property, content }, injectTo: "head" as const });
+      return [
+        meta("og:url", `${base}/`),
+        meta("og:image", `${base}/og-image.png`),
+        meta("og:image:width", "1200"),
+        meta("og:image:height", "630"),
+        // Đúng chữ vẽ trên public/og-image.png (scripts/render-og-image.mjs); đổi ảnh thì đổi cả dòng này.
+        meta("og:image:alt", "Gọi nước tại bàn. Quét QR, đặt nước, trả tiền khi nhận."),
+        { tag: "link", attrs: { rel: "canonical", href: `${base}/` }, injectTo: "head" },
+      ];
+    },
+  };
+}
+
+export default defineConfig(({ mode }) => ({
+  plugins: [react(), tailwindcss(), publicOriginTags(loadEnv(mode, process.cwd(), "VITE_").VITE_PUBLIC_ORIGIN ?? "")],
   resolve: {
     alias: { "@": path.resolve(__dirname, "src") },
   },
@@ -40,4 +62,4 @@ export default defineConfig({
       },
     },
   },
-});
+}));

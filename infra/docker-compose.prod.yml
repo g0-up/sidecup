@@ -50,6 +50,7 @@ services:
       context: ../apps/web
       args:
         VITE_SELLER_NAME: ${SELLER_NAME:-}
+        VITE_PUBLIC_ORIGIN: https://${DOMAIN}
     restart: always
     depends_on:
       api:
