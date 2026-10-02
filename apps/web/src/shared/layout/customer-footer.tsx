@@ -1,4 +1,4 @@
-const SELLER_NAME = import.meta.env.VITE_SELLER_NAME || "người bán";
+import { SELLER_NAME } from "@/shared/lib/seller";
 
 // Nói rõ đồ uống không phải của quán ăn (P0-2, chủ quán #2).
 export function CustomerFooter() {

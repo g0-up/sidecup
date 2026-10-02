@@ -38,6 +38,11 @@
   --input: #8a8a8a;
   --ring: var(--navy-700);
   --gradient-accent: linear-gradient(260deg, var(--accent-orange) 0%, var(--accent-crimson) 100%);
+
+  /* Chuyển động: ngắn, chỉ transform/opacity; tắt hết khi người dùng chọn giảm chuyển động. */
+  --duration-fast: 150ms;
+  --duration-base: 220ms;
+  --ease-out: cubic-bezier(0.2, 0, 0, 1);
 }
 
 @theme inline {
@@ -88,6 +93,51 @@
     /* Inter Tight tự host, font-display swap; trình duyệt chỉ tải tập ký tự latin/vietnamese mà trang dùng. */
     font-family: var(--font-sans);
     letter-spacing: 0.5px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after,
+    ::backdrop {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+}
+
+@layer components {
+  /* Bottom sheet trượt lên khi mở (@starting-style), trượt xuống khi có data-closing rồi mới unmount.
+     Trình duyệt chưa có @starting-style thì mở tức thì. */
+  .sheet,
+  .sheet::backdrop {
+    transition-property: transform, opacity;
+    transition-duration: var(--duration-base);
+    transition-timing-function: var(--ease-out);
+  }
+  .sheet[data-closing] {
+    transform: translateY(100%);
+  }
+  .sheet[data-closing]::backdrop {
+    opacity: 0;
+  }
+  @starting-style {
+    .sheet[open] {
+      transform: translateY(100%);
+    }
+    .sheet[open]::backdrop {
+      opacity: 0;
+    }
+  }
+
+  /* Số ly trên thanh giỏ nảy một nhịp khi tăng (chỉ transform). */
+  .count-bump[data-bump] {
+    animation: count-bump var(--duration-base) var(--ease-out);
+  }
+  @keyframes count-bump {
+    50% {
+      transform: scale(1.08);
+    }
   }
 }
 
