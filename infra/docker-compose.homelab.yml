@@ -1,0 +1,81 @@
+# Overlay homelab: Traefik (mạng ngoài `homelab`, sau Cloudflare Tunnel) thay cho Caddy.
+# Luôn ghép SAU file production:
+#   docker compose -f infra/docker-compose.prod.yml -f infra/docker-compose.homelab.yml --env-file infra/.env up -d --build
+# hoặc `make homelab-up`. Xem docs/runbook.md mục "Triển khai homelab (Traefik)".
+#
+# Hai hostname:
+#   https://sidecup.cauchuyenlaptrinh.com      web (nginx tĩnh); link QR, link đơn trong tin Zalo
+#   https://sidecup-api.cauchuyenlaptrinh.com  api (REST /api/*, WebSocket /ws/*), /internal/* bị chặn
+# Hai hostname cùng site nên cookie phiên SameSite=Lax vẫn đi kèm request từ web sang api (CORS có credentials).
+# Không service nào publish cổng ra máy host, kể cả postgres.
+
+services:
+  # TLS kết thúc ở Cloudflare, Traefik lo định tuyến: không chạy Caddy.
+  # Lưu ý: file production vẫn bắt buộc DOMAIN và ACME_EMAIL khi đọc cấu hình, xem infra/.env.example.
+  caddy:
+    profiles: ["caddy"]
+
+  postgres:
+    # Database chỉ nằm trong mạng default riêng của stack: không bao giờ map cổng ra host.
+    ports: !reset []
+    networks:
+      default:
+        # Mạng `homelab` dùng chung đã có nhiều service tên `api`, `web` của stack khác;
+        # alias riêng để api không bao giờ phân giải nhầm sang Postgres của stack khác.
+        aliases: [sidecup-postgres]
+
+  api:
+    ports: !reset []
+    environment:
+      DATABASE_URL: postgres://${POSTGRES_USER:-sidecup}:${POSTGRES_PASSWORD}@sidecup-postgres:5432/${POSTGRES_DB:-sidecup}?sslmode=disable
+      # Gốc của web: link QR, link đơn, cờ Secure của cookie và Origin hợp lệ khi nâng cấp WebSocket.
+      PUBLIC_BASE_URL: https://sidecup.cauchuyenlaptrinh.com
+      CORS_ORIGINS: https://sidecup.cauchuyenlaptrinh.com
+    networks:
+      - default
+      - homelab
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=homelab
+      # API nội bộ cho notifier không bao giờ ra Internet: không router nào khớp → Traefik trả 404.
+      - traefik.http.routers.sidecup-api.rule=Host(`sidecup-api.cauchuyenlaptrinh.com`) && !PathPrefix(`/internal`)
+      - traefik.http.routers.sidecup-api.entrypoints=web
+      - traefik.http.routers.sidecup-api.service=sidecup-api
+      - traefik.http.routers.sidecup-api.middlewares=sidecup-headers
+      - traefik.http.services.sidecup-api.loadbalancer.server.port=8080
+      - traefik.http.services.sidecup-api.loadbalancer.healthcheck.path=/readyz
+      - traefik.http.services.sidecup-api.loadbalancer.healthcheck.interval=10s
+      - traefik.http.services.sidecup-api.loadbalancer.healthcheck.timeout=2s
+
+  web:
+    ports: !reset []
+    build:
+      args:
+        VITE_API_ORIGIN: https://sidecup-api.cauchuyenlaptrinh.com
+    networks:
+      - homelab
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=homelab
+      # nginx.conf vẫn có location proxy /api, /ws tới `api:8080`; trên mạng `homelab` tên đó trỏ cả
+      # sang stack khác, nên chặn hai path này ở Traefik (404) thay vì để nginx proxy nhầm.
+      - traefik.http.routers.sidecup-web.rule=Host(`sidecup.cauchuyenlaptrinh.com`) && !PathPrefix(`/api/`) && !PathPrefix(`/ws/`)
+      - traefik.http.routers.sidecup-web.entrypoints=web
+      - traefik.http.routers.sidecup-web.service=sidecup-web
+      - traefik.http.routers.sidecup-web.middlewares=sidecup-headers
+      - traefik.http.services.sidecup-web.loadbalancer.server.port=80
+      # Cùng bộ header với infra/caddy/Caddyfile, connect-src mở cho hostname api.
+      # Traefik chỉ thấy http (TLS ở Cloudflare) nên phải ép HSTS.
+      - traefik.http.middlewares.sidecup-headers.headers.stsSeconds=31536000
+      - traefik.http.middlewares.sidecup-headers.headers.stsIncludeSubdomains=true
+      - traefik.http.middlewares.sidecup-headers.headers.forceSTSHeader=true
+      - traefik.http.middlewares.sidecup-headers.headers.contentTypeNosniff=true
+      - traefik.http.middlewares.sidecup-headers.headers.referrerPolicy=strict-origin-when-cross-origin
+      - traefik.http.middlewares.sidecup-headers.headers.frameDeny=true
+      - "traefik.http.middlewares.sidecup-headers.headers.permissionsPolicy=camera=(), microphone=(), geolocation=()"
+      - "traefik.http.middlewares.sidecup-headers.headers.contentSecurityPolicy=default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' https: data: blob:; connect-src 'self' https://sidecup-api.cauchuyenlaptrinh.com wss://sidecup-api.cauchuyenlaptrinh.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
+      - traefik.http.middlewares.sidecup-headers.headers.customResponseHeaders.Server=
+
+networks:
+  homelab:
+    external: true

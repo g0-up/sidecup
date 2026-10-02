@@ -1,7 +1,8 @@
 COMPOSE      = docker compose -f infra/docker-compose.yml
 COMPOSE_PROD = docker compose -f infra/docker-compose.prod.yml --env-file infra/.env
+COMPOSE_HOMELAB = docker compose -f infra/docker-compose.prod.yml -f infra/docker-compose.homelab.yml --env-file infra/.env
 
-.PHONY: help dev dev-api dev-web db-up down check-ports migrate-up migrate-down seed test test-api test-web lint build size e2e prod-up prod-down
+.PHONY: help dev dev-api dev-web db-up down check-ports migrate-up migrate-down seed test test-api test-web lint build size e2e prod-up prod-down homelab-config homelab-up homelab-down
 
 help:
 	@echo "make dev          Postgres (docker) + API (go run) + web (vite); Ctrl-C dừng API/web"
@@ -10,6 +11,7 @@ help:
 	@echo "make migrate-up | migrate-down | seed"
 	@echo "make test | lint | build | size | e2e"
 	@echo "make prod-up | prod-down   (infra/docker-compose.prod.yml + infra/.env)"
+	@echo "make homelab-config | homelab-up | homelab-down   (prod + infra/docker-compose.homelab.yml, sau Traefik)"
 
 # Không tự đổi cổng khi bị chiếm: báo rõ tiến trình đang giữ cổng để dừng đúng nó.
 check-ports:
@@ -80,3 +82,12 @@ prod-up:
 
 prod-down:
 	$(COMPOSE_PROD) down
+
+homelab-config:
+	$(COMPOSE_HOMELAB) config --quiet
+
+homelab-up:
+	$(COMPOSE_HOMELAB) up -d --build
+
+homelab-down:
+	$(COMPOSE_HOMELAB) down
