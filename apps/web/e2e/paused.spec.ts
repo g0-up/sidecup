@@ -15,8 +15,9 @@ test("tạm ngưng nhận đơn từ công tắc trên màn người bán → me
   await toggle.click();
   await expect(sellerPage.getByText("Tạm ngưng nhận đơn")).toBeVisible();
 
-  await expect(customerPage.getByRole("status")).toContainText("Quán tạm ngưng nhận đơn", { timeout: 20_000 });
+  const banner = customerPage.getByRole("status").filter({ hasText: "Quán tạm ngưng nhận đơn" });
+  await expect(banner).toBeVisible({ timeout: 20_000 });
 
   await seller.setAccepting(true);
-  await expect(customerPage.getByRole("status")).toBeHidden({ timeout: 20_000 });
+  await expect(banner).toBeHidden({ timeout: 20_000 });
 });

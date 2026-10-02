@@ -6,7 +6,7 @@ test("quét mã → đặt → nhận → mang ra → thu tiền mặt → báo 
 
   await customerPage.goto(`/t/${table.token}`);
   await expect(customerPage.getByRole("heading", { name: "Bàn 9" })).toBeVisible();
-  await expect(customerPage.getByText(table.partnerName)).toBeVisible();
+  await expect(customerPage.getByText(table.partnerName, { exact: false })).toBeVisible();
   const id = await placeOrder(customerPage, table);
   await expect(customerPage.getByText("Đã gửi").first()).toBeVisible();
 
@@ -16,10 +16,10 @@ test("quét mã → đặt → nhận → mang ra → thu tiền mặt → báo 
   await expect(card.getByText("0901234567")).toBeVisible();
 
   await card.getByRole("button", { name: "Nhận đơn" }).click();
-  await expect(customerPage.getByText("Quán đã nhận, đang pha")).toBeVisible();
+  await expect(customerPage.getByRole("heading", { level: 1, name: /^Quán đang pha/ })).toBeVisible();
 
   await card.getByRole("button", { name: "Mang ra bàn" }).click();
-  await expect(customerPage.getByText("Đang mang ra", { exact: true }).first()).toBeVisible();
+  await expect(customerPage.getByRole("heading", { level: 1, name: "Nước đang được mang ra bàn" })).toBeVisible();
 
   await card.getByRole("button", { name: "Thu tiền mặt" }).click();
   await expect(customerPage.getByText("Đã nhận nước").first()).toBeVisible();

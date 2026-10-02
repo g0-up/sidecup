@@ -20,6 +20,6 @@ test("chặn /ws: trang khách và màn người bán vẫn cập nhật qua pol
   await expect(card).toBeVisible({ timeout: 20_000 });
 
   await seller.transition(id, "sent", "accepted");
-  await expect(customerPage.getByText("Quán đã nhận, đang pha")).toBeVisible({ timeout: 20_000 });
+  await expect(customerPage.getByRole("heading", { level: 1, name: /^Quán đang pha/ })).toBeVisible({ timeout: 20_000 });
   expect(logs.some((l) => l.includes("ws_fallback"))).toBeTruthy();
 });

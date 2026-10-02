@@ -13,7 +13,7 @@ test("bỏ trống SĐT vẫn đặt được; màn người bán không có lin
   await customerPage.getByRole("button", { name: /Xem giỏ/ }).click();
   const sheet = customerPage.getByRole("dialog", { name: "Giỏ của bạn" });
   await expect(sheet.getByLabel("Số điện thoại")).toHaveValue("");
-  await expect(sheet.getByText("Bỏ trống thì không nhận tin.", { exact: false })).toBeVisible();
+  await expect(sheet.getByText("Bỏ trống nếu không cần.", { exact: false })).toBeVisible();
   await sheet.getByRole("button", { name: "Đặt nước" }).click();
   await customerPage.waitForURL(/\/o\/[0-9a-f-]{36}$/);
 
@@ -22,5 +22,5 @@ test("bỏ trống SĐT vẫn đặt được; màn người bán không có lin
   await expect(card.locator('a[href^="tel:"]')).toHaveCount(0);
 
   await card.getByRole("button", { name: "Nhận đơn" }).click();
-  await expect(customerPage.getByText("Quán đã nhận, đang pha")).toBeVisible();
+  await expect(customerPage.getByRole("heading", { level: 1, name: /^Quán đang pha/ })).toBeVisible();
 });

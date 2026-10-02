@@ -11,6 +11,7 @@ test("khách huỷ khi đơn còn Đã gửi; người bán thấy đơn rời b
   const prompt = customerPage.getByRole("alert").filter({ hasText: "Quán chưa xác nhận" });
   await expect(prompt).toBeVisible();
   await prompt.getByRole("button", { name: "Huỷ đơn" }).click();
+  await prompt.getByRole("button", { name: "Xác nhận huỷ" }).click();
 
   await expect(customerPage.getByText("Bạn đã huỷ đơn")).toBeVisible();
   await expect(card).toBeHidden();
