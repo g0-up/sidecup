@@ -6,7 +6,8 @@ COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 COPY . .
 ARG VITE_SELLER_NAME=""
-ENV VITE_SELLER_NAME=$VITE_SELLER_NAME
+ARG VITE_API_ORIGIN=""
+ENV VITE_SELLER_NAME=$VITE_SELLER_NAME VITE_API_ORIGIN=$VITE_API_ORIGIN
 RUN pnpm exec vite build && node scripts/check-size.mjs
 
 FROM nginx:1.27-alpine

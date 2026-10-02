@@ -8,6 +8,10 @@ export interface RequestOptions {
   signal?: AbortSignal;
 }
 
+// Gốc URL của API, nhúng lúc build. Rỗng = cùng origin với web (proxy Vite ở dev, Caddy trên VPS).
+// Homelab đặt API ở hostname riêng: VITE_API_ORIGIN=https://sidecup-api.cauchuyenlaptrinh.com.
+export const API_ORIGIN = (import.meta.env.VITE_API_ORIGIN ?? "").trim().replace(/\/+$/, "");
+
 type UnauthorizedHandler = () => void;
 let onUnauthorized: UnauthorizedHandler | null = null;
 
@@ -20,11 +24,12 @@ async function send(path: string, opts: RequestOptions): Promise<Response> {
   const headers: Record<string, string> = { Accept: "application/json", "X-Client-Id": getClientId(), ...opts.headers };
   if (opts.body !== undefined) headers["Content-Type"] = "application/json";
   try {
-    return await fetch(path, {
+    return await fetch(API_ORIGIN + path, {
       method: opts.method ?? "GET",
       headers,
       body: opts.body === undefined ? undefined : JSON.stringify(opts.body),
-      credentials: "same-origin",
+      // API khác hostname (cùng site) vẫn cần cookie phiên; cùng origin thì "include" như "same-origin".
+      credentials: "include",
       signal: opts.signal,
     });
   } catch (e) {
