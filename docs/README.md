@@ -22,7 +22,7 @@ apps/web/   React 19, Vite 7, Tailwind 4, shadcn/ui, React Router 7, TanStack Qu
   src/features/         customer-menu, customer-order, seller-auth, seller-orders, admin-*
   src/shared/           api client, realtime (WebSocket + fallback polling), ui, lib
   e2e/                  Playwright
-infra/      docker-compose.yml (dev, profile full cho E2E), docker-compose.prod.yml, caddy/
+infra/      docker-compose.yml (dev, profile full cho E2E), docker-compose.prod.yml, docker-compose.homelab.yml (overlay Traefik), caddy/
 ```
 
 Mỗi feature API có `handler.go` (Gin) → `service.go` (nghiệp vụ, không biết Gin) → repository/SQL. Mọi ghi vào bảng `orders` đi qua `orders.Writer`.

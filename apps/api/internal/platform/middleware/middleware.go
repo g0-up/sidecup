@@ -128,7 +128,7 @@ func NotifierAuth(token string) gin.HandlerFunc {
 	}
 }
 
-// CORS chỉ bật ở dev khi web không đi qua proxy của Vite.
+// CORS chỉ bật khi web khác origin với API: dev không qua proxy của Vite, hoặc homelab (web và api hai hostname).
 func CORS(origins []string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		origin := c.GetHeader("Origin")

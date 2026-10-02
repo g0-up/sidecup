@@ -1,6 +1,6 @@
 # Runbook vận hành
 
-Một VPS chạy `infra/docker-compose.prod.yml`: Caddy (TLS tự động) → `web` (nginx tĩnh) và `api`; Postgres không mở cổng ra ngoài. Tin trạng thái đơn cho khách được gửi qua Zalo bởi worker chạy ngay trong process `api` (mục [Zalo gửi tin cho khách](#zalo-gửi-tin-cho-khách)). Tin báo đơn mới cho người bán qua Zalo chưa làm; nếu sau này có dịch vụ notifier ngoài, nó gọi `http://api:8080/internal/*` trong mạng docker.
+Một VPS chạy `infra/docker-compose.prod.yml`: Caddy (TLS tự động) → `web` (nginx tĩnh) và `api`; Postgres không mở cổng ra ngoài. Homelab sau Traefik và Cloudflare Tunnel thì xem [Triển khai homelab (Traefik)](#triển-khai-homelab-traefik). Tin trạng thái đơn cho khách được gửi qua Zalo bởi worker chạy ngay trong process `api` (mục [Zalo gửi tin cho khách](#zalo-gửi-tin-cho-khách)). Tin báo đơn mới cho người bán qua Zalo chưa làm; nếu sau này có dịch vụ notifier ngoài, nó gọi `http://api:8080/internal/*` trong mạng docker.
 
 ## Triển khai lần đầu
 
@@ -20,6 +20,38 @@ Một VPS chạy `infra/docker-compose.prod.yml`: Caddy (TLS tự động) → `
    - Mở `https://$DOMAIN/seller/login`, đăng nhập, tạo quán, món, bàn; quét thẻ QR bằng điện thoại.
 
 API từ chối khởi động khi thiếu biến hoặc sai định dạng (hash không phải 32 hex, `SESSION_SECRET` < 32 byte, `NOTIFIER_TOKEN` < 16 ký tự, `ZALO_CREDENTIAL_KEY` có giá trị nhưng < 32 byte). Xem lỗi bằng `docker compose -f infra/docker-compose.prod.yml logs api`.
+
+## Triển khai homelab (Traefik)
+
+Thay cho Caddy trên VPS: ghép `infra/docker-compose.homelab.yml` **sau** file production. Caddy không chạy; Traefik định tuyến hai hostname (ghi cứng trong overlay):
+
+| Hostname | Tới | Ghi chú |
+|----------|-----|---------|
+| `https://sidecup.cauchuyenlaptrinh.com` | `web` (nginx, cổng 80) | Link QR, link đơn trong tin Zalo. `/api/*`, `/ws/*` trả 404 ở Traefik; `/internal/*` trả 404 ở nginx. |
+| `https://sidecup-api.cauchuyenlaptrinh.com` | `api:8080` | REST `/api/*`, WebSocket `/ws/*`. `/internal*` trả 404 ở Traefik. Traefik kiểm `/readyz`. |
+
+- Bundle web được build với `VITE_API_ORIGIN=https://sidecup-api.cauchuyenlaptrinh.com` nên gọi API và mở WebSocket ở hostname api. API đặt `PUBLIC_BASE_URL` là hostname web (cookie `Secure`, Origin hợp lệ của WebSocket) và `CORS_ORIGINS` chỉ cho hostname web, có credentials. Hai hostname cùng site `cauchuyenlaptrinh.com` nên cookie phiên `SameSite=Lax` vẫn đi kèm.
+- Không service nào map cổng ra máy host (overlay ép `ports: !reset []` cho `postgres`, `api`, `web`). `postgres` chỉ ở mạng riêng của stack, có alias `sidecup-postgres` để không trùng tên với stack khác trên mạng `homelab`.
+- Cùng bộ header bảo mật như Caddyfile; CSP `connect-src` mở cho `https://` và `wss://` của hostname api.
+
+Chuẩn bị ngoài repo này (repo không tạo các thứ sau):
+
+- Mạng docker ngoài tên `homelab`, dùng chung với Traefik.
+- Traefik v3, provider docker `exposedByDefault=false`, `network: homelab`, entrypoint `web` (`:80`).
+- Cloudflare Tunnel: cả hai hostname → `http://traefik:80`. TLS kết thúc ở Cloudflare; không cần bản ghi `A` hay mở cổng 80/443.
+- Nên đặt `entryPoints.web.forwardedHeaders.trustedIPs` của Traefik là subnet mạng `homelab` (`docker network inspect homelab`). Thiếu nó, Traefik thay `X-Forwarded-For` bằng IP của cloudflared nên giới hạn đăng nhập 5 lần/phút/IP bị dùng chung cho mọi khách.
+
+Các bước:
+
+1. `cp infra/.env.example infra/.env`, điền như [Triển khai lần đầu](#triển-khai-lần-đầu). Overlay tự đặt hostname, nhưng file production vẫn bắt buộc `DOMAIN` và `ACME_EMAIL` khi đọc cấu hình: đặt `DOMAIN=sidecup.cauchuyenlaptrinh.com`, giữ `ACME_EMAIL` bất kỳ. `chmod 600 infra/.env`.
+2. `make homelab-config` (kiểm tra cấu hình ghép, không in bí mật), rồi `make homelab-up`. Đổi hostname = sửa overlay rồi build lại web (origin API nhúng lúc build).
+3. Kiểm tra:
+   - `docker compose -f infra/docker-compose.prod.yml -f infra/docker-compose.homelab.yml --env-file infra/.env ps` → `postgres`, `api`, `web` healthy, không có `caddy`, cột PORTS chỉ có cổng container (không có `0.0.0.0:`).
+   - `curl -fsS https://sidecup-api.cauchuyenlaptrinh.com/api/healthz` → `{"status":"ok"}`.
+   - `curl -s -o /dev/null -w '%{http_code}' https://sidecup-api.cauchuyenlaptrinh.com/internal/notifications/pending` → `404`.
+   - Đăng nhập `https://sidecup.cauchuyenlaptrinh.com/seller/login`; màn người bán không hiện banner "Kết nối chậm" (WebSocket tới hostname api qua được Cloudflare và Traefik).
+
+Cập nhật, lùi phiên bản, sao lưu, xem log: như các mục dưới, thay `make prod-up` bằng `make homelab-up` và thêm `-f infra/docker-compose.homelab.yml` sau `-f infra/docker-compose.prod.yml` trong lệnh `docker compose`. Luôn sao lưu trước `make homelab-up` khi bản mới có migration.
 
 ## Cập nhật phiên bản
 
@@ -122,7 +154,7 @@ Dấu hiệu: màn người bán hiện banner đỏ "Zalo không gửi được
 
 ## Khi WebSocket không qua được
 
-Dấu hiệu: banner vàng "Kết nối chậm" trên màn người bán, log trình duyệt `ws_fallback`. Trang khách và màn người bán vẫn chạy bằng polling 15 giây. Kiểm tra Caddy còn route `/ws/*` tới `api:8080` với `read_timeout 0`. Nếu nhiều khách (> 30% phiên) rơi vào fallback, hạ `fallbackMs` trong `apps/web/src/shared/realtime/socket-controller.ts` xuống 5000.
+Dấu hiệu: banner vàng "Kết nối chậm" trên màn người bán, log trình duyệt `ws_fallback`. Trang khách và màn người bán vẫn chạy bằng polling 15 giây. Kiểm tra Caddy còn route `/ws/*` tới `api:8080` với `read_timeout 0` (homelab: router `sidecup-api` của Traefik còn chạy, CSP của web có `wss://sidecup-api.cauchuyenlaptrinh.com`, Cloudflare Tunnel không chặn WebSocket). Nếu nhiều khách (> 30% phiên) rơi vào fallback, hạ `fallbackMs` trong `apps/web/src/shared/realtime/socket-controller.ts` xuống 5000.
 
 ## Tài khoản DB
 

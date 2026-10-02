@@ -1,6 +1,6 @@
 # Gọi nước tại bàn qua mã QR
 
-Monorepo `apps/api` (Go) + `apps/web` (React) + `infra/` (Docker, Caddy).
+Monorepo `apps/api` (Go) + `apps/web` (React) + `infra/` (Docker, Caddy hoặc Traefik ở homelab).
 
 - Chạy dev, cấu trúc, lệnh: [docs/README.md](docs/README.md)
 - API: [docs/api.md](docs/api.md)
