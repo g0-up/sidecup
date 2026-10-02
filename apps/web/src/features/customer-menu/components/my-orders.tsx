@@ -12,7 +12,7 @@ export function MyOrders({ orders }: { orders: MyOrder[] }) {
       <ul>
         {orders.map((o) => (
           <li key={o.id}>
-            <Link to={`/o/${o.id}`} className="flex items-center justify-between px-4 py-2.5 text-sm">
+            <Link to={`/o/${o.id}`} className="flex min-h-11 items-center justify-between px-4 py-3 text-sm">
               <span>
                 <span className="font-mono font-semibold">#{o.code}</span>
                 <span className="ml-2 text-muted-foreground">

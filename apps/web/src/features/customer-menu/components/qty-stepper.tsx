@@ -15,6 +15,7 @@ export function QtyStepper({ value, onChange, label }: Props) {
         type="button"
         variant="outline"
         size="icon"
+        className="size-11"
         aria-label="Bớt một ly"
         disabled={value <= 1}
         onClick={() => onChange(value - 1)}
@@ -28,6 +29,7 @@ export function QtyStepper({ value, onChange, label }: Props) {
         type="button"
         variant="outline"
         size="icon"
+        className="size-11"
         aria-label="Thêm một ly"
         disabled={value >= MAX_QTY}
         onClick={() => onChange(value + 1)}

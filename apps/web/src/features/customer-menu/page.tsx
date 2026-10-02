@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useReducer, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import { isApiError } from "@/shared/api/errors";
+import { useDocumentHead } from "@/shared/hooks/use-document-head";
 import { useLocalStorage } from "@/shared/hooks/use-local-storage";
 import { normalizePhone } from "@/shared/lib/phone";
 import { createOrder, type MenuProduct } from "./api";
@@ -16,8 +17,16 @@ import { orderingMessage } from "./ordering-message";
 import { ProductList } from "./components/product-list";
 import { ProductSheet } from "./components/product-sheet";
 import { useCart } from "./hooks/use-cart";
-import { useMenu } from "./hooks/use-menu";
+import { useMenu, type MenuState } from "./hooks/use-menu";
 import { clearIdempotencyKey, ensureIdempotencyKey, submitReducer } from "./submit";
+
+const ANNOUNCE_MS = 3000;
+
+function headTitle(state: MenuState): string {
+  if (state.status === "loading") return "Đang mở menu…";
+  if (state.status === "error") return state.error.status === 404 ? "Không tìm thấy mã" : "Không tải được menu";
+  return `${state.menu.table_label} · ${state.menu.partner.name} — Gọi nước`;
+}
 
 export function Component() {
   const { token = "" } = useParams();
@@ -35,6 +44,16 @@ function MenuPage({ token }: { token: string }) {
   const [phone, setPhone] = useState(savedPhone);
   const [submit, dispatchSubmit] = useReducer(submitReducer, { status: "idle" });
   const inflight = useRef(false);
+  // Lời báo "Đã thêm…" cho trình đọc màn hình; kèm tổng số ly nên lần thêm nào chữ cũng đổi và được đọc lại,
+  // kể cả thêm đúng món cũ trong 3 giây. Xoá sau 3 giây để vùng status không giữ chữ cũ.
+  const [announcement, setAnnouncement] = useState("");
+  useDocumentHead({ title: headTitle(state), noindex: true });
+
+  useEffect(() => {
+    if (!announcement) return;
+    const t = setTimeout(() => setAnnouncement(""), ANNOUNCE_MS);
+    return () => clearTimeout(t);
+  }, [announcement]);
 
   const menu = state.status === "ready" ? state.menu : null;
   const products = useMemo(() => menu?.products ?? [], [menu]);
@@ -108,6 +127,9 @@ function MenuPage({ token }: { token: string }) {
       <MyOrders orders={m.my_orders} />
       <ProductList products={m.products} onPick={setPicking} />
       <CustomerFooter />
+      <p role="status" className="sr-only">
+        {announcement}
+      </p>
       <CartBar count={count} total={cartTotal(cart)} onOpen={() => setCartOpen(true)} />
       <ProductSheet
         product={picking}
@@ -115,6 +137,7 @@ function MenuPage({ token }: { token: string }) {
         onAdd={(line) => {
           dispatch({ type: "add", line });
           setPicking(null);
+          setAnnouncement(`Đã thêm ${line.qty > 1 ? `${line.qty} ly ` : ""}${line.name} vào giỏ, giỏ có ${count + line.qty} ly`);
         }}
       />
       <CartSheet

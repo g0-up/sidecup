@@ -1,4 +1,5 @@
 import { Trash2 } from "lucide-react";
+import { useState } from "react";
 import { formatVND } from "@/shared/lib/money";
 import { isVNMobile } from "@/shared/lib/phone";
 import { cn } from "@/shared/lib/utils";
@@ -32,7 +33,9 @@ export function CartSheet(p: Props) {
   const total = cartTotal(p.cart);
   // Bỏ trống là hợp lệ; đã nhập thì phải đúng số di động.
   const phoneValid = p.phone.trim() === "" || isVNMobile(p.phone);
-  const phoneTouched = p.phone.trim().length >= 10;
+  // Báo lỗi khi rời ô hoặc khi đã gõ đủ 10 ký tự, không báo giữa lúc đang gõ dở.
+  const [phoneBlurred, setPhoneBlurred] = useState(false);
+  const phoneTouched = phoneBlurred || p.phone.trim().length >= 10;
   const serverFields = p.submit.status === "error" ? p.submit.fields : {};
   const blockedReason =
     p.cart.length === 0
@@ -86,7 +89,7 @@ export function CartSheet(p: Props) {
                   <Button
                     type="button"
                     variant="ghost"
-                    size="sm"
+                    className="min-h-11 min-w-11"
                     onClick={() => p.dispatch({ type: "remove", index: i })}
                   >
                     <Trash2 /> Bỏ
@@ -119,12 +122,14 @@ export function CartSheet(p: Props) {
             autoComplete="tel"
             placeholder="09xx xxx xxx"
             value={p.phone}
+            className="h-11"
             aria-invalid={(phoneTouched && !phoneValid) || !!serverFields.phone}
             aria-describedby="phone-help"
             onChange={(e) => p.onPhone(e.target.value)}
+            onBlur={() => setPhoneBlurred(true)}
           />
           <p id="phone-help" className="text-xs text-muted-foreground">
-            Nhập để nhận tin trạng thái đơn qua Zalo. Bỏ trống thì không nhận tin.
+            Nhận tin Zalo khi nước sắp tới. Bỏ trống nếu không cần.
           </p>
           {((phoneTouched && !phoneValid) || serverFields.phone) && (
             <p className="text-sm text-destructive">

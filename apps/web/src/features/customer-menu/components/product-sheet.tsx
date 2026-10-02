@@ -1,3 +1,4 @@
+import { Check } from "lucide-react";
 import { useState } from "react";
 import { formatVND } from "@/shared/lib/money";
 import { cn } from "@/shared/lib/utils";
@@ -79,21 +80,33 @@ function Choice<T extends string>({
   return (
     <fieldset>
       <legend className="mb-2 font-medium">{label}</legend>
-      <div className="grid grid-cols-3 gap-2">
-        {(Object.keys(options) as T[]).map((k) => (
-          <button
-            key={k}
-            type="button"
-            aria-pressed={value === k}
-            onClick={() => onChange(k)}
-            className={cn(
-              "h-11 rounded-lg border text-sm",
-              value === k ? "border-primary bg-primary/10 font-medium text-primary" : "bg-background",
-            )}
-          >
-            {options[k]}
-          </button>
-        ))}
+      {/* Ô rộng theo chữ và giãn cho đầy hàng; hết chỗ thì cả ô xuống hàng, chữ không bao giờ gãy hay bị cắt. */}
+      <div className="flex flex-wrap gap-2">
+        {(Object.keys(options) as T[]).map((k) => {
+          const selected = value === k;
+          return (
+            <button
+              key={k}
+              type="button"
+              aria-pressed={selected}
+              onClick={() => onChange(k)}
+              className={cn(
+                "grid h-11 flex-auto place-items-center rounded-lg border px-2 text-sm whitespace-nowrap transition-colors duration-(--duration-fast)",
+                selected ? "border-primary bg-primary text-primary-foreground" : "border-input bg-background",
+              )}
+            >
+              {/* Lớp ẩn giữ chỗ cho dấu tích và chữ đậm, để chọn ô không làm ô đổi cỡ hay nhảy hàng. */}
+              <span aria-hidden className="invisible col-start-1 row-start-1 inline-flex items-center gap-1 font-semibold">
+                <Check className="size-4" />
+                {options[k]}
+              </span>
+              <span className={cn("col-start-1 row-start-1 inline-flex items-center gap-1", selected && "font-semibold")}>
+                {selected && <Check aria-hidden className="size-4 shrink-0" />}
+                {options[k]}
+              </span>
+            </button>
+          );
+        })}
       </div>
     </fieldset>
   );

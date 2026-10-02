@@ -11,6 +11,8 @@ export function ProductList({ products, onPick }: Props) {
   if (products.length === 0) {
     return <p className="px-4 py-8 text-center text-muted-foreground">Menu đang được cập nhật</p>;
   }
+  // Menu không món nào có ảnh thì bỏ hẳn ô ảnh, khỏi một cột ô xám giống nhau.
+  const showTiles = products.some((p) => p.image_url);
   return (
     <ul className="divide-y" aria-label="Menu">
       {products.map((p) => (
@@ -24,7 +26,7 @@ export function ProductList({ products, onPick }: Props) {
               !p.available && "opacity-50",
             )}
           >
-            {p.image_url ? (
+            {!showTiles ? null : p.image_url ? (
               <img
                 src={p.image_url}
                 alt=""
@@ -35,7 +37,12 @@ export function ProductList({ products, onPick }: Props) {
                 className="size-14 shrink-0 rounded-md bg-muted object-cover"
               />
             ) : (
-              <span aria-hidden className="size-14 shrink-0 rounded-md bg-secondary" />
+              <span
+                aria-hidden
+                className="flex size-14 shrink-0 items-center justify-center rounded-md bg-secondary text-xl font-semibold text-primary"
+              >
+                {p.name.trim().charAt(0).toUpperCase()}
+              </span>
             )}
             <span className="min-w-0 flex-1">
               <span className="block truncate font-medium">{p.name}</span>

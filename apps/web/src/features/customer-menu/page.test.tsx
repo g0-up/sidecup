@@ -78,7 +78,7 @@ describe("trang menu khách", () => {
     await user.click(screen.getByRole("button", { name: /Xem giỏ · 1 ly/ }));
     const sheet = await screen.findByRole("dialog");
     expect(within(sheet).getByLabelText(/Số điện thoại/)).toHaveValue("");
-    expect(within(sheet).getByText(/Bỏ trống thì không nhận tin/)).toBeInTheDocument();
+    expect(within(sheet).getByText(/Bỏ trống nếu không cần/)).toBeInTheDocument();
     await user.click(within(sheet).getByRole("button", { name: "Đặt nước" }));
 
     await waitFor(() => expect(router.state.location.pathname).toMatch(/^\/o\//));
@@ -160,6 +160,41 @@ describe("trang menu khách", () => {
   it("tạm ngưng: hiện banner và khoá đặt", async () => {
     db.settings.accepting_orders = false;
     renderMenu();
-    expect(await screen.findByRole("status")).toHaveTextContent("Quán tạm ngưng nhận đơn");
+    expect(await screen.findByText(/Quán tạm ngưng nhận đơn/)).toHaveAttribute("role", "status");
+  });
+
+  it("thêm món: báo qua vùng role=status; tiêu đề tab theo bàn và có noindex", async () => {
+    const user = userEvent.setup();
+    renderMenu();
+    await screen.findByRole("heading", { name: "Bàn 1" });
+    expect(document.title).toBe("Bàn 1 · Quán test — Gọi nước");
+    expect(document.head.querySelector('meta[name="robots"]')).toHaveAttribute("content", "noindex, nofollow");
+
+    await addToCart(user, "Cà phê sữa đá");
+    expect(screen.getByText("Đã thêm Cà phê sữa đá vào giỏ, giỏ có 1 ly")).toHaveAttribute("role", "status");
+    // Thêm đúng món đó lần nữa ngay sau: chữ phải đổi thì trình đọc màn hình mới đọc lại.
+    await addToCart(user, "Cà phê sữa đá");
+    expect(screen.getByText("Đã thêm Cà phê sữa đá vào giỏ, giỏ có 2 ly")).toHaveAttribute("role", "status");
+  });
+
+  it("SĐT sai báo lỗi khi rời ô, không chờ gõ đủ 10 số", async () => {
+    const user = userEvent.setup();
+    renderMenu();
+    await addToCart(user, "Bạc xỉu");
+    await user.click(screen.getByRole("button", { name: /Xem giỏ/ }));
+    const sheet = await screen.findByRole("dialog");
+    const phone = within(sheet).getByLabelText(/Số điện thoại/);
+    await user.type(phone, "123");
+    expect(within(sheet).queryByText("Số điện thoại gồm 10 chữ số, bắt đầu bằng 0")).not.toBeInTheDocument();
+    await user.click(within(sheet).getByLabelText("Ghi chú"));
+    expect(within(sheet).getByText("Số điện thoại gồm 10 chữ số, bắt đầu bằng 0")).toBeInTheDocument();
+    expect(phone).toHaveAttribute("aria-invalid", "true");
+  });
+
+  it("mã không tồn tại: chỉ cách quét lại mã QR", async () => {
+    renderRoutes([{ path: "/t/:token", Component: menuPage.Component }], "/t/KHONGCO");
+    expect(await screen.findByRole("heading", { name: "Không tìm thấy mã này" })).toBeInTheDocument();
+    expect(screen.getByText("Quét lại mã QR trên bàn")).toBeInTheDocument();
+    expect(document.title).toBe("Không tìm thấy mã");
   });
 });
