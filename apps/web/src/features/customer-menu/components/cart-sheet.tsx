@@ -30,7 +30,8 @@ interface Props {
 
 export function CartSheet(p: Props) {
   const total = cartTotal(p.cart);
-  const phoneValid = isVNMobile(p.phone);
+  // Bỏ trống là hợp lệ; đã nhập thì phải đúng số di động.
+  const phoneValid = p.phone.trim() === "" || isVNMobile(p.phone);
   const phoneTouched = p.phone.trim().length >= 10;
   const serverFields = p.submit.status === "error" ? p.submit.fields : {};
   const blockedReason =
@@ -41,7 +42,7 @@ export function CartSheet(p: Props) {
         : p.orderingMessage
           ? p.orderingMessage
           : !phoneValid
-            ? "Nhập số điện thoại để đặt"
+            ? "Sửa số điện thoại hoặc bỏ trống để đặt"
             : null;
   const submitting = p.submit.status === "submitting";
 
@@ -110,7 +111,7 @@ export function CartSheet(p: Props) {
           </p>
         </div>
         <div className="space-y-1.5">
-          <Label htmlFor="phone">Số điện thoại</Label>
+          <Label htmlFor="phone">Số điện thoại (không bắt buộc)</Label>
           <Input
             id="phone"
             type="tel"
@@ -123,7 +124,7 @@ export function CartSheet(p: Props) {
             onChange={(e) => p.onPhone(e.target.value)}
           />
           <p id="phone-help" className="text-xs text-muted-foreground">
-            Chỉ dùng để báo trạng thái đơn qua Zalo
+            Nhập để nhận tin trạng thái đơn qua Zalo. Bỏ trống thì không nhận tin.
           </p>
           {((phoneTouched && !phoneValid) || serverFields.phone) && (
             <p className="text-sm text-destructive">
@@ -141,7 +142,7 @@ export function CartSheet(p: Props) {
             <span>Tổng</span>
             <span className="tabular-nums">{formatVND(total)}</span>
           </div>
-          <Button type="submit" size="lg" className="h-12 w-full text-base" disabled={!!blockedReason || submitting}>
+          <Button type="submit" variant="cta" className="w-full" disabled={!!blockedReason || submitting}>
             {submitting ? "Đang gửi…" : "Đặt nước"}
           </Button>
           {blockedReason && p.cart.length > 0 && (

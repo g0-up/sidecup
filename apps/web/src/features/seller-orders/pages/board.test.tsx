@@ -75,6 +75,17 @@ describe("bảng đơn người bán", () => {
     expect(within(sent).queryByText("Mới")).not.toBeInTheDocument();
   });
 
+  it("đơn khách bỏ trống SĐT vẫn hiện đủ, không có link gọi", async () => {
+    seed("a", "sent", "AAA111").customer_phone = null;
+    renderBoard();
+    const sent = await screen.findByRole("region", { name: "Đã gửi" });
+    const card = within(sent).getByRole("article", { name: "Đơn AAA111" });
+    expect(within(card).getByText(/Cà phê sữa đá/)).toBeInTheDocument();
+    expect(within(card).getByText("50.000đ")).toBeInTheDocument();
+    expect(card.querySelector('a[href^="tel:"]')).toBeNull();
+    expect(within(card).getByRole("button", { name: /Nhận đơn/ })).toBeInTheDocument();
+  });
+
   it("order.created qua WebSocket thêm thẻ mới có nhãn Mới", async () => {
     renderBoard();
     await screen.findByRole("region", { name: "Đã gửi" });

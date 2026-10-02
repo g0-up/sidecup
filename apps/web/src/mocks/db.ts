@@ -2,6 +2,7 @@
 import type { Menu, MenuProduct } from "@/features/customer-menu/api";
 import type { SellerOrder } from "@/shared/api/orders";
 import type { Settings } from "@/shared/api/settings";
+import type { ZaloLinkState, ZaloStatus } from "@/shared/api/zalo";
 
 export const MOCK_TOKEN = "DEVTEST001";
 
@@ -11,6 +12,8 @@ export interface MockDb {
   settings: Settings;
   revokedTokens: Set<string>;
   idempotency: Map<string, string>;
+  zalo: ZaloStatus;
+  zaloLinks: Map<string, ZaloLinkState>;
 }
 
 function fresh(): MockDb {
@@ -32,6 +35,8 @@ function fresh(): MockDb {
     },
     revokedTokens: new Set(),
     idempotency: new Map(),
+    zalo: { configured: true, linked: false, status: "", display_name: "", linked_at: null },
+    zaloLinks: new Map(),
   };
 }
 

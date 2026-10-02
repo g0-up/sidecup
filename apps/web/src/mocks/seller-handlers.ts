@@ -1,6 +1,7 @@
 import { http, HttpResponse } from "msw";
 import type { SellerOrder } from "@/shared/api/orders";
 import type { SettingsUpdate } from "@/shared/api/settings";
+import type { ZaloLinkState } from "@/shared/api/zalo";
 import { db } from "./db";
 
 const err = (status: number, code: string, message: string, details?: Record<string, unknown>) =>
@@ -13,6 +14,16 @@ export function setMockLoggedIn(v: boolean) {
 }
 
 const OPEN = ["sent", "accepted", "delivering"];
+
+// Ảnh PNG 1x1 thay cho mã QR thật của Zalo.
+const MOCK_QR_PNG = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
+
+// Mỗi lần poll tiến một bước như người bán đang quét mã thật.
+const NEXT_LINK_STATE: Partial<Record<ZaloLinkState, ZaloLinkState>> = {
+  pending: "qr_ready",
+  qr_ready: "scanned",
+  scanned: "linked",
+};
 
 const guard = () => (loggedIn ? null : err(401, "UNAUTHENTICATED", "Phiên đăng nhập đã hết, vui lòng đăng nhập lại"));
 
@@ -75,6 +86,51 @@ export const sellerHandlers = [
     const body = (await request.json()) as SettingsUpdate;
     db.settings = { ...db.settings, ...body, updated_at: new Date().toISOString() };
     return HttpResponse.json(db.settings);
+  }),
+  http.get("/api/seller/zalo", () => guard() ?? HttpResponse.json(db.zalo)),
+  http.delete("/api/seller/zalo", () => {
+    const g = guard();
+    if (g) return g;
+    if (!db.zalo.configured) return err(503, "ZALO_NOT_CONFIGURED", "Chưa cấu hình Zalo trên máy chủ");
+    db.zalo = { ...db.zalo, linked: false, status: "", display_name: "", linked_at: null };
+    return new HttpResponse(null, { status: 204 });
+  }),
+  http.post("/api/seller/zalo/link", async ({ request }) => {
+    const g = guard();
+    if (g) return g;
+    if (!db.zalo.configured) return err(503, "ZALO_NOT_CONFIGURED", "Chưa cấu hình Zalo trên máy chủ");
+    const body = (await request.json()) as { consent_version?: string };
+    if (!body.consent_version) {
+      return err(422, "VALIDATION", "Dữ liệu chưa hợp lệ", { fields: { consent_version: "Bắt buộc" } });
+    }
+    const id = crypto.randomUUID();
+    db.zaloLinks.set(id, "pending");
+    return HttpResponse.json({ link_id: id }, { status: 202 });
+  }),
+  http.get("/api/seller/zalo/link/:id", ({ params }) => {
+    const g = guard();
+    if (g) return g;
+    const id = String(params.id);
+    const state = db.zaloLinks.get(id);
+    if (!state) return err(404, "ZALO_LINK_NOT_FOUND", "Không tìm thấy phiên quét mã");
+    const next = NEXT_LINK_STATE[state] ?? state;
+    db.zaloLinks.set(id, next);
+    if (next === "linked") {
+      db.zalo = { configured: true, linked: true, status: "linked", display_name: "Quán Test", linked_at: new Date().toISOString() };
+    }
+    return HttpResponse.json({
+      link_id: id,
+      state: next,
+      ...(next === "qr_ready" ? { qr_png_base64: MOCK_QR_PNG } : {}),
+      ...(next === "linked" ? { display_name: "Quán Test" } : {}),
+    });
+  }),
+  http.delete("/api/seller/zalo/link/:id", ({ params }) => {
+    const g = guard();
+    if (g) return g;
+    if (!db.zalo.configured) return err(503, "ZALO_NOT_CONFIGURED", "Chưa cấu hình Zalo trên máy chủ");
+    db.zaloLinks.delete(String(params.id));
+    return new HttpResponse(null, { status: 204 });
   }),
   http.get("/api/seller/notifier/status", () =>
     HttpResponse.json({ healthy: true, last_seen_at: new Date().toISOString(), session_ok: true, message: "", failed_last_hour: 0 }),

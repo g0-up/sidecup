@@ -67,7 +67,8 @@ function MenuPage({ token }: { token: string }) {
             ...(l.ice ? { ice: l.ice } : {}),
           })),
           note: note.trim() || undefined,
-          phone: normalizePhone(phone),
+          // SĐT không bắt buộc: bỏ trống thì không gửi field, khách không nhận tin Zalo.
+          ...(normalizePhone(phone) ? { phone: normalizePhone(phone) } : {}),
         },
         key,
       );

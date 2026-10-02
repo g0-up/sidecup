@@ -53,7 +53,8 @@ export interface CreateOrderLine {
 export interface CreateOrderBody {
   items: CreateOrderLine[];
   note?: string;
-  phone: string;
+  // Không bắt buộc; bỏ trống thì khách không nhận tin trạng thái đơn qua Zalo.
+  phone?: string;
 }
 
 export interface CreatedOrder {

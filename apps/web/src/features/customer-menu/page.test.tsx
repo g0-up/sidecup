@@ -1,4 +1,4 @@
-import { screen, waitFor, within } from "@testing-library/react";
+import { act, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { http, HttpResponse } from "msw";
 import { beforeEach, describe, expect, it } from "vitest";
@@ -48,9 +48,12 @@ describe("trang menu khách", () => {
     await user.click(screen.getByRole("button", { name: /Xem giỏ · 1 ly/ }));
     const sheet = await screen.findByRole("dialog");
     const submit = within(sheet).getByRole("button", { name: "Đặt nước" });
+    const phone = within(sheet).getByLabelText(/Số điện thoại/);
+    await user.type(phone, "0901");
     expect(submit).toBeDisabled();
+    expect(within(sheet).getByText("Sửa số điện thoại hoặc bỏ trống để đặt")).toBeInTheDocument();
 
-    await user.type(within(sheet).getByLabelText("Số điện thoại"), "0901 234 567");
+    await user.type(phone, " 234 567");
     expect(submit).toBeEnabled();
     await user.click(submit);
 
@@ -62,6 +65,50 @@ describe("trang menu khách", () => {
     expect(sessionStorage.getItem(`sc_cart_${MOCK_TOKEN}`)).toBeNull();
     expect(localStorage.getItem("sc_phone")).toBe("0901234567");
     server.events.removeAllListeners();
+  });
+
+  it("bỏ trống SĐT vẫn đặt được và không gửi field phone", async () => {
+    const user = userEvent.setup();
+    const bodies: Record<string, unknown>[] = [];
+    server.events.on("request:start", async ({ request }) => {
+      if (request.method === "POST") bodies.push((await request.clone().json()) as Record<string, unknown>);
+    });
+    const { router } = renderMenu();
+    await addToCart(user, "Cà phê sữa đá");
+    await user.click(screen.getByRole("button", { name: /Xem giỏ · 1 ly/ }));
+    const sheet = await screen.findByRole("dialog");
+    expect(within(sheet).getByLabelText(/Số điện thoại/)).toHaveValue("");
+    expect(within(sheet).getByText(/Bỏ trống thì không nhận tin/)).toBeInTheDocument();
+    await user.click(within(sheet).getByRole("button", { name: "Đặt nước" }));
+
+    await waitFor(() => expect(router.state.location.pathname).toMatch(/^\/o\//));
+    expect(db.orders[0].customer_phone).toBeNull();
+    expect(bodies[0]).not.toHaveProperty("phone");
+    server.events.removeAllListeners();
+  });
+
+  it("SĐT đã lưu được điền sẵn và giữ nguyên; chỉ xoá khi khách tự xoá ô", async () => {
+    localStorage.setItem("sc_phone", "0901234567");
+    const user = userEvent.setup();
+    const { router } = renderMenu();
+    await addToCart(user, "Bạc xỉu");
+    await user.click(screen.getByRole("button", { name: /Xem giỏ/ }));
+    let sheet = await screen.findByRole("dialog");
+    expect(within(sheet).getByLabelText(/Số điện thoại/)).toHaveValue("0901234567");
+    await user.click(within(sheet).getByRole("button", { name: "Đặt nước" }));
+    await waitFor(() => expect(router.state.location.pathname).toMatch(/^\/o\//));
+    expect(db.orders[0].customer_phone).toBe("0901234567");
+    expect(localStorage.getItem("sc_phone")).toBe("0901234567");
+
+    await act(() => router.navigate(`/t/${MOCK_TOKEN}`));
+    await addToCart(user, "Bạc xỉu");
+    await user.click(screen.getByRole("button", { name: /Xem giỏ/ }));
+    sheet = await screen.findByRole("dialog");
+    await user.clear(within(sheet).getByLabelText(/Số điện thoại/));
+    await user.click(within(sheet).getByRole("button", { name: "Đặt nước" }));
+    await waitFor(() => expect(db.orders).toHaveLength(2));
+    expect(db.orders[1].customer_phone).toBeNull();
+    expect(localStorage.getItem("sc_phone")).toBe("");
   });
 
   it("lỗi mạng giữ nguyên key; bấm lại dùng cùng key nên không trùng đơn", async () => {
@@ -80,7 +127,7 @@ describe("trang menu khách", () => {
     await addToCart(user, "Bạc xỉu");
     await user.click(screen.getByRole("button", { name: /Xem giỏ/ }));
     const sheet = await screen.findByRole("dialog");
-    await user.type(within(sheet).getByLabelText("Số điện thoại"), "0901234567");
+    await user.type(within(sheet).getByLabelText(/Số điện thoại/), "0901234567");
     await user.click(within(sheet).getByRole("button", { name: "Đặt nước" }));
     expect(await within(sheet).findByRole("alert")).toHaveTextContent("Mất kết nối");
     expect(sessionStorage.getItem(`sc_idem_${MOCK_TOKEN}`)).toBe(keys[0]);
@@ -97,7 +144,7 @@ describe("trang menu khách", () => {
     db.products.find((p) => p.id === "p-bacxiu")!.available = false;
     await user.click(screen.getByRole("button", { name: /Xem giỏ/ }));
     const sheet = await screen.findByRole("dialog");
-    await user.type(within(sheet).getByLabelText("Số điện thoại"), "0901234567");
+    await user.type(within(sheet).getByLabelText(/Số điện thoại/), "0901234567");
     await user.click(within(sheet).getByRole("button", { name: "Đặt nước" }));
     expect(await within(sheet).findByText("Hết món")).toBeInTheDocument();
     expect(within(sheet).getByRole("button", { name: "Đặt nước" })).toBeDisabled();

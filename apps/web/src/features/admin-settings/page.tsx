@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/sha
 import { Label } from "@/shared/ui/label";
 import { Switch } from "@/shared/ui/switch";
 import { SettingsForm } from "./components/settings-form";
+import { ZaloCard } from "./components/zalo-card";
 
 export function Component() {
   const qc = useQueryClient();
@@ -59,6 +60,7 @@ export function Component() {
               <SettingsForm settings={data} />
             </CardContent>
           </Card>
+          <ZaloCard />
         </>
       )}
     </div>

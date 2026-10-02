@@ -30,7 +30,7 @@ export const customerHandlers = [
     if (db.revokedTokens.has(String(params.token))) return err(409, "QR_REVOKED", "Mã này không còn dùng");
     if (!db.settings.accepting_orders) return err(409, "PAUSED", "Quán tạm ngưng nhận đơn");
     const body = (await request.json()) as CreateOrderBody;
-    if (!/^0\d{9}$/.test(body.phone)) {
+    if (body.phone && !/^0\d{9}$/.test(body.phone)) {
       return err(422, "VALIDATION", "Dữ liệu chưa hợp lệ", { fields: { phone: "Số điện thoại gồm 10 chữ số, bắt đầu bằng 0" } });
     }
     const unavailable = body.items
@@ -71,7 +71,7 @@ export const customerHandlers = [
       updated_at: now,
       partner_id: "partner-1",
       qr_token: String(params.token),
-      customer_phone: body.phone,
+      customer_phone: body.phone || null,
       commission_rate: null,
       commission_amount: null,
       client_id: clientId,
