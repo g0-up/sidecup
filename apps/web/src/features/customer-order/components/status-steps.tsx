@@ -22,7 +22,7 @@ export function StatusSteps({ status }: { status: OrderStatus }) {
               className={cn(
                 "flex size-8 items-center justify-center rounded-full border-2 text-sm font-semibold",
                 done && "border-success bg-success text-white",
-                active && "animate-pulse border-primary text-primary",
+                active && "motion-safe:animate-pulse border-primary text-primary",
                 !done && !active && "border-muted text-muted-foreground",
               )}
             >

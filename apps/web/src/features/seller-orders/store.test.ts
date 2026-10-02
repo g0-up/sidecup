@@ -22,6 +22,7 @@ function order(id: string, status: SellerOrder["status"], updated = "2026-10-01T
     updated_at: updated,
     partner_id: "p",
     qr_token: "T",
+    menu_path: "/t/T",
     customer_phone: "0901234567",
     commission_rate: null,
     commission_amount: null,

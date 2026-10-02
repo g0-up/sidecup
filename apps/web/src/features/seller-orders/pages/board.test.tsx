@@ -31,6 +31,7 @@ function seed(id: string, status: SellerOrder["status"], code: string): SellerOr
     updated_at: now,
     partner_id: "p1",
     qr_token: "DEVTEST001",
+    menu_path: "/t/DEVTEST001",
     customer_phone: "0901234567",
     commission_rate: null,
     commission_amount: null,

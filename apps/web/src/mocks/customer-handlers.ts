@@ -1,14 +1,16 @@
 import { http, HttpResponse } from "msw";
 import type { CreateOrderBody } from "@/features/customer-menu/api";
-import type { SellerOrder } from "@/shared/api/orders";
+import type { PublicOrder, SellerOrder } from "@/shared/api/orders";
 import { db, mockMenu, MOCK_TOKEN } from "./db";
 
 const err = (status: number, code: string, message: string, details?: Record<string, unknown>) =>
   HttpResponse.json({ error: { code, message, details } }, { status });
 
-function publicView(o: SellerOrder) {
-  const { customer_phone: _p, commission_rate: _r, commission_amount: _a, partner_id: _pi, qr_token: _q, ...pub } = o;
-  return pub;
+// Mock coi Zalo luôn gửi được: có SĐT là khách nhận tin.
+function publicView(o: SellerOrder): PublicOrder {
+  const { customer_phone, commission_rate: _r, commission_amount: _a, partner_id: _pi, qr_token: _q, ...pub } = o;
+  delete (pub as { client_id?: string }).client_id;
+  return { ...pub, eta_minutes: db.settings.eta_minutes, notify_zalo: customer_phone !== null };
 }
 
 export const customerHandlers = [
@@ -71,6 +73,7 @@ export const customerHandlers = [
       updated_at: now,
       partner_id: "partner-1",
       qr_token: String(params.token),
+      menu_path: `/t/${encodeURIComponent(String(params.token))}`,
       customer_phone: body.phone || null,
       commission_rate: null,
       commission_amount: null,

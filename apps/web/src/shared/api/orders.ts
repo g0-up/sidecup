@@ -10,8 +10,8 @@ export interface OrderItem {
   line_total: number;
 }
 
-// PublicOrder là view công khai của đơn: không SĐT, không client_id.
-export interface PublicOrder {
+// OrderBase là phần đơn khách và người bán đều thấy: không SĐT, không client_id.
+interface OrderBase {
   id: string;
   code: string;
   status: OrderStatus;
@@ -28,10 +28,18 @@ export interface PublicOrder {
   paid_at: string | null;
   closed_at: string | null;
   updated_at: string;
+  // Đường tương đối về menu của bàn ("/t/<token>") cho nút gọi thêm.
+  menu_path: string;
+}
+
+// PublicOrder là view của khách: thêm thời gian pha dự kiến và việc khách có nhận tin Zalo không.
+export interface PublicOrder extends OrderBase {
+  eta_minutes: number;
+  notify_zalo: boolean;
 }
 
 // SellerOrder thêm SĐT và hoa hồng; chỉ có sau khi người bán đăng nhập.
-export interface SellerOrder extends PublicOrder {
+export interface SellerOrder extends OrderBase {
   partner_id: string;
   qr_token: string;
   customer_phone: string | null;
