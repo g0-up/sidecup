@@ -69,11 +69,11 @@ func New(d Deps) (*App, error) {
 	menuCast := menu.NewBroadcaster(d.DB, d.Hub, d.Clock)
 	authSvc := auth.NewService(cfg.SellerPasswordHash, cfg.SessionSecret, d.Clock)
 	notifySvc := notifications.NewService(d.DB, d.Clock, d.Hub)
-	orderSvc := orders.NewService(d.DB, d.Clock, d.Hub, notifications.OutboxRepo{}, cfg.PublicBaseURL)
 	zaloSvc, dispatcher, err := newZalo(cfg, d.DB, notifySvc)
 	if err != nil {
 		return nil, err
 	}
+	orderSvc := orders.NewService(d.DB, d.Clock, d.Hub, notifications.OutboxRepo{}, zaloLinked(zaloSvc), cfg.PublicBaseURL)
 
 	authH := auth.NewHandler(authSvc, cfg.SecureCookies())
 	settingsH := settings.NewHandler(settings.NewService(d.DB, d.Hub, menuCast))
@@ -149,6 +149,17 @@ func New(d Deps) (*App, error) {
 		Orders:     orderSvc,
 		Zalo:       zaloSvc,
 	}, nil
+}
+
+// zaloLinked cho trang đơn biết khách có SĐT sẽ nhận tin: Zalo đã bật, đã liên kết và phiên chưa hết hạn.
+func zaloLinked(svc *zalo.Service) orders.ZaloLinked {
+	if svc == nil {
+		return nil
+	}
+	return func(ctx context.Context) bool {
+		st, err := svc.Status(ctx)
+		return err == nil && st.Linked && st.Status == zalo.StatusLinked
+	}
 }
 
 // newZalo dựng tính năng Zalo và worker gửi tin cho khách. Hai bên trỏ vào nhau: đổi trạng thái liên kết thì

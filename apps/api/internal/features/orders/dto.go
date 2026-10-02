@@ -1,13 +1,14 @@
 package orders
 
 import (
+	"net/url"
 	"time"
 
 	"github.com/google/uuid"
 )
 
-// PublicView là thứ khách (và ai có UUID đơn) thấy: không SĐT, không client_id.
-type PublicView struct {
+// OrderView là phần đơn mà cả khách lẫn người bán đều thấy: không SĐT, không client_id.
+type OrderView struct {
 	ID            uuid.UUID  `json:"id"`
 	Code          string     `json:"code"`
 	Status        Status     `json:"status"`
@@ -24,11 +25,21 @@ type PublicView struct {
 	PaidAt        *time.Time `json:"paid_at"`
 	ClosedAt      *time.Time `json:"closed_at"`
 	UpdatedAt     time.Time  `json:"updated_at"`
+	// MenuPath là đường tương đối về menu của bàn, để trang đơn có nút gọi thêm; origin web tự ghép.
+	MenuPath string `json:"menu_path"`
+}
+
+// PublicView là thứ khách (và ai có UUID đơn) thấy: đơn kèm thời gian pha dự kiến và việc khách
+// có nhận tin Zalo hay không. Chỉ có cờ notify_zalo, không bao giờ có SĐT.
+type PublicView struct {
+	OrderView
+	EtaMinutes int  `json:"eta_minutes"`
+	NotifyZalo bool `json:"notify_zalo"`
 }
 
 // SellerView thêm SĐT và dữ liệu hoa hồng; chỉ trả sau khi người bán đăng nhập.
 type SellerView struct {
-	PublicView
+	OrderView
 	PartnerID        uuid.UUID `json:"partner_id"`
 	QRToken          string    `json:"qr_token"`
 	CustomerPhone    *string   `json:"customer_phone"`
@@ -36,21 +47,26 @@ type SellerView struct {
 	CommissionAmount *int64    `json:"commission_amount"`
 }
 
-func ToPublic(o Order) PublicView {
+func toView(o Order) OrderView {
 	items := o.Items
 	if items == nil {
 		items = OrderItems{}
 	}
-	return PublicView{
+	return OrderView{
 		ID: o.ID, Code: o.Code, Status: o.Status, Items: items, Note: o.Note, Total: o.Total,
 		PartnerName: o.PartnerName, TableLabel: o.TableLabel, CancelReason: o.CancelReason, PaymentMethod: o.PaymentMethod,
 		CreatedAt: o.CreatedAt, AcceptedAt: o.AcceptedAt, DeliveringAt: o.DeliveringAt, PaidAt: o.PaidAt,
-		ClosedAt: o.ClosedAt, UpdatedAt: o.UpdatedAt,
+		ClosedAt: o.ClosedAt, UpdatedAt: o.UpdatedAt, MenuPath: "/t/" + url.PathEscape(o.QRToken),
 	}
 }
 
+// ToPublic ghép view của khách; etaMinutes và notifyZalo do service đọc từ cài đặt và liên kết Zalo.
+func ToPublic(o Order, etaMinutes int, notifyZalo bool) PublicView {
+	return PublicView{OrderView: toView(o), EtaMinutes: etaMinutes, NotifyZalo: notifyZalo}
+}
+
 func ToSeller(o Order) SellerView {
-	v := SellerView{PublicView: ToPublic(o), PartnerID: o.PartnerID, QRToken: o.QRToken, CustomerPhone: o.CustomerPhone, CommissionAmount: o.CommissionAmount}
+	v := SellerView{OrderView: toView(o), PartnerID: o.PartnerID, QRToken: o.QRToken, CustomerPhone: o.CustomerPhone, CommissionAmount: o.CommissionAmount}
 	if o.CommissionRate.Valid {
 		r, _ := o.CommissionRate.Decimal.Float64()
 		v.CommissionRate = &r

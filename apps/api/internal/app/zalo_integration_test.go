@@ -170,3 +170,23 @@ func TestZaloRoutesWithKeyRequireSellerAndStartUnlinked(t *testing.T) {
 	assert.False(t, ok)
 	assert.Equal(t, zalo.ExpiredMessage, msg)
 }
+
+func TestPublicOrderPromisesZaloOnlyWithPhoneAndLiveLink(t *testing.T) {
+	h := newHarness(t, withZaloKey)
+	f := h.fixture()
+	cust, _ := h.customer()
+	notify := func(id string) any { return cust.get("/api/orders/" + id).Map(t)["notify_zalo"] }
+
+	r, withPhone := cust.placeOrder(f.Token, orderBody(line(f.Tea, 1)))
+	require.Equal(t, http.StatusCreated, r.Code, string(r.Body))
+	assert.Equal(t, false, r.Map(t)["notify_zalo"], "chưa liên kết")
+	_, noPhone := cust.placeOrder(f.Token, map[string]any{"items": []any{line(f.Tea, 1)}})
+
+	require.NoError(t, h.DB.Exec(`INSERT INTO zalo_account (id, encrypted_credentials, status, consent_version, consent_at, linked_at)
+		VALUES (1, '\x00', 'linked', '2026-10-02', now(), now())`).Error)
+	assert.Equal(t, true, notify(withPhone))
+	assert.Equal(t, false, notify(noPhone))
+
+	require.NoError(t, h.DB.Exec(`UPDATE zalo_account SET status = 'expired'`).Error)
+	assert.Equal(t, false, notify(withPhone), "phiên hết hạn thì tin không tới")
+}

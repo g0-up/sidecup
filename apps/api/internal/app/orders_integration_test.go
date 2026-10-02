@@ -236,6 +236,11 @@ func TestCustomerGetAndCancel(t *testing.T) {
 	require.Equal(t, http.StatusOK, r.Code)
 	assert.NotContains(t, string(r.Body), "0901234567")
 	assert.NotContains(t, string(r.Body), "client_id")
+	assert.NotContains(t, string(r.Body), "qr_token")
+	pub := r.Map(t)
+	assert.Equal(t, "/t/"+f.Token, pub["menu_path"])
+	assert.EqualValues(t, 7, pub["eta_minutes"])
+	assert.Equal(t, false, pub["notify_zalo"], "Zalo chưa bật thì không hứa gửi tin")
 
 	other, _ := h.customer()
 	r = other.post("/api/orders/"+id+"/cancel", nil)

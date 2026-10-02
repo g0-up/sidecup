@@ -12,6 +12,7 @@ import (
 
 	"sidecup/api/internal/features/menu"
 	"sidecup/api/internal/features/notifications"
+	"sidecup/api/internal/features/settings"
 	"sidecup/api/internal/platform/apperr"
 	"sidecup/api/internal/platform/clock"
 	"sidecup/api/internal/platform/db"
@@ -27,6 +28,10 @@ type Outbox interface {
 type Publisher interface {
 	Publish(topic, typ string, data any)
 }
+
+// ZaloLinked báo tài khoản Zalo gửi tin cho khách có đang liên kết và còn phiên không. Nil khi Zalo chưa
+// bật. Lỗi đọc trạng thái phải trả false: thà bảo khách giữ trang mở còn hơn hứa tin không tới.
+type ZaloLinked func(ctx context.Context) bool
 
 var (
 	ErrOrderNotFound       = apperr.NotFound("ORDER_NOT_FOUND", "Không tìm thấy đơn")
@@ -48,11 +53,12 @@ type Service struct {
 	outbox  Outbox
 	writer  Writer
 	repo    Repository
+	zalo    ZaloLinked
 	baseURL string
 }
 
-func NewService(gdb *gorm.DB, clk clock.Clock, hub Publisher, outbox Outbox, publicBaseURL string) *Service {
-	return &Service{db: gdb, clock: clk, hub: hub, outbox: outbox, baseURL: publicBaseURL}
+func NewService(gdb *gorm.DB, clk clock.Clock, hub Publisher, outbox Outbox, zaloLinked ZaloLinked, publicBaseURL string) *Service {
+	return &Service{db: gdb, clock: clk, hub: hub, outbox: outbox, zalo: zaloLinked, baseURL: publicBaseURL}
 }
 
 // NormalizePhone bỏ khoảng trắng, dấu chấm, gạch; đổi +84/84 thành 0.
@@ -87,8 +93,15 @@ func (s *Service) Create(ctx context.Context, token, clientID, idemKey string, r
 	var (
 		order   *Order
 		created bool
+		eta     int
 	)
 	err := db.WithTx(ctx, s.db, func(tx *gorm.DB) error {
+		// Đọc ETA trong transaction: sau commit không còn bước nào lỗi được trước khi báo người bán,
+		// nếu không lần gửi lại cùng Idempotency-Key chỉ nhận đơn cũ và order.created mất hẳn.
+		var err error
+		if eta, err = etaMinutes(ctx, tx); err != nil {
+			return err
+		}
 		existing, err := s.repo.ByIdempotencyKey(ctx, tx, idemKey)
 		if err != nil {
 			return err
@@ -151,11 +164,12 @@ func (s *Service) Create(ctx context.Context, token, clientID, idemKey string, r
 	if err != nil {
 		return PublicView{}, false, err
 	}
+	pub := s.publicView(ctx, order, eta)
 	if created {
 		s.hub.Publish(realtime.TopicSeller, realtime.TypeOrderCreated, ToSeller(*order))
-		s.hub.Publish(realtime.TopicOrder(order.ID.String()), realtime.TypeOrderUpdated, ToPublic(*order))
+		s.hub.Publish(realtime.TopicOrder(order.ID.String()), realtime.TypeOrderUpdated, pub)
 	}
-	return ToPublic(*order), created, nil
+	return pub, created, nil
 }
 
 func sameClient(o *Order, clientID string) (*Order, error) {
@@ -173,7 +187,27 @@ func (s *Service) GetPublic(ctx context.Context, id uuid.UUID) (PublicView, erro
 	if o == nil {
 		return PublicView{}, ErrOrderNotFound
 	}
-	return ToPublic(*o), nil
+	eta, err := etaMinutes(ctx, s.db)
+	if err != nil {
+		return PublicView{}, err
+	}
+	return s.publicView(ctx, o, eta), nil
+}
+
+// publicView là nơi duy nhất dựng view của khách, để response và tin realtime luôn giống nhau.
+func (s *Service) publicView(ctx context.Context, o *Order, eta int) PublicView {
+	return ToPublic(*o, eta, s.notifiesZalo(ctx, o))
+}
+
+// notifiesZalo: khách chỉ nhận tin khi đã để SĐT và Zalo đang liên kết. SĐT bị xoá khi purge người nhận,
+// nên đơn cũ tự thành false.
+func (s *Service) notifiesZalo(ctx context.Context, o *Order) bool {
+	return o.CustomerPhone != nil && *o.CustomerPhone != "" && s.zalo != nil && s.zalo(ctx)
+}
+
+func etaMinutes(ctx context.Context, tx *gorm.DB) (int, error) {
+	st, err := settings.Load(ctx, tx)
+	return st.EtaMinutes, err
 }
 
 func (s *Service) GetSeller(ctx context.Context, id uuid.UUID) (SellerView, error) {
@@ -212,24 +246,26 @@ func (s *Service) Cancel(ctx context.Context, id uuid.UUID, clientID string) (Pu
 	if o.ClientID != clientID {
 		return PublicView{}, errNotOwner
 	}
-	out, err := s.Transition(ctx, id, ActorCustomer, o.Status, StatusCancelled, TransitionOpts{Reason: ReasonCustomer})
-	if err != nil {
-		return PublicView{}, err
-	}
-	return out.PublicView, nil
+	_, pub, err := s.transition(ctx, id, ActorCustomer, o.Status, StatusCancelled, TransitionOpts{Reason: ReasonCustomer})
+	return pub, err
 }
 
 // Transition chạy một chuyển trạng thái trong transaction (UPDATE có điều kiện + event + outbox),
 // rồi publish sau commit. Thua cuộc đua (0 dòng) → 409 INVALID_TRANSITION kèm trạng thái hiện tại.
 func (s *Service) Transition(ctx context.Context, id uuid.UUID, actor Actor, from, to Status, opts TransitionOpts) (SellerView, error) {
+	seller, _, err := s.transition(ctx, id, actor, from, to, opts)
+	return seller, err
+}
+
+func (s *Service) transition(ctx context.Context, id uuid.UUID, actor Actor, from, to Status, opts TransitionOpts) (SellerView, PublicView, error) {
 	if to == StatusPaid && opts.PaymentMethod == "" {
-		return SellerView{}, errPaymentRequired
+		return SellerView{}, PublicView{}, errPaymentRequired
 	}
 	if to != StatusPaid && opts.PaymentMethod != "" {
-		return SellerView{}, errPaymentNotAllowed
+		return SellerView{}, PublicView{}, errPaymentNotAllowed
 	}
 	if !CanTransition(from, to, actor) {
-		return SellerView{}, s.conflict(ctx, id)
+		return SellerView{}, PublicView{}, s.conflict(ctx, id)
 	}
 	switch to {
 	case StatusRejected:
@@ -240,20 +276,29 @@ func (s *Service) Transition(ctx context.Context, id uuid.UUID, actor Actor, fro
 		opts.Reason = ReasonCustomerMissing
 	}
 
-	var order *Order
+	var (
+		order *Order
+		eta   int
+	)
 	err := db.WithTx(ctx, s.db, func(tx *gorm.DB) error {
 		var err error
-		order, err = s.transitionTx(ctx, tx, id, actor, from, to, opts)
+		if order, err = s.transitionTx(ctx, tx, id, actor, from, to, opts); err != nil {
+			return err
+		}
+		// ETA đọc trong cùng transaction để tin realtime sau commit không phải truy vấn thêm hay thất bại.
+		eta, err = etaMinutes(ctx, tx)
 		return err
 	})
 	if errors.Is(err, ErrNotFound) {
-		return SellerView{}, s.conflict(ctx, id)
+		return SellerView{}, PublicView{}, s.conflict(ctx, id)
 	}
 	if err != nil {
-		return SellerView{}, err
+		return SellerView{}, PublicView{}, err
 	}
-	s.publishUpdated(order)
-	return ToSeller(*order), nil
+	seller, pub := ToSeller(*order), s.publicView(ctx, order, eta)
+	s.hub.Publish(realtime.TopicSeller, realtime.TypeOrderUpdated, seller)
+	s.hub.Publish(realtime.TopicOrder(order.ID.String()), realtime.TypeOrderUpdated, pub)
+	return seller, pub, nil
 }
 
 func (s *Service) transitionTx(ctx context.Context, tx *gorm.DB, id uuid.UUID, actor Actor, from, to Status, opts TransitionOpts) (*Order, error) {
@@ -294,11 +339,6 @@ func (s *Service) conflict(ctx context.Context, id uuid.UUID) error {
 		return ErrOrderNotFound
 	}
 	return invalidTransition(o.Status)
-}
-
-func (s *Service) publishUpdated(o *Order) {
-	s.hub.Publish(realtime.TopicSeller, realtime.TypeOrderUpdated, ToSeller(*o))
-	s.hub.Publish(realtime.TopicOrder(o.ID.String()), realtime.TypeOrderUpdated, ToPublic(*o))
 }
 
 func (s *Service) notification(kind, recipient string, o *Order) notifications.Notification {
