@@ -16,6 +16,7 @@ import (
 	"golang.org/x/sync/errgroup"
 
 	"sidecup/api/internal/app"
+	"sidecup/api/internal/features/zalo"
 	"sidecup/api/internal/platform/clock"
 	"sidecup/api/internal/platform/config"
 	"sidecup/api/internal/platform/db"
@@ -106,13 +107,21 @@ func serve() error {
 	})
 	g.Go(func() error { return a.Scheduler.Run(gctx) })
 	g.Go(func() error { return a.Notifier.Monitor(gctx) })
+	g.Go(func() error { return a.Dispatcher.Run(gctx) })
+	if a.Zalo != nil {
+		a.Zalo.StartHealthProbe(gctx, zalo.ProbeOptions{})
+	}
 	g.Go(func() error {
 		<-gctx.Done()
 		slog.Info("shutting down")
 		hub.CloseAll()
 		shutdownCtx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 		defer cancel()
-		return srv.Shutdown(shutdownCtx)
+		err := srv.Shutdown(shutdownCtx)
+		if a.Zalo != nil {
+			a.Zalo.Close()
+		}
+		return err
 	})
 	return g.Wait()
 }

@@ -45,7 +45,7 @@ func URL() string { return dsn }
 
 var appTables = []string{
 	"notification_outbox", "order_events", "adjustments", "orders", "page_views",
-	"qr_codes", "partner_hidden_products", "products", "partners", "settings", "notifier_heartbeat",
+	"qr_codes", "partner_hidden_products", "products", "partners", "settings", "notifier_heartbeat", "zalo_account",
 }
 
 func Reset(t testing.TB, gdb *gorm.DB) {

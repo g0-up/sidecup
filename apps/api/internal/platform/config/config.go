@@ -24,6 +24,8 @@ type Config struct {
 	CORSOrigins        []string `env:"CORS_ORIGINS" envSeparator:","`
 	LogLevel           string   `env:"LOG_LEVEL" envDefault:"info"`
 	MigrateOnStart     bool     `env:"MIGRATE_ON_START" envDefault:"false"`
+	// ZaloCredentialKey mã hoá phiên Zalo lưu trong DB; rỗng thì tắt tính năng gửi tin Zalo.
+	ZaloCredentialKey string `env:"ZALO_CREDENTIAL_KEY"`
 
 	Location *time.Location `env:"-"`
 	// PublicHost là host[:port] của PublicBaseURL, dùng để kiểm Origin khi nâng cấp WebSocket.
@@ -32,6 +34,9 @@ type Config struct {
 
 // IsDev bật các tiện ích chỉ dành cho máy dev (cookie không Secure, seed).
 func (c Config) IsDev() bool { return c.AppEnv == "dev" }
+
+// ZaloEnabled: có key mã hoá thì mới liên kết và gửi tin Zalo.
+func (c Config) ZaloEnabled() bool { return c.ZaloCredentialKey != "" }
 
 // SecureCookies quyết định cờ Secure của cookie phiên: chỉ tắt khi chạy trên http (dev, e2e local).
 func (c Config) SecureCookies() bool {
@@ -103,6 +108,9 @@ func (c *Config) validate() error {
 	}
 	if len(c.NotifierToken) < 16 {
 		errs = append(errs, errors.New("NOTIFIER_TOKEN phải dài ít nhất 16 ký tự"))
+	}
+	if c.ZaloCredentialKey != "" && len(c.ZaloCredentialKey) < 32 {
+		errs = append(errs, errors.New("ZALO_CREDENTIAL_KEY phải dài ít nhất 32 byte"))
 	}
 	switch c.LogLevel {
 	case "debug", "info", "warn", "error":

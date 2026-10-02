@@ -19,6 +19,7 @@ import (
 	"sidecup/api/internal/features/qrcodes"
 	"sidecup/api/internal/features/reports"
 	"sidecup/api/internal/features/settings"
+	"sidecup/api/internal/features/zalo"
 	"sidecup/api/internal/platform/apperr"
 	"sidecup/api/internal/platform/clock"
 	"sidecup/api/internal/platform/config"
@@ -26,6 +27,7 @@ import (
 	"sidecup/api/internal/platform/httpx"
 	"sidecup/api/internal/platform/middleware"
 	"sidecup/api/internal/platform/realtime"
+	"sidecup/api/internal/platform/secrets"
 )
 
 type Deps struct {
@@ -37,11 +39,14 @@ type Deps struct {
 
 // App giữ router và các tiến trình nền mà main cần chạy/dừng cùng server.
 type App struct {
-	Engine    *gin.Engine
-	Scheduler *orders.Scheduler
-	Notifier  *notifications.Service
-	Menu      *menu.Broadcaster
-	Orders    *orders.Service
+	Engine     *gin.Engine
+	Scheduler  *orders.Scheduler
+	Notifier   *notifications.Service
+	Dispatcher *notifications.Dispatcher
+	Menu       *menu.Broadcaster
+	Orders     *orders.Service
+	// Zalo nil khi chưa đặt ZALO_CREDENTIAL_KEY: route vẫn đăng ký nhưng trả 503, dispatcher chỉ heartbeat.
+	Zalo *zalo.Service
 }
 
 // Tin cậy X-Forwarded-For chỉ từ mạng nội bộ (Caddy trong docker, proxy của Vite) để rate limit đúng IP khách.
@@ -65,6 +70,10 @@ func New(d Deps) (*App, error) {
 	authSvc := auth.NewService(cfg.SellerPasswordHash, cfg.SessionSecret, d.Clock)
 	notifySvc := notifications.NewService(d.DB, d.Clock, d.Hub)
 	orderSvc := orders.NewService(d.DB, d.Clock, d.Hub, notifications.OutboxRepo{}, cfg.PublicBaseURL)
+	zaloSvc, dispatcher, err := newZalo(cfg, d.DB, notifySvc)
+	if err != nil {
+		return nil, err
+	}
 
 	authH := auth.NewHandler(authSvc, cfg.SecureCookies())
 	settingsH := settings.NewHandler(settings.NewService(d.DB, d.Hub, menuCast))
@@ -76,6 +85,7 @@ func New(d Deps) (*App, error) {
 	paymentsH := payments.NewHandler(payments.NewService(d.DB))
 	reportsH := reports.NewHandler(reports.NewService(d.DB, d.Clock))
 	notifyH := notifications.NewHandler(notifySvc)
+	zaloH := zalo.NewHandler(zaloSvc)
 
 	healthz := func(c *gin.Context) { c.JSON(http.StatusOK, gin.H{"status": "ok"}) }
 	r.GET("/healthz", healthz)
@@ -114,6 +124,7 @@ func New(d Deps) (*App, error) {
 	paymentsH.RegisterSeller(seller)
 	reportsH.RegisterSeller(seller)
 	notifyH.RegisterSeller(seller)
+	zaloH.RegisterSeller(seller)
 
 	// Nội bộ cho dịch vụ notifier Zalo; reverse proxy trả 404 cho /internal từ Internet.
 	notifyH.RegisterInternal(r.Group("/internal", middleware.NotifierAuth(cfg.NotifierToken)))
@@ -130,10 +141,30 @@ func New(d Deps) (*App, error) {
 	r.HandleMethodNotAllowed = true
 
 	return &App{
-		Engine:    r,
-		Scheduler: orders.NewScheduler(orderSvc),
-		Notifier:  notifySvc,
-		Menu:      menuCast,
-		Orders:    orderSvc,
+		Engine:     r,
+		Scheduler:  orders.NewScheduler(orderSvc),
+		Notifier:   notifySvc,
+		Dispatcher: dispatcher,
+		Menu:       menuCast,
+		Orders:     orderSvc,
+		Zalo:       zaloSvc,
 	}, nil
+}
+
+// newZalo dựng tính năng Zalo và worker gửi tin cho khách. Hai bên trỏ vào nhau: đổi trạng thái liên kết thì
+// dispatcher ghi heartbeat ngay để banner đổi theo, còn dispatcher gửi tin qua service.
+func newZalo(cfg config.Config, gdb *gorm.DB, notifySvc *notifications.Service) (*zalo.Service, *notifications.Dispatcher, error) {
+	if !cfg.ZaloEnabled() {
+		return nil, notifications.NewDispatcher(notifySvc, nil), nil
+	}
+	cipher, err := secrets.New([]byte(cfg.ZaloCredentialKey))
+	if err != nil {
+		return nil, nil, err
+	}
+	var dispatcher *notifications.Dispatcher
+	svc := zalo.NewService(zalo.NewRepository(gdb), cipher, zalo.Options{
+		OnStatusChange: func(ctx context.Context) { dispatcher.Nudge(ctx) },
+	})
+	dispatcher = notifications.NewDispatcher(notifySvc, svc)
+	return svc, dispatcher, nil
 }

@@ -48,3 +48,19 @@ func TestLoadRejectsWeakSecrets(t *testing.T) {
 		})
 	}
 }
+
+func TestZaloCredentialKey(t *testing.T) {
+	setValidEnv(t)
+	cfg, err := Load()
+	require.NoError(t, err)
+	assert.False(t, cfg.ZaloEnabled(), "rỗng là hợp lệ, tính năng tắt")
+
+	t.Setenv("ZALO_CREDENTIAL_KEY", "short-key")
+	_, err = Load()
+	assert.ErrorContains(t, err, "ZALO_CREDENTIAL_KEY")
+
+	t.Setenv("ZALO_CREDENTIAL_KEY", "0123456789abcdef0123456789abcdef")
+	cfg, err = Load()
+	require.NoError(t, err)
+	assert.True(t, cfg.ZaloEnabled())
+}

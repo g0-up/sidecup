@@ -30,6 +30,11 @@ linters:
           - noctx
           # websocket.Dial trả *http.Response mà thư viện tự đóng body.
           - bodyclose
+      # Giao thức Zalo bắt buộc MD5 để ký request và dựng IMEI; không phải lựa chọn mật mã của ta.
+      - path: internal/features/zalo/protocol/
+        linters:
+          - gosec
+        text: "G401|G501"
 
 formatters:
   enable:

@@ -39,7 +39,8 @@ type harness struct {
 	Loc   *time.Location
 }
 
-func newHarness(t *testing.T) *harness {
+// newHarness dựng app trên DB thật; configure (nếu có) chỉnh cấu hình trước khi dựng.
+func newHarness(t *testing.T, configure ...func(*config.Config)) *harness {
 	t.Helper()
 	gdb := testdb.Open(t)
 	loc, err := time.LoadLocation("Asia/Ho_Chi_Minh")
@@ -50,6 +51,9 @@ func newHarness(t *testing.T) *harness {
 		AppEnv: "test", AppTZ: loc.String(), Location: loc,
 		PublicBaseURL: "http://sidecup.test", PublicHost: "sidecup.test",
 		SellerPasswordHash: testPasswordHash, SessionSecret: strings.Repeat("s", 32), NotifierToken: "notifier-token-123456",
+	}
+	for _, fn := range configure {
+		fn(&cfg)
 	}
 	a, err := app.New(app.Deps{Config: cfg, DB: gdb, Clock: clk, Hub: hub})
 	require.NoError(t, err)

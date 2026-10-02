@@ -81,6 +81,16 @@ func NewService(gdb *gorm.DB, clk clock.Clock, hub Publisher) *Service {
 // Claim trả tối đa limit tin đến hạn và khoá mềm chúng 60 giây (next_attempt_at), để hai vòng lặp
 // của notifier không gửi trùng. Notifier không ack trong 60 giây thì tin quay lại hàng đợi.
 func (s *Service) Claim(ctx context.Context, limit int) ([]PendingItem, error) {
+	return s.claim(ctx, "", limit)
+}
+
+// ClaimKind như Claim nhưng chỉ lấy một loại tin; worker gửi khách trong process dùng nó để không đụng
+// tới tin báo người bán.
+func (s *Service) ClaimKind(ctx context.Context, kind string, limit int) ([]PendingItem, error) {
+	return s.claim(ctx, kind, limit)
+}
+
+func (s *Service) claim(ctx context.Context, kind string, limit int) ([]PendingItem, error) {
 	if limit <= 0 {
 		limit = defaultClaimSize
 	}
@@ -97,9 +107,12 @@ func (s *Service) Claim(ctx context.Context, limit int) ([]PendingItem, error) {
 		if expired.RowsAffected > 0 {
 			slog.WarnContext(ctx, "notification outbox expired", "count", expired.RowsAffected)
 		}
-		err := tx.Clauses(clause.Locking{Strength: "UPDATE", Options: "SKIP LOCKED"}).
-			Where("status = ? AND (next_attempt_at IS NULL OR next_attempt_at <= ?)", StatusPending, now).
-			Order("id").Limit(limit).Find(&rows).Error
+		q := tx.Clauses(clause.Locking{Strength: "UPDATE", Options: "SKIP LOCKED"}).
+			Where("status = ? AND (next_attempt_at IS NULL OR next_attempt_at <= ?)", StatusPending, now)
+		if kind != "" {
+			q = q.Where("kind = ?", kind)
+		}
+		err := q.Order("id").Limit(limit).Find(&rows).Error
 		if err != nil || len(rows) == 0 {
 			return err
 		}
@@ -172,6 +185,16 @@ func (s *Service) Ack(ctx context.Context, id int64, ok bool, errMsg string) (Ac
 		}
 	}
 	return AckResp{ID: row.ID, Status: row.Status, Attempts: row.Attempts}, nil
+}
+
+// AckPermanent đánh dấu failed ngay, không backoff: lỗi phía người nhận (không dùng Zalo, chặn người lạ)
+// thử lại cũng vô ích. Tin đã sent/failed thì no-op như Ack.
+func (s *Service) AckPermanent(ctx context.Context, id int64, errMsg string) error {
+	res := s.db.WithContext(ctx).Model(&Outbox{}).
+		Where("id = ? AND status = ?", id, StatusPending).
+		Updates(map[string]any{"status": StatusFailed, "attempts": gorm.Expr("attempts + 1"),
+			"last_error": truncate(errMsg, 1000), "next_attempt_at": nil})
+	return res.Error
 }
 
 type HeartbeatReq struct {

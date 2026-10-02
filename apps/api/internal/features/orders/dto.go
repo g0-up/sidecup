@@ -76,7 +76,8 @@ type listResp struct {
 type CreateReq struct {
 	Items []LineReq `json:"items" validate:"required,min=1,max=30,dive"`
 	Note  *string   `json:"note" validate:"omitempty,max=200"`
-	Phone string    `json:"phone" validate:"required,max=20"`
+	// Phone không bắt buộc: bỏ trống thì khách không nhận tin trạng thái đơn qua Zalo.
+	Phone string `json:"phone" validate:"omitempty,max=20"`
 }
 
 type TransitionReq struct {

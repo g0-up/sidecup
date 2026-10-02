@@ -69,9 +69,13 @@ func NormalizePhone(raw string) (string, bool) {
 
 // Create tạo đơn idempotent. created=false nghĩa là trả lại đơn đã có cùng Idempotency-Key (200).
 func (s *Service) Create(ctx context.Context, token, clientID, idemKey string, req CreateReq) (PublicView, bool, error) {
-	phone, ok := NormalizePhone(req.Phone)
-	if !ok {
-		return PublicView{}, false, apperr.Field("phone", "Số điện thoại gồm 10 chữ số, bắt đầu bằng 0")
+	var phone *string
+	if strings.TrimSpace(req.Phone) != "" {
+		p, ok := NormalizePhone(req.Phone)
+		if !ok {
+			return PublicView{}, false, apperr.Field("phone", "Số điện thoại gồm 10 chữ số, bắt đầu bằng 0")
+		}
+		phone = &p
 	}
 	var note *string
 	if req.Note != nil {
@@ -120,7 +124,7 @@ func (s *Service) Create(ctx context.Context, token, clientID, idemKey string, r
 
 		inserted, ok, err := s.writer.Insert(ctx, tx, &Order{
 			QRToken: qr.Token, PartnerID: table.Partner.ID, PartnerName: table.Partner.Name, TableLabel: qr.TableLabel,
-			Items: items, Note: note, Total: total, CustomerPhone: &phone,
+			Items: items, Note: note, Total: total, CustomerPhone: phone,
 			ClientID: clientID, IdempotencyKey: idemKey, CreatedAt: now,
 		})
 		if err != nil {

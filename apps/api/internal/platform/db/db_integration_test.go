@@ -20,6 +20,7 @@ import (
 	"sidecup/api/internal/features/qrcodes"
 	"sidecup/api/internal/features/reports"
 	"sidecup/api/internal/features/settings"
+	"sidecup/api/internal/features/zalo"
 	"sidecup/api/internal/platform/db"
 	"sidecup/api/internal/platform/db/testdb"
 )
@@ -35,7 +36,7 @@ func TestMigrateRoundTrip(t *testing.T) {
 	require.NoError(t, db.Migrate(url, db.Up))
 	v, _, err = db.Version(url)
 	require.NoError(t, err)
-	assert.Equal(t, uint(2), v)
+	assert.Equal(t, uint(3), v)
 }
 
 func TestSchemaHasNoTriggersOrFunctions(t *testing.T) {
@@ -54,7 +55,7 @@ func TestModelsMatchSchema(t *testing.T) {
 	models := []any{
 		&partners.Partner{}, &partners.HiddenProduct{}, &products.Product{}, &qrcodes.QRCode{},
 		&orders.Order{}, &orders.Event{}, &reports.Adjustment{}, &menu.PageView{},
-		&settings.Settings{}, &notifications.Outbox{}, &notifications.Heartbeat{},
+		&settings.Settings{}, &notifications.Outbox{}, &notifications.Heartbeat{}, &zalo.Account{},
 	}
 	cache := &sync.Map{}
 	for _, m := range models {
