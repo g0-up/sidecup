@@ -36,7 +36,7 @@ cp apps/api/.env.example apps/api/.env   # sửa SELLER_PASSWORD_HASH, SESSION_S
 cp apps/web/.env.example apps/web/.env
 (cd apps/web && pnpm install)
 make dev        # Postgres (docker) + migrate + API :8080 + web :5173 (proxy /api, /ws)
-make seed       # Quán test, 5 món, bàn DEVTEST001..003 → http://localhost:5173/t/DEVTEST001
+make seed       # Quán test, bàn DEVTEST001..003 (menu mặc định có từ migrate-up) → http://localhost:5173/t/DEVTEST001
 ```
 
 - `make dev` không hot reload Go: đổi code API thì Ctrl-C rồi chạy lại, hoặc `make dev-api` ở terminal riêng.
