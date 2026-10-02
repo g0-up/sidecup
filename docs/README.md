@@ -4,7 +4,7 @@ Khách quét mã QR trên bàn, đặt nước trên web; người bán nhận v
 
 | Tài liệu | Nội dung |
 |----------|----------|
-| [api.md](./api.md) | Hợp đồng REST, WebSocket, API nội bộ cho notifier Zalo |
+| [api.md](./api.md) | Hợp đồng REST, WebSocket, kết nối Zalo gửi tin cho khách, API nội bộ cho notifier |
 | [runbook.md](./runbook.md) | Deploy, sao lưu, mật khẩu, xoay khoá, sự cố |
 | [acceptance-p0.md](./acceptance-p0.md) | Đối chiếu từng tiêu chí P0 với test tự động hoặc bước kiểm tay |
 

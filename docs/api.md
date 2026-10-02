@@ -72,7 +72,7 @@ Header `Idempotency-Key: <uuid>`. Rate limit 10/phút theo `client_id` và 30/ph
 
 - `qty` 1..20 (sau khi gộp dòng cùng món + tuỳ chọn); 1..30 dòng; `note` ≤ 200 ký tự.
 - `sweet ∈ {less, medium, sweet}`, `ice ∈ {none, less, normal}`; chỉ gửi khi món có tuỳ chọn đó, vắng thì mặc định `medium`/`normal`.
-- `phone`: 10 số bắt đầu bằng 0 sau khi bỏ khoảng trắng/dấu chấm/gạch; `+84` được đổi thành `0`.
+- `phone` không bắt buộc: vắng, rỗng hoặc chỉ có khoảng trắng → `customer_phone = null` và khách không nhận tin trạng thái. Có giá trị thì phải là 10 số bắt đầu bằng 0 sau khi bỏ khoảng trắng/dấu chấm/gạch; `+84` được đổi thành `0`.
 - Server tự tra giá và gộp dòng. `201` đơn mới; `200` khi key đã dùng (trả lại đơn cũ, bỏ qua body).
 - Response: view công khai của đơn (xem dưới) + `server_time`.
 
@@ -118,7 +118,14 @@ Cookie HttpOnly, SameSite=Lax, Secure khi `PUBLIC_BASE_URL` là https, hạn 30 
 | GET | `/api/seller/reports/commission/export?partner_id&…` | `text/plain`; bắt buộc `partner_id`; không có SĐT |
 | GET | `/api/seller/reports/funnel?from&to&partner_id` | `{from, to, rows:[{partner_id, partner_name, day, views, orders, paid}]}`; mặc định 7 ngày |
 | GET / POST | `/api/seller/adjustments` | Lọc `partner_id, from, to` hoặc `period` (kèm `partner_id`); POST `{partner_id, amount ≠ 0, reason, order_code?}` |
-| GET | `/api/seller/notifier/status` | `{healthy, last_seen_at, session_ok, message, failed_last_hour}`; `failed_last_hour` chỉ đếm tin báo **người bán** gửi lỗi |
+| GET | `/api/seller/notifier/status` | `{healthy, last_seen_at, session_ok, message, failed_last_hour}`; `failed_last_hour` chỉ đếm tin báo **người bán** gửi lỗi. Khi phiên Zalo hết hạn: `session_ok=false` và `message` là câu hoàn chỉnh để hiện nguyên văn trên banner |
+| GET | `/api/seller/zalo` | `{configured, linked, status: ""\|linked\|expired, display_name, linked_at}`. Thiếu `ZALO_CREDENTIAL_KEY` → `{configured:false, linked:false, …}` (vẫn 200). Không bao giờ trả credentials |
+| DELETE | `/api/seller/zalo` | Ngắt kết nối, xoá hẳn credentials đã mã hoá; `204`, idempotent |
+| POST | `/api/seller/zalo/link` | `{consent_version}` (bắt buộc, ≤ 64 ký tự) → `202 {link_id}`. Bắt đầu một lần quét QR; lần mới thay lần cũ đang chạy |
+| GET | `/api/seller/zalo/link/{id}` | `{link_id, state, qr_png_base64?, display_name?, failure?}`; `state ∈ {pending, qr_ready, scanned, confirmed, linked, expired, error}`, ba trạng thái cuối là kết thúc. Poll mỗi 1,5 giây. `404 ZALO_LINK_NOT_FOUND` khi id sai hoặc đã dọn |
+| DELETE | `/api/seller/zalo/link/{id}` | `204`. Dừng lần quét đang mở (nút "Huỷ"); chỉ trả về khi attempt đã dừng, nên lần quét vừa kịp xong đã được lưu và `GET /api/seller/zalo` đọc sau đó là trạng thái cuối. Idempotent: id cũ/lạ vẫn `204`; id không phải UUID → `404 ZALO_LINK_NOT_FOUND` |
+
+Mọi route của `/api/seller/zalo*` trừ `GET /api/seller/zalo` (trả `configured:false`) trả `503 ZALO_NOT_CONFIGURED` khi API chạy không có `ZALO_CREDENTIAL_KEY`.
 
 `open_hours`: `[{days: [1..7], from: "HH:MM", to: "HH:MM"}]`, 1 = Thứ Hai … 7 = Chủ Nhật. Hai đầu tính theo phút và đều bao gồm. `to < from` là khung qua nửa đêm, thuộc ngày bắt đầu.
 
@@ -136,6 +143,8 @@ Máy trạng thái (`to` hợp lệ theo `expected_from`):
 ## Nội bộ cho dịch vụ notifier Zalo (`Authorization: Bearer <NOTIFIER_TOKEN>`)
 
 Reverse proxy trả 404 cho `/internal/*`; notifier gọi thẳng `http://api:8080` trong mạng docker.
+
+Tin `customer_status` do worker chạy **trong process API** gửi qua tài khoản Zalo kết nối ở Cài đặt (claim/ack cùng outbox, cùng lease, backoff và hạn 30 phút). Các route dưới đây vẫn giữ cho một notifier ngoài nếu sau này viết để gửi `seller_new_order`; worker trong API cũng ghi heartbeat mỗi 30 giây (`session_ok=false` chỉ khi phiên Zalo hết hạn), nên đừng chạy song song một notifier ngoài cũng gửi heartbeat. SĐT không tìm thấy trên Zalo → tin `failed` ngay, không thử lại; phiên hết hạn → tin nằm lại `pending`, không tốn lượt thử.
 
 | Method | Path | |
 |--------|------|-|

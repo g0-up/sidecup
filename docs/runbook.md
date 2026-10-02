@@ -1,6 +1,6 @@
 # Runbook vận hành
 
-Một VPS chạy `infra/docker-compose.prod.yml`: Caddy (TLS tự động) → `web` (nginx tĩnh) và `api`; Postgres không mở cổng ra ngoài. Dịch vụ notifier Zalo nằm ngoài repo này, gọi `http://api:8080/internal/*` trong mạng docker.
+Một VPS chạy `infra/docker-compose.prod.yml`: Caddy (TLS tự động) → `web` (nginx tĩnh) và `api`; Postgres không mở cổng ra ngoài. Tin trạng thái đơn cho khách được gửi qua Zalo bởi worker chạy ngay trong process `api` (mục [Zalo gửi tin cho khách](#zalo-gửi-tin-cho-khách)). Tin báo đơn mới cho người bán qua Zalo chưa làm; nếu sau này có dịch vụ notifier ngoài, nó gọi `http://api:8080/internal/*` trong mạng docker.
 
 ## Triển khai lần đầu
 
@@ -10,6 +10,7 @@ Một VPS chạy `infra/docker-compose.prod.yml`: Caddy (TLS tự động) → `
    - `POSTGRES_PASSWORD`: `openssl rand -hex 24`.
    - `SESSION_SECRET`: `openssl rand -base64 48`.
    - `NOTIFIER_TOKEN`: `openssl rand -hex 32` (đưa cùng giá trị cho dịch vụ notifier).
+   - `ZALO_CREDENTIAL_KEY` (không bắt buộc): `openssl rand -base64 48`. Bỏ trống thì không gửi tin Zalo cho khách; xem [Zalo gửi tin cho khách](#zalo-gửi-tin-cho-khách).
    - `SELLER_PASSWORD_HASH`: xem mục [Mật khẩu người bán](#mật-khẩu-người-bán).
    - `chmod 600 infra/.env`.
 3. `make prod-up` (tương đương `docker compose -f infra/docker-compose.prod.yml --env-file infra/.env up -d --build`). API tự chạy migration khi khởi động (`MIGRATE_ON_START=true`, có advisory lock).
@@ -18,7 +19,7 @@ Một VPS chạy `infra/docker-compose.prod.yml`: Caddy (TLS tự động) → `
    - `curl -s -o /dev/null -w '%{http_code}' https://$DOMAIN/internal/notifications/pending` → `404`.
    - Mở `https://$DOMAIN/seller/login`, đăng nhập, tạo quán, món, bàn; quét thẻ QR bằng điện thoại.
 
-API từ chối khởi động khi thiếu biến hoặc sai định dạng (hash không phải 32 hex, `SESSION_SECRET` < 32 byte, `NOTIFIER_TOKEN` < 16 ký tự). Xem lỗi bằng `docker compose -f infra/docker-compose.prod.yml logs api`.
+API từ chối khởi động khi thiếu biến hoặc sai định dạng (hash không phải 32 hex, `SESSION_SECRET` < 32 byte, `NOTIFIER_TOKEN` < 16 ký tự, `ZALO_CREDENTIAL_KEY` có giá trị nhưng < 32 byte). Xem lỗi bằng `docker compose -f infra/docker-compose.prod.yml logs api`.
 
 ## Cập nhật phiên bản
 
@@ -28,7 +29,14 @@ make prod-up            # build lại image, migration chạy khi api khởi đ�
 docker compose -f infra/docker-compose.prod.yml --env-file infra/.env ps
 ```
 
-Migration chỉ đi tới. Muốn lùi: deploy lại bản code cũ **và** chạy `docker compose … exec api /api migrate down` cho đúng số bước — làm sau khi đã sao lưu (mục dưới).
+Migration chỉ đi tới. **Cảnh báo:** `api migrate down` (và `make migrate-down` ở dev) lùi **toàn bộ** migration về 0, tức là xoá mọi bảng và dữ liệu — không có tham số số bước. Đừng dùng nó để lùi một phiên bản. Muốn lùi:
+
+1. Sao lưu ngay (mục dưới).
+2. Deploy lại bản code cũ.
+3. Chạy tay file `apps/api/migrations/<số>_<tên>.down.sql` của **từng** migration mới hơn bản cũ, từ số lớn về nhỏ, rồi đặt lại phiên bản: `UPDATE schema_migrations SET version = <số của bản cũ>, dirty = false;`. Ví dụ lùi `000003_zalo_account`: `DROP TABLE IF EXISTS zalo_account;` rồi `version = 2`.
+4. Nếu có gì sai, khôi phục từ bản sao lưu ở bước 1.
+
+Trước khi cập nhật lên bản có migration mới (ví dụ `000003_zalo_account`), luôn sao lưu DB trước `make prod-up` vì API tự `migrate up` khi khởi động.
 
 ## Sao lưu
 
@@ -76,13 +84,34 @@ Database **không có trigger** (architecture A14). Bất biến "đơn `paid` k
 - SĐT khách chỉ lưu ở `orders.customer_phone` và `notification_outbox.recipient`. Mỗi ngày lúc 03:00 (giờ Việt Nam) scheduler xoá SĐT của đơn quá 90 ngày và của tin đã xử lý quá 90 ngày.
 - SĐT không có trong view công khai, báo cáo, bản export cho chủ quán, log HTTP (logger không ghi body, cookie, header `Authorization`, và GORM không in giá trị tham số).
 
+## Zalo gửi tin cho khách
+
+Khi người bán đổi trạng thái đơn (Đang pha, Đang mang ra, Đã thu tiền, Quán từ chối, Huỷ do quá hạn), worker trong process `api` gửi tin Zalo tới khách có nhập SĐT, từ tài khoản Zalo cá nhân mà người bán kết nối trong **Cài đặt → Gửi trạng thái đơn qua Zalo**. Đây là cách không chính thức (PRD P0-5, rủi ro đã chấp nhận).
+
+- **Khoá `ZALO_CREDENTIAL_KEY`**: mã hoá (AES-GCM) cookie/phiên Zalo lưu trong bảng `zalo_account`; credentials không bao giờ nằm trong log hay response. Tạo bằng `openssl rand -base64 48`, đặt trong `infra/.env`, `make prod-up`. Thiếu key thì API vẫn chạy, worker không gửi tin, thẻ Zalo hiện "Chưa cấu hình Zalo trên máy chủ".
+- **Đổi key**: phiên đã lưu không giải mã được nữa → tài khoản chuyển `expired`, banner đỏ bật; người bán vào Cài đặt quét lại mã QR. Làm khi nghi lộ `infra/.env` hoặc bản sao lưu DB.
+- **Tài khoản Zalo phụ**: dùng một tài khoản riêng để gửi tin, không phải Zalo chính của người bán. Nhắn cho người lạ dễ bị Zalo hạn chế hoặc khoá; mất tài khoản phụ thì không mất danh bạ, tin nhắn với khách quen.
+- **Chỉ một replica `api`**: phiên Zalo và lần quét QR nằm trong bộ nhớ process; hai bản sao sẽ cùng gửi tin và tranh phiên.
+- Mất mạng tới Zalo, Zalo trả 5xx/429 hay request quá hạn **không** làm tài khoản thành `expired`: tin được thử lại như lỗi gửi thường (tính vào 3 lượt thử). Chỉ khi Zalo thực sự từ chối phiên (đăng xuất, cookie hỏng) mới chuyển `expired` và bật banner.
+- Gửi tin là *ít nhất một lần*: nếu Zalo đã nhận tin nhưng ack vào DB thất bại (DB rớt, tắt máy giữa chừng), tin được gửi lại sau khi hết lease 60 giây — khách có thể nhận trùng một tin.
+- SĐT không có Zalo (hoặc chặn tìm bằng SĐT) → tin `failed` ngay với `last_error = không tìm thấy Zalo`, không thử lại, không bật banner. Lỗi khác thử lại tối đa 3 lần (30s, 60s).
+
+### Khi banner "Phiên Zalo đã hết hạn"
+
+Dấu hiệu: màn người bán hiện banner đỏ "Phiên Zalo đã hết hạn — khách không nhận được tin trạng thái đơn. Vào Cài đặt để quét lại mã QR." kèm link "Mở Cài đặt". Zalo đã đăng xuất tài khoản gửi tin (đăng nhập nơi khác, đổi mật khẩu, bị hạn chế) hoặc key đã đổi.
+
+1. Đơn vẫn chạy bình thường; khách vẫn xem trạng thái trên trang web của đơn.
+2. Người bán mở **Cài đặt** → thẻ Zalo hiện "Phiên hết hạn" → **Quét lại mã QR** bằng app Zalo trên điện thoại phụ → xác nhận đăng nhập.
+3. Banner tắt trong vài giây. Tin chưa gửi còn trong hạn 30 phút được gửi tiếp (phiên hết hạn không làm tốn lượt thử); tin quá 30 phút bị đánh dấu `failed` với `last_error = expired`.
+4. Nếu quét lại vẫn hỏng hoặc tài khoản bị khoá: **Ngắt kết nối** rồi kết nối một tài khoản phụ khác.
+
 ## Khi notifier Zalo chết
 
-Dấu hiệu: màn người bán hiện banner đỏ "Zalo không gửi được tin — chỉ còn chuông báo trên màn này" (heartbeat quá 90 giây, `session_ok=false`, hoặc có tin báo người bán `failed` trong 1 giờ). Tin gửi khách lỗi (số không dùng Zalo, khách chặn người lạ) không bật banner, chỉ ghi `last_error`.
+Dấu hiệu: màn người bán hiện banner đỏ "Zalo không gửi được tin — chỉ còn chuông báo trên màn này" (heartbeat quá 90 giây, hoặc có tin báo người bán `failed` trong 1 giờ). Heartbeat do worker trong `api` ghi mỗi 30 giây, nên quá 90 giây nghĩa là chính process `api` treo hoặc mất DB. Tin gửi khách lỗi (số không dùng Zalo, khách chặn người lạ) không bật banner, chỉ ghi `last_error`.
 
 1. Đơn vẫn chạy bình thường; chuông trên màn người bán là kênh chính. Nhắc người bán để âm báo bật.
-2. Kiểm tra dịch vụ notifier (log, phiên đăng nhập Zalo của tài khoản phụ). Đăng nhập lại Zalo nếu phiên hết hạn.
-3. Tin `pending` tự gửi lại khi notifier sống lại, trừ tin quá 30 phút: chúng bị đánh dấu `failed` với `last_error = expired` để khách không nhận tin trạng thái cũ hàng giờ sau. Tin đã `failed` không gửi lại tự động; xem bằng:
+2. Kiểm tra `docker compose -f infra/docker-compose.prod.yml logs api` (log không chứa SĐT hay credentials).
+3. Tin `pending` tự gửi lại khi worker sống lại, trừ tin quá 30 phút: chúng bị đánh dấu `failed` với `last_error = expired` để khách không nhận tin trạng thái cũ hàng giờ sau. Tin đã `failed` không gửi lại tự động; xem bằng:
 
    ```sql
    SELECT id, kind, status, attempts, last_error, created_at FROM notification_outbox
@@ -101,4 +130,4 @@ Bản đầu dùng một role (`POSTGRES_USER`) cho cả migration và ứng d�
 
 ## Giả định chịu tải
 
-Hệ thống giả định **một instance API** (hub WebSocket trong tiến trình, scheduler, rate limit trong bộ nhớ). Không scale `api` lên nhiều bản sao khi chưa thêm pub/sub (Postgres `LISTEN/NOTIFY` hoặc Redis) và `pg_advisory_lock` cho scheduler.
+Hệ thống giả định **một instance API** (hub WebSocket trong tiến trình, scheduler, rate limit trong bộ nhớ, phiên Zalo gửi tin cho khách). Không scale `api` lên nhiều bản sao khi chưa thêm pub/sub (Postgres `LISTEN/NOTIFY` hoặc Redis) và `pg_advisory_lock` cho scheduler.

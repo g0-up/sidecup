@@ -151,8 +151,10 @@ Thêm:
 - \[ \] Trong vòng 10 giây sau khi đơn được tạo (mục tiêu, cần đo thực tế), hệ thống gửi một tin Zalo từ tài khoản Zalo cá nhân dùng riêng để gửi tin, tới Zalo của người bán (hoặc một nhóm Zalo gồm người bán và người giao). Tin gồm: mã đơn, quán, bàn, tóm tắt món, tổng tiền và link mở đúng đơn trên màn người bán (web).
 - \[ \] Mọi thao tác nhận, từ chối, mang ra, thu tiền làm trên màn người bán; tin Zalo chỉ để báo.
 - \[ \] Màn người bán kêu chuông khi có đơn mới, dùng được khi để mở trên một máy cố định ở quầy pha. Đây là kênh chính; tin Zalo báo cho người bán khi họ không nhìn màn hình.
-- \[ \] Gửi tin Zalo thất bại thì thử lại; sau 3 lần vẫn lỗi, hoặc khi phiên đăng nhập Zalo hết hạn, màn người bán hiện cảnh báo đỏ để người bán biết lúc đó chỉ còn chuông báo.
+- \[ \] Gửi tin Zalo thất bại thì thử lại; sau 3 lần vẫn lỗi, hoặc khi phiên đăng nhập Zalo hết hạn, màn người bán hiện cảnh báo đỏ để người bán biết lúc đó chỉ còn chuông báo. Khi phiên hết hạn, cảnh báo ghi rõ "Phiên Zalo đã hết hạn — khách không nhận được tin trạng thái đơn. Vào Cài đặt để quét lại mã QR." kèm link tới Cài đặt; chưa cấu hình hoặc chưa kết nối Zalo thì không đỏ.
 - \[ \] Tài khoản gửi tin là một tài khoản Zalo phụ, không phải tài khoản chính của người bán, để nếu bị khoá thì không mất danh bạ và tin nhắn với khách quen.
+
+> **Trạng thái hiện tại:** tin báo đơn mới cho người bán qua Zalo **chưa** làm; người bán nhận đơn bằng chuông và màn người bán. Tài khoản Zalo kết nối trong Cài đặt (P0-11) hiện chỉ gửi tin trạng thái cho khách.
 
 > **Rủi ro đã chấp nhận:** gửi tin tự động từ Zalo cá nhân là cách không chính thức, trái điều khoản của Zalo. Tài khoản gửi tin có thể bị khoá, và phần kết nối tự xây có thể phải sửa khi Zalo cập nhật. Khi đó hệ thống vẫn chạy bằng chuông trên màn người bán; chuyển sang Zalo OA khi người bán có giấy phép hộ kinh doanh. Gửi tin cho khách (P0-11) là nhắn tới người lạ, nên rủi ro tài khoản gửi tin bị Zalo hạn chế hoặc khoá cao hơn so với chỉ nhắn cho người bán.
 
@@ -191,10 +193,11 @@ Thêm:
 
 ### P0-11. Số điện thoại và tin trạng thái cho khách
 
-- \[ \] Giỏ có ô số điện thoại bắt buộc; kiểm tra định dạng số di động Việt Nam (10 chữ số, bắt đầu bằng 0). Sai hoặc để trống thì báo lỗi ngay dưới ô và không cho đặt.
-- \[ \] Dưới ô ghi rõ: "Chỉ dùng để báo trạng thái đơn qua Zalo". Bấm "Đặt nước" là đồng ý với mục đích này.
+- \[ \] Giỏ có ô số điện thoại không bắt buộc. Bỏ trống thì vẫn đặt được và không gửi tin trạng thái; nhập thì phải đúng định dạng số di động Việt Nam (10 chữ số, bắt đầu bằng 0), sai thì báo lỗi ngay dưới ô và không cho đặt.
+- \[ \] Dưới ô ghi rõ: "Nhập để nhận tin trạng thái đơn qua Zalo. Bỏ trống thì không nhận tin." Nhập số và bấm "Đặt nước" là đồng ý với mục đích này.
 - \[ \] Trình duyệt nhớ số đã nhập để lần sau điền sẵn; khách sửa được.
 - \[ \] Khi đơn chuyển sang Đang pha, Đang mang ra, Đã thu tiền, Quán từ chối hoặc Đã huỷ do quá hạn, hệ thống gửi tin Zalo tới số này từ tài khoản gửi tin. Tin gồm: mã đơn, quán, bàn, trạng thái mới, tổng tiền.
+- \[ \] Người bán kết nối tài khoản gửi tin bằng cách quét mã QR trong trang Cài đặt (đồng ý rủi ro trước khi quét), xem trạng thái kết nối, ngắt kết nối và quét lại khi phiên hết hạn.
 - \[ \] Gửi lỗi (số không dùng Zalo, khách chặn tin người lạ, tài khoản gửi tin bị hạn chế) thì ghi log và bỏ qua; đơn vẫn chạy bình thường, trang trạng thái trên web vẫn là kênh chính.
 - \[ \] Màn người bán hiện số điện thoại của khách trên từng đơn, để gọi khi đến bàn mà không tìm thấy khách.
 - \[ \] Số điện thoại không hiện trong báo cáo gửi chủ quán và không xuất ra ngoài hệ thống.
