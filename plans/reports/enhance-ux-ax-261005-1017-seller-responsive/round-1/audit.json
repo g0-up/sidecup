@@ -1,0 +1,2414 @@
+{
+  "base": "http://localhost:5173",
+  "capturedAt": "2026-10-05T03:31:12.015Z",
+  "pages": [
+    {
+      "viewport": "desktop",
+      "scene": "seller-login",
+      "path": "/seller/login",
+      "screenshot": "desktop-seller-login.png",
+      "title": "Gọi nước tại bàn",
+      "overflowX": false,
+      "scrollWidth": 1440,
+      "headerHeight": null,
+      "tablesScrolling": [],
+      "targetsUnder24": [],
+      "targetsUnder44": [
+        "INPUT 286x36",
+        "Đăng nhập 286x40"
+      ],
+      "smallInputs": [],
+      "h1": [
+        "Màn người bán"
+      ]
+    },
+    {
+      "viewport": "desktop",
+      "scene": "seller-board",
+      "path": "/seller",
+      "screenshot": "desktop-seller-board.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 1440,
+      "headerHeight": 52,
+      "tablesScrolling": [],
+      "targetsUnder24": [
+        "BUTTON 32x18",
+        "0901234567 102x20",
+        "0901234567 102x20",
+        "0901234567 102x20",
+        "0901234567 102x20"
+      ],
+      "targetsUnder44": [
+        "Đơn 52x32",
+        "Món 54x32",
+        "Quán 59x32",
+        "Cài đặt 71x32",
+        "Báo cáo 77x32",
+        "BUTTON 32x18",
+        "Bật âm báo 118x32",
+        "Đăng xuất 36x36",
+        "Đang mở (4) 102x29",
+        "Đã đóng hôm nay 134x29",
+        "#EF34GH 79x28",
+        "0901234567 102x20",
+        "Nhận đơn 180x40",
+        "Từ chối 182x40",
+        "#AB12CD 79x28",
+        "0901234567 102x20",
+        "Nhận đơn 181x40",
+        "Từ chối 183x40",
+        "#JK56LM 79x28",
+        "0901234567 102x20",
+        "Mang ra bàn 371x40",
+        "#NP78QR 79x28",
+        "0901234567 102x20",
+        "Thu tiền mặt 118x40",
+        "Chuyển khoản 120x40",
+        "Không gặp khách 118x40"
+      ],
+      "smallInputs": [],
+      "h1": []
+    },
+    {
+      "viewport": "desktop",
+      "scene": "seller-board-closed",
+      "path": "/seller",
+      "screenshot": "desktop-seller-board-closed.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 1440,
+      "headerHeight": 52,
+      "tablesScrolling": [],
+      "targetsUnder24": [
+        "BUTTON 32x18",
+        "0901234567 102x20"
+      ],
+      "targetsUnder44": [
+        "Đơn 52x32",
+        "Món 54x32",
+        "Quán 59x32",
+        "Cài đặt 71x32",
+        "Báo cáo 77x32",
+        "BUTTON 32x18",
+        "Bật âm báo 118x32",
+        "Đăng xuất 36x36",
+        "Đang mở (4) 102x29",
+        "Đã đóng hôm nay 134x29",
+        "#ST90UV 79x28",
+        "0901234567 102x20"
+      ],
+      "smallInputs": [],
+      "h1": []
+    },
+    {
+      "viewport": "desktop",
+      "scene": "seller-reject-confirm",
+      "path": "/seller",
+      "screenshot": "desktop-seller-reject-confirm.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 1440,
+      "headerHeight": 52,
+      "tablesScrolling": [],
+      "targetsUnder24": [],
+      "targetsUnder44": [
+        "Quay lại 86x36",
+        "Xác nhận 93x36"
+      ],
+      "smallInputs": [],
+      "h1": []
+    },
+    {
+      "viewport": "desktop",
+      "scene": "seller-vietqr",
+      "path": "/seller",
+      "screenshot": "desktop-seller-vietqr.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 1440,
+      "headerHeight": 52,
+      "tablesScrolling": [],
+      "targetsUnder24": [
+        "Close 16x16"
+      ],
+      "targetsUnder44": [
+        "Đóng 70x36",
+        "Đã nhận tiền 116x36",
+        "Close 16x16"
+      ],
+      "smallInputs": [],
+      "h1": []
+    },
+    {
+      "viewport": "desktop",
+      "scene": "seller-order-detail",
+      "path": "/seller/orders/o-sent-new",
+      "screenshot": "desktop-seller-order-detail.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 1440,
+      "headerHeight": 52,
+      "tablesScrolling": [],
+      "targetsUnder24": [
+        "BUTTON 32x18",
+        "← Bảng đơn 80x17",
+        "0901234567 102x20"
+      ],
+      "targetsUnder44": [
+        "Đơn 52x32",
+        "Món 54x32",
+        "Quán 59x32",
+        "Cài đặt 71x32",
+        "Báo cáo 77x32",
+        "BUTTON 32x18",
+        "Bật âm báo 118x32",
+        "Đăng xuất 36x36",
+        "← Bảng đơn 80x17",
+        "0901234567 102x20",
+        "Nhận đơn 218x40",
+        "Từ chối 220x40"
+      ],
+      "smallInputs": [],
+      "h1": []
+    },
+    {
+      "viewport": "desktop",
+      "scene": "seller-products",
+      "path": "/seller/products",
+      "screenshot": "desktop-seller-products.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 1440,
+      "headerHeight": 52,
+      "tablesScrolling": [],
+      "targetsUnder24": [
+        "BUTTON 32x18",
+        "Cà phê sữa đá: đang bán 32x18",
+        "Bạc xỉu: đang bán 32x18",
+        "Nước suối: đang bán 32x18",
+        "Trà đào cam sả: hết món 32x18"
+      ],
+      "targetsUnder44": [
+        "Đơn 52x32",
+        "Món 54x32",
+        "Quán 59x32",
+        "Cài đặt 71x32",
+        "Báo cáo 77x32",
+        "BUTTON 32x18",
+        "Bật âm báo 118x32",
+        "Đăng xuất 36x36",
+        "Thêm món 120x36",
+        "Cà phê sữa đá: đang bán 32x18",
+        "Sửa Cà phê sữa đá 67x32",
+        "Bạc xỉu: đang bán 32x18",
+        "Sửa Bạc xỉu 67x32",
+        "Nước suối: đang bán 32x18",
+        "Sửa Nước suối 67x32",
+        "Trà đào cam sả: hết món 32x18",
+        "Sửa Trà đào cam sả 67x32"
+      ],
+      "smallInputs": [],
+      "h1": [
+        "Món"
+      ]
+    },
+    {
+      "viewport": "desktop",
+      "scene": "seller-product-form",
+      "path": "/seller/products",
+      "screenshot": "desktop-seller-product-form.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 1440,
+      "headerHeight": 52,
+      "tablesScrolling": [],
+      "targetsUnder24": [
+        "BUTTON 16x16",
+        "INPUT 16x16",
+        "BUTTON 16x16",
+        "INPUT 16x16",
+        "Close 16x16"
+      ],
+      "targetsUnder44": [
+        "INPUT 464x36",
+        "INPUT 226x36",
+        "INPUT 226x36",
+        "https://… 464x36",
+        "BUTTON 16x16",
+        "INPUT 16x16",
+        "BUTTON 16x16",
+        "INPUT 16x16",
+        "Huỷ 61x36",
+        "Lưu 57x36",
+        "Close 16x16"
+      ],
+      "smallInputs": [],
+      "h1": [
+        "Món"
+      ]
+    },
+    {
+      "viewport": "desktop",
+      "scene": "seller-partners",
+      "path": "/seller/partners",
+      "screenshot": "desktop-seller-partners.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 1440,
+      "headerHeight": 52,
+      "tablesScrolling": [],
+      "targetsUnder24": [
+        "BUTTON 32x18",
+        "Quán test 66x17"
+      ],
+      "targetsUnder44": [
+        "Đơn 52x32",
+        "Món 54x32",
+        "Quán 59x32",
+        "Cài đặt 71x32",
+        "Báo cáo 77x32",
+        "BUTTON 32x18",
+        "Bật âm báo 118x32",
+        "Đăng xuất 36x36",
+        "Thêm quán 124x36",
+        "Quán test 66x17"
+      ],
+      "smallInputs": [],
+      "h1": [
+        "Quán"
+      ]
+    },
+    {
+      "viewport": "desktop",
+      "scene": "seller-partner-form",
+      "path": "/seller/partners",
+      "screenshot": "desktop-seller-partner-form.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 1440,
+      "headerHeight": 52,
+      "tablesScrolling": [],
+      "targetsUnder24": [
+        "Theo tuầnTheo tháng 1x1",
+        "BUTTON 32x18",
+        "INPUT 32x18",
+        "BUTTON 16x16",
+        "INPUT 16x16",
+        "BUTTON 16x16",
+        "INPUT 16x16",
+        "BUTTON 16x16",
+        "INPUT 16x16",
+        "BUTTON 16x16",
+        "INPUT 16x16",
+        "Close 16x16"
+      ],
+      "targetsUnder44": [
+        "INPUT 528x36",
+        "INPUT 258x36",
+        "Theo tuần 258x36",
+        "Theo tuầnTheo tháng 1x1",
+        "BUTTON 32x18",
+        "INPUT 32x18",
+        "Khung 1 T2 40x36",
+        "Khung 1 T3 40x36",
+        "Khung 1 T4 40x36",
+        "Khung 1 T5 40x36",
+        "Khung 1 T6 40x36",
+        "Khung 1 T7 40x36",
+        "Khung 1 CN 40x36",
+        "Khung 1 từ 128x36",
+        "Khung 1 đến 128x36",
+        "Xoá khung 1 36x36",
+        "Thêm khung giờ 152x32",
+        "Mọi ngày 11:00–13:30 163x32",
+        "BUTTON 16x16",
+        "INPUT 16x16",
+        "BUTTON 16x16",
+        "INPUT 16x16",
+        "BUTTON 16x16",
+        "INPUT 16x16",
+        "BUTTON 16x16",
+        "INPUT 16x16",
+        "Huỷ 61x36",
+        "Lưu 57x36",
+        "Close 16x16"
+      ],
+      "smallInputs": [],
+      "h1": [
+        "Quán"
+      ]
+    },
+    {
+      "viewport": "desktop",
+      "scene": "seller-partner-detail",
+      "path": "/seller/partners/00000000-0000-4000-8000-000000000001",
+      "screenshot": "desktop-seller-partner-detail.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 1440,
+      "headerHeight": 52,
+      "tablesScrolling": [],
+      "targetsUnder24": [
+        "BUTTON 32x18",
+        "http://localhost:5173/t/DEVTEST001 229x17"
+      ],
+      "targetsUnder44": [
+        "Đơn 52x32",
+        "Món 54x32",
+        "Quán 59x32",
+        "Cài đặt 71x32",
+        "Báo cáo 77x32",
+        "BUTTON 32x18",
+        "Bật âm báo 118x32",
+        "Đăng xuất 36x36",
+        "Danh sách quán 148x32",
+        "Sửa quán 111x36",
+        "Bàn & mã QR 103x29",
+        "Thông tin 83x29",
+        "Tên bàn mới 176x36",
+        "Thêm bàn 115x36",
+        "In tất cả bàn 131x36",
+        "http://localhost:5173/t/DEVTEST001 229x17",
+        "Xem thẻ 99x32",
+        "Thu hồi 93x32"
+      ],
+      "smallInputs": [],
+      "h1": [
+        "Quán test"
+      ]
+    },
+    {
+      "viewport": "desktop",
+      "scene": "seller-qr-card",
+      "path": "/seller/partners/00000000-0000-4000-8000-000000000001",
+      "screenshot": "desktop-seller-qr-card.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 1440,
+      "headerHeight": 52,
+      "tablesScrolling": [],
+      "targetsUnder24": [
+        "Close 16x16"
+      ],
+      "targetsUnder44": [
+        "Tải ảnh 99x36",
+        "Close 16x16"
+      ],
+      "smallInputs": [],
+      "h1": [
+        "Quán test"
+      ]
+    },
+    {
+      "viewport": "desktop",
+      "scene": "seller-print",
+      "path": "/seller/partners/00000000-0000-4000-8000-000000000001/print",
+      "screenshot": "desktop-seller-print.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 1440,
+      "headerHeight": 52,
+      "tablesScrolling": [],
+      "targetsUnder24": [
+        "BUTTON 32x18"
+      ],
+      "targetsUnder44": [
+        "Đơn 52x32",
+        "Món 54x32",
+        "Quán 59x32",
+        "Cài đặt 71x32",
+        "Báo cáo 77x32",
+        "BUTTON 32x18",
+        "Bật âm báo 118x32",
+        "Đăng xuất 36x36",
+        "Về quán 97x32",
+        "In 1 thẻ 95x36"
+      ],
+      "smallInputs": [],
+      "h1": []
+    },
+    {
+      "viewport": "desktop",
+      "scene": "seller-settings",
+      "path": "/seller/settings",
+      "screenshot": "desktop-seller-settings.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 1440,
+      "headerHeight": 52,
+      "tablesScrolling": [],
+      "targetsUnder24": [
+        "BUTTON 32x18",
+        "BUTTON 32x18",
+        "Vietcombank — Ngân hàng TMCP Ngoại Thương Việt Nam 1x1",
+        "BUTTON 16x16"
+      ],
+      "targetsUnder44": [
+        "Đơn 52x32",
+        "Món 54x32",
+        "Quán 59x32",
+        "Cài đặt 71x32",
+        "Báo cáo 77x32",
+        "BUTTON 32x18",
+        "Bật âm báo 118x32",
+        "Đăng xuất 36x36",
+        "BUTTON 32x18",
+        "INPUT 128x36",
+        "Ngân hàng 944x36",
+        "Vietcombank — Ngân hàng TMCP Ngoại Thương Việt Nam 1x1",
+        "Mã BIN ngân hàng 944x36",
+        "INPUT 944x36",
+        "INPUT 944x36",
+        "Lưu cài đặt 104x36",
+        "BUTTON 16x16",
+        "Kết nối Zalo 111x36"
+      ],
+      "smallInputs": [],
+      "h1": [
+        "Cài đặt"
+      ]
+    },
+    {
+      "viewport": "desktop",
+      "scene": "seller-reports",
+      "path": "/seller/reports",
+      "screenshot": "desktop-seller-reports.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 1440,
+      "headerHeight": 52,
+      "tablesScrolling": [],
+      "targetsUnder24": [
+        "BUTTON 32x18",
+        "Quán test 1x1"
+      ],
+      "targetsUnder44": [
+        "Đơn 52x32",
+        "Món 54x32",
+        "Quán 59x32",
+        "Cài đặt 71x32",
+        "Báo cáo 77x32",
+        "BUTTON 32x18",
+        "Bật âm báo 118x32",
+        "Đăng xuất 36x36",
+        "Hoa hồng 82x29",
+        "Phễu 52x29",
+        "Tất cả quán 208x36",
+        "Kỳ hiện tại 160x36",
+        "Sao chép bản tóm tắt 191x36",
+        "Chọn quán 490x36",
+        "Quán test 1x1",
+        "INPUT 490x36",
+        "INPUT 490x36",
+        "INPUT 490x36",
+        "Ghi điều chỉnh 127x36"
+      ],
+      "smallInputs": [],
+      "h1": [
+        "Báo cáo"
+      ]
+    },
+    {
+      "viewport": "desktop",
+      "scene": "seller-reports-funnel",
+      "path": "/seller/reports",
+      "screenshot": "desktop-seller-reports-funnel.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 1440,
+      "headerHeight": 52,
+      "tablesScrolling": [],
+      "targetsUnder24": [
+        "BUTTON 32x18"
+      ],
+      "targetsUnder44": [
+        "Đơn 52x32",
+        "Món 54x32",
+        "Quán 59x32",
+        "Cài đặt 71x32",
+        "Báo cáo 77x32",
+        "BUTTON 32x18",
+        "Bật âm báo 118x32",
+        "Đăng xuất 36x36",
+        "Hoa hồng 82x29",
+        "Phễu 52x29",
+        "Tất cả quán 208x36",
+        "INPUT 160x36",
+        "INPUT 160x36"
+      ],
+      "smallInputs": [],
+      "h1": [
+        "Báo cáo"
+      ]
+    },
+    {
+      "viewport": "tablet",
+      "scene": "seller-login",
+      "path": "/seller/login",
+      "screenshot": "tablet-seller-login.png",
+      "title": "Gọi nước tại bàn",
+      "overflowX": false,
+      "scrollWidth": 768,
+      "headerHeight": null,
+      "tablesScrolling": [],
+      "targetsUnder24": [],
+      "targetsUnder44": [
+        "INPUT 286x36",
+        "Đăng nhập 286x40"
+      ],
+      "smallInputs": [],
+      "h1": [
+        "Màn người bán"
+      ]
+    },
+    {
+      "viewport": "tablet",
+      "scene": "seller-board",
+      "path": "/seller",
+      "screenshot": "tablet-seller-board.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 768,
+      "headerHeight": 92,
+      "tablesScrolling": [],
+      "targetsUnder24": [
+        "BUTTON 32x18",
+        "0901234567 102x20",
+        "0901234567 102x20",
+        "0901234567 102x20",
+        "0901234567 102x20"
+      ],
+      "targetsUnder44": [
+        "Đơn 52x32",
+        "Món 54x32",
+        "Quán 59x32",
+        "Cài đặt 71x32",
+        "Báo cáo 77x32",
+        "BUTTON 32x18",
+        "Bật âm báo 118x32",
+        "Đăng xuất 36x36",
+        "Đang mở (4) 102x29",
+        "Đã đóng hôm nay 134x29",
+        "#EF34GH 79x28",
+        "0901234567 102x20",
+        "Nhận đơn 199x40",
+        "Từ chối 199x40",
+        "#AB12CD 79x28",
+        "0901234567 102x20",
+        "Nhận đơn 201x40",
+        "Từ chối 201x40",
+        "#JK56LM 79x28",
+        "0901234567 102x20",
+        "Mang ra bàn 201x40",
+        "#NP78QR 79x28",
+        "0901234567 102x20",
+        "Thu tiền mặt 201x40",
+        "Chuyển khoản 201x40",
+        "Không gặp khách 201x40"
+      ],
+      "smallInputs": [],
+      "h1": []
+    },
+    {
+      "viewport": "tablet",
+      "scene": "seller-board-closed",
+      "path": "/seller",
+      "screenshot": "tablet-seller-board-closed.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 768,
+      "headerHeight": 92,
+      "tablesScrolling": [],
+      "targetsUnder24": [
+        "BUTTON 32x18",
+        "0901234567 102x20"
+      ],
+      "targetsUnder44": [
+        "Đơn 52x32",
+        "Món 54x32",
+        "Quán 59x32",
+        "Cài đặt 71x32",
+        "Báo cáo 77x32",
+        "BUTTON 32x18",
+        "Bật âm báo 118x32",
+        "Đăng xuất 36x36",
+        "Đang mở (4) 102x29",
+        "Đã đóng hôm nay 134x29",
+        "#ST90UV 79x28",
+        "0901234567 102x20"
+      ],
+      "smallInputs": [],
+      "h1": []
+    },
+    {
+      "viewport": "tablet",
+      "scene": "seller-reject-confirm",
+      "path": "/seller",
+      "screenshot": "tablet-seller-reject-confirm.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 768,
+      "headerHeight": 92,
+      "tablesScrolling": [],
+      "targetsUnder24": [],
+      "targetsUnder44": [
+        "Quay lại 86x36",
+        "Xác nhận 93x36"
+      ],
+      "smallInputs": [],
+      "h1": []
+    },
+    {
+      "viewport": "tablet",
+      "scene": "seller-vietqr",
+      "path": "/seller",
+      "screenshot": "tablet-seller-vietqr.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 768,
+      "headerHeight": 92,
+      "tablesScrolling": [],
+      "targetsUnder24": [
+        "Close 16x16"
+      ],
+      "targetsUnder44": [
+        "Đóng 70x36",
+        "Đã nhận tiền 116x36",
+        "Close 16x16"
+      ],
+      "smallInputs": [],
+      "h1": []
+    },
+    {
+      "viewport": "tablet",
+      "scene": "seller-order-detail",
+      "path": "/seller/orders/o-sent-new",
+      "screenshot": "tablet-seller-order-detail.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 768,
+      "headerHeight": 92,
+      "tablesScrolling": [],
+      "targetsUnder24": [
+        "BUTTON 32x18",
+        "← Bảng đơn 80x17",
+        "0901234567 102x20"
+      ],
+      "targetsUnder44": [
+        "Đơn 52x32",
+        "Món 54x32",
+        "Quán 59x32",
+        "Cài đặt 71x32",
+        "Báo cáo 77x32",
+        "BUTTON 32x18",
+        "Bật âm báo 118x32",
+        "Đăng xuất 36x36",
+        "← Bảng đơn 80x17",
+        "0901234567 102x20",
+        "Nhận đơn 218x40",
+        "Từ chối 220x40"
+      ],
+      "smallInputs": [],
+      "h1": []
+    },
+    {
+      "viewport": "tablet",
+      "scene": "seller-products",
+      "path": "/seller/products",
+      "screenshot": "tablet-seller-products.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 768,
+      "headerHeight": 92,
+      "tablesScrolling": [],
+      "targetsUnder24": [
+        "BUTTON 32x18",
+        "Cà phê sữa đá: đang bán 32x18",
+        "Bạc xỉu: đang bán 32x18",
+        "Nước suối: đang bán 32x18",
+        "Trà đào cam sả: hết món 32x18"
+      ],
+      "targetsUnder44": [
+        "Đơn 52x32",
+        "Món 54x32",
+        "Quán 59x32",
+        "Cài đặt 71x32",
+        "Báo cáo 77x32",
+        "BUTTON 32x18",
+        "Bật âm báo 118x32",
+        "Đăng xuất 36x36",
+        "Thêm món 120x36",
+        "Cà phê sữa đá: đang bán 32x18",
+        "Sửa Cà phê sữa đá 67x32",
+        "Bạc xỉu: đang bán 32x18",
+        "Sửa Bạc xỉu 67x32",
+        "Nước suối: đang bán 32x18",
+        "Sửa Nước suối 67x32",
+        "Trà đào cam sả: hết món 32x18",
+        "Sửa Trà đào cam sả 67x32"
+      ],
+      "smallInputs": [],
+      "h1": [
+        "Món"
+      ]
+    },
+    {
+      "viewport": "tablet",
+      "scene": "seller-product-form",
+      "path": "/seller/products",
+      "screenshot": "tablet-seller-product-form.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 768,
+      "headerHeight": 92,
+      "tablesScrolling": [],
+      "targetsUnder24": [
+        "BUTTON 16x16",
+        "INPUT 16x16",
+        "BUTTON 16x16",
+        "INPUT 16x16",
+        "Close 16x16"
+      ],
+      "targetsUnder44": [
+        "INPUT 464x36",
+        "INPUT 226x36",
+        "INPUT 226x36",
+        "https://… 464x36",
+        "BUTTON 16x16",
+        "INPUT 16x16",
+        "BUTTON 16x16",
+        "INPUT 16x16",
+        "Huỷ 61x36",
+        "Lưu 57x36",
+        "Close 16x16"
+      ],
+      "smallInputs": [],
+      "h1": [
+        "Món"
+      ]
+    },
+    {
+      "viewport": "tablet",
+      "scene": "seller-partners",
+      "path": "/seller/partners",
+      "screenshot": "tablet-seller-partners.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 768,
+      "headerHeight": 92,
+      "tablesScrolling": [],
+      "targetsUnder24": [
+        "BUTTON 32x18",
+        "Quán test 66x17"
+      ],
+      "targetsUnder44": [
+        "Đơn 52x32",
+        "Món 54x32",
+        "Quán 59x32",
+        "Cài đặt 71x32",
+        "Báo cáo 77x32",
+        "BUTTON 32x18",
+        "Bật âm báo 118x32",
+        "Đăng xuất 36x36",
+        "Thêm quán 124x36",
+        "Quán test 66x17"
+      ],
+      "smallInputs": [],
+      "h1": [
+        "Quán"
+      ]
+    },
+    {
+      "viewport": "tablet",
+      "scene": "seller-partner-form",
+      "path": "/seller/partners",
+      "screenshot": "tablet-seller-partner-form.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 768,
+      "headerHeight": 92,
+      "tablesScrolling": [],
+      "targetsUnder24": [
+        "Theo tuầnTheo tháng 1x1",
+        "BUTTON 32x18",
+        "INPUT 32x18",
+        "BUTTON 16x16",
+        "INPUT 16x16",
+        "BUTTON 16x16",
+        "INPUT 16x16",
+        "BUTTON 16x16",
+        "INPUT 16x16",
+        "BUTTON 16x16",
+        "INPUT 16x16",
+        "Close 16x16"
+      ],
+      "targetsUnder44": [
+        "INPUT 528x36",
+        "INPUT 258x36",
+        "Theo tuần 258x36",
+        "Theo tuầnTheo tháng 1x1",
+        "BUTTON 32x18",
+        "INPUT 32x18",
+        "Khung 1 T2 40x36",
+        "Khung 1 T3 40x36",
+        "Khung 1 T4 40x36",
+        "Khung 1 T5 40x36",
+        "Khung 1 T6 40x36",
+        "Khung 1 T7 40x36",
+        "Khung 1 CN 40x36",
+        "Khung 1 từ 128x36",
+        "Khung 1 đến 128x36",
+        "Xoá khung 1 36x36",
+        "Thêm khung giờ 152x32",
+        "Mọi ngày 11:00–13:30 163x32",
+        "BUTTON 16x16",
+        "INPUT 16x16",
+        "BUTTON 16x16",
+        "INPUT 16x16",
+        "BUTTON 16x16",
+        "INPUT 16x16",
+        "BUTTON 16x16",
+        "INPUT 16x16",
+        "Huỷ 61x36",
+        "Lưu 57x36",
+        "Close 16x16"
+      ],
+      "smallInputs": [],
+      "h1": [
+        "Quán"
+      ]
+    },
+    {
+      "viewport": "tablet",
+      "scene": "seller-partner-detail",
+      "path": "/seller/partners/00000000-0000-4000-8000-000000000001",
+      "screenshot": "tablet-seller-partner-detail.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 768,
+      "headerHeight": 92,
+      "tablesScrolling": [],
+      "targetsUnder24": [
+        "BUTTON 32x18",
+        "http://localhost:5173/t/DEVTEST001 229x17"
+      ],
+      "targetsUnder44": [
+        "Đơn 52x32",
+        "Món 54x32",
+        "Quán 59x32",
+        "Cài đặt 71x32",
+        "Báo cáo 77x32",
+        "BUTTON 32x18",
+        "Bật âm báo 118x32",
+        "Đăng xuất 36x36",
+        "Danh sách quán 148x32",
+        "Sửa quán 111x36",
+        "Bàn & mã QR 103x29",
+        "Thông tin 83x29",
+        "Tên bàn mới 176x36",
+        "Thêm bàn 115x36",
+        "In tất cả bàn 131x36",
+        "http://localhost:5173/t/DEVTEST001 229x17",
+        "Xem thẻ 99x32",
+        "Thu hồi 93x32"
+      ],
+      "smallInputs": [],
+      "h1": [
+        "Quán test"
+      ]
+    },
+    {
+      "viewport": "tablet",
+      "scene": "seller-qr-card",
+      "path": "/seller/partners/00000000-0000-4000-8000-000000000001",
+      "screenshot": "tablet-seller-qr-card.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 768,
+      "headerHeight": 92,
+      "tablesScrolling": [],
+      "targetsUnder24": [
+        "Close 16x16"
+      ],
+      "targetsUnder44": [
+        "Tải ảnh 99x36",
+        "Close 16x16"
+      ],
+      "smallInputs": [],
+      "h1": [
+        "Quán test"
+      ]
+    },
+    {
+      "viewport": "tablet",
+      "scene": "seller-print",
+      "path": "/seller/partners/00000000-0000-4000-8000-000000000001/print",
+      "screenshot": "tablet-seller-print.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 768,
+      "headerHeight": 92,
+      "tablesScrolling": [],
+      "targetsUnder24": [
+        "BUTTON 32x18"
+      ],
+      "targetsUnder44": [
+        "Đơn 52x32",
+        "Món 54x32",
+        "Quán 59x32",
+        "Cài đặt 71x32",
+        "Báo cáo 77x32",
+        "BUTTON 32x18",
+        "Bật âm báo 118x32",
+        "Đăng xuất 36x36",
+        "Về quán 97x32",
+        "In 1 thẻ 95x36"
+      ],
+      "smallInputs": [],
+      "h1": []
+    },
+    {
+      "viewport": "tablet",
+      "scene": "seller-settings",
+      "path": "/seller/settings",
+      "screenshot": "tablet-seller-settings.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 768,
+      "headerHeight": 92,
+      "tablesScrolling": [],
+      "targetsUnder24": [
+        "BUTTON 32x18",
+        "BUTTON 32x18",
+        "Vietcombank — Ngân hàng TMCP Ngoại Thương Việt Nam 1x1",
+        "BUTTON 16x16"
+      ],
+      "targetsUnder44": [
+        "Đơn 52x32",
+        "Món 54x32",
+        "Quán 59x32",
+        "Cài đặt 71x32",
+        "Báo cáo 77x32",
+        "BUTTON 32x18",
+        "Bật âm báo 118x32",
+        "Đăng xuất 36x36",
+        "BUTTON 32x18",
+        "INPUT 128x36",
+        "Ngân hàng 688x36",
+        "Vietcombank — Ngân hàng TMCP Ngoại Thương Việt Nam 1x1",
+        "Mã BIN ngân hàng 688x36",
+        "INPUT 688x36",
+        "INPUT 688x36",
+        "Lưu cài đặt 104x36",
+        "BUTTON 16x16",
+        "Kết nối Zalo 111x36"
+      ],
+      "smallInputs": [],
+      "h1": [
+        "Cài đặt"
+      ]
+    },
+    {
+      "viewport": "tablet",
+      "scene": "seller-reports",
+      "path": "/seller/reports",
+      "screenshot": "tablet-seller-reports.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 768,
+      "headerHeight": 92,
+      "tablesScrolling": [
+        {
+          "scrollWidth": 763,
+          "clientWidth": 734,
+          "hiddenPx": 29
+        }
+      ],
+      "targetsUnder24": [
+        "BUTTON 32x18",
+        "Quán test 1x1"
+      ],
+      "targetsUnder44": [
+        "Đơn 52x32",
+        "Món 54x32",
+        "Quán 59x32",
+        "Cài đặt 71x32",
+        "Báo cáo 77x32",
+        "BUTTON 32x18",
+        "Bật âm báo 118x32",
+        "Đăng xuất 36x36",
+        "Hoa hồng 82x29",
+        "Phễu 52x29",
+        "Tất cả quán 208x36",
+        "Kỳ hiện tại 160x36",
+        "Sao chép bản tóm tắt 191x36",
+        "Chọn quán 362x36",
+        "Quán test 1x1",
+        "INPUT 362x36",
+        "INPUT 362x36",
+        "INPUT 362x36",
+        "Ghi điều chỉnh 127x36"
+      ],
+      "smallInputs": [],
+      "h1": [
+        "Báo cáo"
+      ]
+    },
+    {
+      "viewport": "tablet",
+      "scene": "seller-reports-funnel",
+      "path": "/seller/reports",
+      "screenshot": "tablet-seller-reports-funnel.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 768,
+      "headerHeight": 92,
+      "tablesScrolling": [],
+      "targetsUnder24": [
+        "BUTTON 32x18"
+      ],
+      "targetsUnder44": [
+        "Đơn 52x32",
+        "Món 54x32",
+        "Quán 59x32",
+        "Cài đặt 71x32",
+        "Báo cáo 77x32",
+        "BUTTON 32x18",
+        "Bật âm báo 118x32",
+        "Đăng xuất 36x36",
+        "Hoa hồng 82x29",
+        "Phễu 52x29",
+        "Tất cả quán 208x36",
+        "INPUT 160x36",
+        "INPUT 160x36"
+      ],
+      "smallInputs": [],
+      "h1": [
+        "Báo cáo"
+      ]
+    },
+    {
+      "viewport": "mobile",
+      "scene": "seller-login",
+      "path": "/seller/login",
+      "screenshot": "mobile-seller-login.png",
+      "title": "Gọi nước tại bàn",
+      "overflowX": false,
+      "scrollWidth": 375,
+      "headerHeight": null,
+      "tablesScrolling": [],
+      "targetsUnder24": [],
+      "targetsUnder44": [
+        "INPUT 277x36",
+        "Đăng nhập 277x40"
+      ],
+      "smallInputs": [],
+      "h1": [
+        "Màn người bán"
+      ]
+    },
+    {
+      "viewport": "mobile",
+      "scene": "seller-board",
+      "path": "/seller",
+      "screenshot": "mobile-seller-board.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 375,
+      "headerHeight": 96,
+      "tablesScrolling": [],
+      "targetsUnder24": [
+        "BUTTON 32x18",
+        "0901234567 102x20",
+        "0901234567 102x20",
+        "0901234567 102x20",
+        "0901234567 102x20"
+      ],
+      "targetsUnder44": [
+        "Mở menu 36x36",
+        "BUTTON 32x18",
+        "Bật âm báo 118x32",
+        "Đăng xuất 36x36",
+        "Đang mở (4) 102x29",
+        "Đã đóng hôm nay 134x29",
+        "#EF34GH 79x28",
+        "0901234567 102x20",
+        "Nhận đơn 149x40",
+        "Từ chối 151x40",
+        "#AB12CD 79x28",
+        "0901234567 102x20",
+        "Nhận đơn 150x40",
+        "Từ chối 152x40",
+        "#JK56LM 79x28",
+        "0901234567 102x20",
+        "Mang ra bàn 309x40",
+        "#NP78QR 79x28",
+        "0901234567 102x20",
+        "Thu tiền mặt 150x40",
+        "Chuyển khoản 152x40",
+        "Không gặp khách 309x40"
+      ],
+      "smallInputs": [],
+      "h1": []
+    },
+    {
+      "viewport": "mobile",
+      "scene": "seller-nav-open",
+      "path": "/seller",
+      "screenshot": "mobile-seller-nav-open.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 375,
+      "headerHeight": 280,
+      "tablesScrolling": [],
+      "targetsUnder24": [
+        "BUTTON 32x18",
+        "0901234567 102x20",
+        "0901234567 102x20",
+        "0901234567 102x20",
+        "0901234567 102x20"
+      ],
+      "targetsUnder44": [
+        "Mở menu 36x36",
+        "Đơn 343x32",
+        "Món 343x32",
+        "Quán 343x32",
+        "Cài đặt 343x32",
+        "Báo cáo 343x32",
+        "BUTTON 32x18",
+        "Bật âm báo 118x32",
+        "Đăng xuất 36x36",
+        "Đang mở (4) 102x29",
+        "Đã đóng hôm nay 134x29",
+        "#EF34GH 79x28",
+        "0901234567 102x20",
+        "Nhận đơn 149x40",
+        "Từ chối 151x40",
+        "#AB12CD 79x28",
+        "0901234567 102x20",
+        "Nhận đơn 150x40",
+        "Từ chối 152x40",
+        "#JK56LM 79x28",
+        "0901234567 102x20",
+        "Mang ra bàn 309x40",
+        "#NP78QR 79x28",
+        "0901234567 102x20",
+        "Thu tiền mặt 150x40",
+        "Chuyển khoản 152x40",
+        "Không gặp khách 309x40"
+      ],
+      "smallInputs": [],
+      "h1": []
+    },
+    {
+      "viewport": "mobile",
+      "scene": "seller-board-closed",
+      "path": "/seller",
+      "screenshot": "mobile-seller-board-closed.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 375,
+      "headerHeight": 96,
+      "tablesScrolling": [],
+      "targetsUnder24": [
+        "BUTTON 32x18",
+        "0901234567 102x20"
+      ],
+      "targetsUnder44": [
+        "Mở menu 36x36",
+        "BUTTON 32x18",
+        "Bật âm báo 118x32",
+        "Đăng xuất 36x36",
+        "Đang mở (4) 102x29",
+        "Đã đóng hôm nay 134x29",
+        "#ST90UV 79x28",
+        "0901234567 102x20"
+      ],
+      "smallInputs": [],
+      "h1": []
+    },
+    {
+      "viewport": "mobile",
+      "scene": "seller-reject-confirm",
+      "path": "/seller",
+      "screenshot": "mobile-seller-reject-confirm.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 375,
+      "headerHeight": 96,
+      "tablesScrolling": [],
+      "targetsUnder24": [],
+      "targetsUnder44": [
+        "Quay lại 295x36",
+        "Xác nhận 295x36"
+      ],
+      "smallInputs": [],
+      "h1": []
+    },
+    {
+      "viewport": "mobile",
+      "scene": "seller-vietqr",
+      "path": "/seller",
+      "screenshot": "mobile-seller-vietqr.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 375,
+      "headerHeight": 96,
+      "tablesScrolling": [],
+      "targetsUnder24": [
+        "Close 16x16"
+      ],
+      "targetsUnder44": [
+        "Đóng 295x36",
+        "Đã nhận tiền 295x36",
+        "Close 16x16"
+      ],
+      "smallInputs": [],
+      "h1": []
+    },
+    {
+      "viewport": "mobile",
+      "scene": "seller-order-detail",
+      "path": "/seller/orders/o-sent-new",
+      "screenshot": "mobile-seller-order-detail.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 375,
+      "headerHeight": 96,
+      "tablesScrolling": [],
+      "targetsUnder24": [
+        "BUTTON 32x18",
+        "← Bảng đơn 80x17",
+        "0901234567 102x20"
+      ],
+      "targetsUnder44": [
+        "Mở menu 36x36",
+        "BUTTON 32x18",
+        "Bật âm báo 118x32",
+        "Đăng xuất 36x36",
+        "← Bảng đơn 80x17",
+        "0901234567 102x20",
+        "Nhận đơn 150x40",
+        "Từ chối 152x40"
+      ],
+      "smallInputs": [],
+      "h1": []
+    },
+    {
+      "viewport": "mobile",
+      "scene": "seller-products",
+      "path": "/seller/products",
+      "screenshot": "mobile-seller-products.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 375,
+      "headerHeight": 96,
+      "tablesScrolling": [
+        {
+          "scrollWidth": 547,
+          "clientWidth": 341,
+          "hiddenPx": 206
+        }
+      ],
+      "targetsUnder24": [
+        "BUTTON 32x18",
+        "Cà phê sữa đá: đang bán 32x18",
+        "Bạc xỉu: đang bán 32x18",
+        "Nước suối: đang bán 32x18",
+        "Trà đào cam sả: hết món 32x18"
+      ],
+      "targetsUnder44": [
+        "Mở menu 36x36",
+        "BUTTON 32x18",
+        "Bật âm báo 118x32",
+        "Đăng xuất 36x36",
+        "Thêm món 120x36",
+        "Cà phê sữa đá: đang bán 32x18",
+        "Sửa Cà phê sữa đá 67x32",
+        "Bạc xỉu: đang bán 32x18",
+        "Sửa Bạc xỉu 67x32",
+        "Nước suối: đang bán 32x18",
+        "Sửa Nước suối 67x32",
+        "Trà đào cam sả: hết món 32x18",
+        "Sửa Trà đào cam sả 67x32"
+      ],
+      "smallInputs": [],
+      "h1": [
+        "Món"
+      ]
+    },
+    {
+      "viewport": "mobile",
+      "scene": "seller-product-form",
+      "path": "/seller/products",
+      "screenshot": "mobile-seller-product-form.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 375,
+      "headerHeight": 96,
+      "tablesScrolling": [
+        {
+          "scrollWidth": 547,
+          "clientWidth": 341,
+          "hiddenPx": 206
+        }
+      ],
+      "targetsUnder24": [
+        "BUTTON 16x16",
+        "INPUT 16x16",
+        "BUTTON 16x16",
+        "INPUT 16x16",
+        "Close 16x16"
+      ],
+      "targetsUnder44": [
+        "INPUT 295x36",
+        "INPUT 142x36",
+        "INPUT 142x36",
+        "https://… 295x36",
+        "BUTTON 16x16",
+        "INPUT 16x16",
+        "BUTTON 16x16",
+        "INPUT 16x16",
+        "Huỷ 295x36",
+        "Lưu 295x36",
+        "Close 16x16"
+      ],
+      "smallInputs": [],
+      "h1": [
+        "Món"
+      ]
+    },
+    {
+      "viewport": "mobile",
+      "scene": "seller-partners",
+      "path": "/seller/partners",
+      "screenshot": "mobile-seller-partners.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 375,
+      "headerHeight": 96,
+      "tablesScrolling": [
+        {
+          "scrollWidth": 545,
+          "clientWidth": 341,
+          "hiddenPx": 204
+        }
+      ],
+      "targetsUnder24": [
+        "BUTTON 32x18",
+        "Quán test 66x17"
+      ],
+      "targetsUnder44": [
+        "Mở menu 36x36",
+        "BUTTON 32x18",
+        "Bật âm báo 118x32",
+        "Đăng xuất 36x36",
+        "Thêm quán 124x36",
+        "Quán test 66x17"
+      ],
+      "smallInputs": [],
+      "h1": [
+        "Quán"
+      ]
+    },
+    {
+      "viewport": "mobile",
+      "scene": "seller-partner-form",
+      "path": "/seller/partners",
+      "screenshot": "mobile-seller-partner-form.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 375,
+      "headerHeight": 96,
+      "tablesScrolling": [
+        {
+          "scrollWidth": 545,
+          "clientWidth": 341,
+          "hiddenPx": 204
+        }
+      ],
+      "targetsUnder24": [
+        "Theo tuầnTheo tháng 1x1",
+        "BUTTON 32x18",
+        "INPUT 32x18",
+        "BUTTON 16x16",
+        "INPUT 16x16",
+        "BUTTON 16x16",
+        "INPUT 16x16",
+        "BUTTON 16x16",
+        "INPUT 16x16",
+        "BUTTON 16x16",
+        "INPUT 16x16",
+        "Close 16x16"
+      ],
+      "targetsUnder44": [
+        "INPUT 295x36",
+        "INPUT 142x36",
+        "Theo tuần 142x36",
+        "Theo tuầnTheo tháng 1x1",
+        "BUTTON 32x18",
+        "INPUT 32x18",
+        "Khung 1 T2 40x36",
+        "Khung 1 T3 40x36",
+        "Khung 1 T4 40x36",
+        "Khung 1 T5 40x36",
+        "Khung 1 T6 40x36",
+        "Khung 1 T7 40x36",
+        "Khung 1 CN 40x36",
+        "Khung 1 từ 128x36",
+        "Khung 1 đến 128x36",
+        "Xoá khung 1 36x36",
+        "Thêm khung giờ 152x32",
+        "Mọi ngày 11:00–13:30 163x32",
+        "BUTTON 16x16",
+        "INPUT 16x16",
+        "BUTTON 16x16",
+        "INPUT 16x16",
+        "BUTTON 16x16",
+        "INPUT 16x16",
+        "BUTTON 16x16",
+        "INPUT 16x16",
+        "Huỷ 295x36",
+        "Lưu 295x36",
+        "Close 16x16"
+      ],
+      "smallInputs": [],
+      "h1": [
+        "Quán"
+      ]
+    },
+    {
+      "viewport": "mobile",
+      "scene": "seller-partner-detail",
+      "path": "/seller/partners/00000000-0000-4000-8000-000000000001",
+      "screenshot": "mobile-seller-partner-detail.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 375,
+      "headerHeight": 96,
+      "tablesScrolling": [
+        {
+          "scrollWidth": 676,
+          "clientWidth": 341,
+          "hiddenPx": 335
+        }
+      ],
+      "targetsUnder24": [
+        "BUTTON 32x18",
+        "http://localhost:5173/t/DEVTEST001 229x17"
+      ],
+      "targetsUnder44": [
+        "Mở menu 36x36",
+        "BUTTON 32x18",
+        "Bật âm báo 118x32",
+        "Đăng xuất 36x36",
+        "Danh sách quán 148x32",
+        "Sửa quán 111x36",
+        "Bàn & mã QR 103x29",
+        "Thông tin 83x29",
+        "Tên bàn mới 176x36",
+        "Thêm bàn 115x36",
+        "In tất cả bàn 131x36",
+        "http://localhost:5173/t/DEVTEST001 229x17",
+        "Xem thẻ 99x32",
+        "Thu hồi 93x32"
+      ],
+      "smallInputs": [],
+      "h1": [
+        "Quán test"
+      ]
+    },
+    {
+      "viewport": "mobile",
+      "scene": "seller-qr-card",
+      "path": "/seller/partners/00000000-0000-4000-8000-000000000001",
+      "screenshot": "mobile-seller-qr-card.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 375,
+      "headerHeight": 96,
+      "tablesScrolling": [
+        {
+          "scrollWidth": 676,
+          "clientWidth": 341,
+          "hiddenPx": 335
+        }
+      ],
+      "targetsUnder24": [
+        "Close 16x16"
+      ],
+      "targetsUnder44": [
+        "Tải ảnh 295x36",
+        "Close 16x16"
+      ],
+      "smallInputs": [],
+      "h1": [
+        "Quán test"
+      ]
+    },
+    {
+      "viewport": "mobile",
+      "scene": "seller-print",
+      "path": "/seller/partners/00000000-0000-4000-8000-000000000001/print",
+      "screenshot": "mobile-seller-print.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 375,
+      "headerHeight": 96,
+      "tablesScrolling": [],
+      "targetsUnder24": [
+        "BUTTON 32x18"
+      ],
+      "targetsUnder44": [
+        "Mở menu 36x36",
+        "BUTTON 32x18",
+        "Bật âm báo 118x32",
+        "Đăng xuất 36x36",
+        "Về quán 97x32",
+        "In 1 thẻ 95x36"
+      ],
+      "smallInputs": [],
+      "h1": []
+    },
+    {
+      "viewport": "mobile",
+      "scene": "seller-settings",
+      "path": "/seller/settings",
+      "screenshot": "mobile-seller-settings.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 375,
+      "headerHeight": 96,
+      "tablesScrolling": [],
+      "targetsUnder24": [
+        "BUTTON 32x18",
+        "BUTTON 32x18",
+        "Vietcombank — Ngân hàng TMCP Ngoại Thương Việt Nam 1x1",
+        "BUTTON 16x16"
+      ],
+      "targetsUnder44": [
+        "Mở menu 36x36",
+        "BUTTON 32x18",
+        "Bật âm báo 118x32",
+        "Đăng xuất 36x36",
+        "BUTTON 32x18",
+        "INPUT 128x36",
+        "Ngân hàng 295x36",
+        "Vietcombank — Ngân hàng TMCP Ngoại Thương Việt Nam 1x1",
+        "Mã BIN ngân hàng 295x36",
+        "INPUT 295x36",
+        "INPUT 295x36",
+        "Lưu cài đặt 104x36",
+        "BUTTON 16x16",
+        "Kết nối Zalo 111x36"
+      ],
+      "smallInputs": [],
+      "h1": [
+        "Cài đặt"
+      ]
+    },
+    {
+      "viewport": "mobile",
+      "scene": "seller-reports",
+      "path": "/seller/reports",
+      "screenshot": "mobile-seller-reports.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 375,
+      "headerHeight": 96,
+      "tablesScrolling": [
+        {
+          "scrollWidth": 763,
+          "clientWidth": 341,
+          "hiddenPx": 422
+        }
+      ],
+      "targetsUnder24": [
+        "BUTTON 32x18",
+        "Quán test 1x1"
+      ],
+      "targetsUnder44": [
+        "Mở menu 36x36",
+        "BUTTON 32x18",
+        "Bật âm báo 118x32",
+        "Đăng xuất 36x36",
+        "Hoa hồng 82x29",
+        "Phễu 52x29",
+        "Tất cả quán 208x36",
+        "Kỳ hiện tại 160x36",
+        "Sao chép bản tóm tắt 191x36",
+        "Chọn quán 343x36",
+        "Quán test 1x1",
+        "INPUT 343x36",
+        "INPUT 343x36",
+        "INPUT 343x36",
+        "Ghi điều chỉnh 127x36"
+      ],
+      "smallInputs": [],
+      "h1": [
+        "Báo cáo"
+      ]
+    },
+    {
+      "viewport": "mobile",
+      "scene": "seller-reports-funnel",
+      "path": "/seller/reports",
+      "screenshot": "mobile-seller-reports-funnel.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 375,
+      "headerHeight": 96,
+      "tablesScrolling": [
+        {
+          "scrollWidth": 463,
+          "clientWidth": 341,
+          "hiddenPx": 122
+        }
+      ],
+      "targetsUnder24": [
+        "BUTTON 32x18"
+      ],
+      "targetsUnder44": [
+        "Mở menu 36x36",
+        "BUTTON 32x18",
+        "Bật âm báo 118x32",
+        "Đăng xuất 36x36",
+        "Hoa hồng 82x29",
+        "Phễu 52x29",
+        "Tất cả quán 208x36",
+        "INPUT 160x36",
+        "INPUT 160x36"
+      ],
+      "smallInputs": [],
+      "h1": [
+        "Báo cáo"
+      ]
+    },
+    {
+      "viewport": "narrow320",
+      "scene": "seller-login",
+      "path": "/seller/login",
+      "screenshot": "narrow320-seller-login.png",
+      "title": "Gọi nước tại bàn",
+      "overflowX": false,
+      "scrollWidth": 320,
+      "headerHeight": null,
+      "tablesScrolling": [],
+      "targetsUnder24": [],
+      "targetsUnder44": [
+        "INPUT 222x36",
+        "Đăng nhập 222x40"
+      ],
+      "smallInputs": [],
+      "h1": [
+        "Màn người bán"
+      ]
+    },
+    {
+      "viewport": "narrow320",
+      "scene": "seller-board",
+      "path": "/seller",
+      "screenshot": "narrow320-seller-board.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 320,
+      "headerHeight": 136,
+      "tablesScrolling": [],
+      "targetsUnder24": [
+        "BUTTON 32x18",
+        "0901234567 102x20",
+        "0901234567 102x20",
+        "0901234567 102x20",
+        "0901234567 102x20"
+      ],
+      "targetsUnder44": [
+        "Mở menu 36x36",
+        "BUTTON 32x18",
+        "Bật âm báo 118x32",
+        "Đăng xuất 36x36",
+        "Đang mở (4) 102x29",
+        "Đã đóng hôm nay 134x29",
+        "#EF34GH 79x28",
+        "0901234567 102x20",
+        "Nhận đơn 121x40",
+        "Từ chối 123x40",
+        "#AB12CD 79x28",
+        "0901234567 102x20",
+        "Nhận đơn 122x40",
+        "Từ chối 124x40",
+        "#JK56LM 79x28",
+        "0901234567 102x20",
+        "Mang ra bàn 254x40",
+        "#NP78QR 79x28",
+        "0901234567 102x20",
+        "Thu tiền mặt 122x40",
+        "Chuyển khoản 124x40",
+        "Không gặp khách 254x40"
+      ],
+      "smallInputs": [],
+      "h1": []
+    },
+    {
+      "viewport": "narrow320",
+      "scene": "seller-nav-open",
+      "path": "/seller",
+      "screenshot": "narrow320-seller-nav-open.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 320,
+      "headerHeight": 320,
+      "tablesScrolling": [],
+      "targetsUnder24": [
+        "BUTTON 32x18",
+        "0901234567 102x20",
+        "0901234567 102x20",
+        "0901234567 102x20",
+        "0901234567 102x20"
+      ],
+      "targetsUnder44": [
+        "Mở menu 36x36",
+        "Đơn 288x32",
+        "Món 288x32",
+        "Quán 288x32",
+        "Cài đặt 288x32",
+        "Báo cáo 288x32",
+        "BUTTON 32x18",
+        "Bật âm báo 118x32",
+        "Đăng xuất 36x36",
+        "Đang mở (4) 102x29",
+        "Đã đóng hôm nay 134x29",
+        "#EF34GH 79x28",
+        "0901234567 102x20",
+        "Nhận đơn 121x40",
+        "Từ chối 123x40",
+        "#AB12CD 79x28",
+        "0901234567 102x20",
+        "Nhận đơn 122x40",
+        "Từ chối 124x40",
+        "#JK56LM 79x28",
+        "0901234567 102x20",
+        "Mang ra bàn 254x40",
+        "#NP78QR 79x28",
+        "0901234567 102x20",
+        "Thu tiền mặt 122x40",
+        "Chuyển khoản 124x40",
+        "Không gặp khách 254x40"
+      ],
+      "smallInputs": [],
+      "h1": []
+    },
+    {
+      "viewport": "narrow320",
+      "scene": "seller-board-closed",
+      "path": "/seller",
+      "screenshot": "narrow320-seller-board-closed.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 320,
+      "headerHeight": 136,
+      "tablesScrolling": [],
+      "targetsUnder24": [
+        "BUTTON 32x18",
+        "0901234567 102x20"
+      ],
+      "targetsUnder44": [
+        "Mở menu 36x36",
+        "BUTTON 32x18",
+        "Bật âm báo 118x32",
+        "Đăng xuất 36x36",
+        "Đang mở (4) 102x29",
+        "Đã đóng hôm nay 134x29",
+        "#ST90UV 79x28",
+        "0901234567 102x20"
+      ],
+      "smallInputs": [],
+      "h1": []
+    },
+    {
+      "viewport": "narrow320",
+      "scene": "seller-reject-confirm",
+      "path": "/seller",
+      "screenshot": "narrow320-seller-reject-confirm.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 320,
+      "headerHeight": 136,
+      "tablesScrolling": [],
+      "targetsUnder24": [],
+      "targetsUnder44": [
+        "Quay lại 240x36",
+        "Xác nhận 240x36"
+      ],
+      "smallInputs": [],
+      "h1": []
+    },
+    {
+      "viewport": "narrow320",
+      "scene": "seller-vietqr",
+      "path": "/seller",
+      "screenshot": "narrow320-seller-vietqr.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 320,
+      "headerHeight": 136,
+      "tablesScrolling": [],
+      "targetsUnder24": [
+        "Close 16x16"
+      ],
+      "targetsUnder44": [
+        "Đóng 264x36",
+        "Đã nhận tiền 264x36",
+        "Close 16x16"
+      ],
+      "smallInputs": [],
+      "h1": []
+    },
+    {
+      "viewport": "narrow320",
+      "scene": "seller-order-detail",
+      "path": "/seller/orders/o-sent-new",
+      "screenshot": "narrow320-seller-order-detail.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 320,
+      "headerHeight": 136,
+      "tablesScrolling": [],
+      "targetsUnder24": [
+        "BUTTON 32x18",
+        "← Bảng đơn 80x17",
+        "0901234567 102x20"
+      ],
+      "targetsUnder44": [
+        "Mở menu 36x36",
+        "BUTTON 32x18",
+        "Bật âm báo 118x32",
+        "Đăng xuất 36x36",
+        "← Bảng đơn 80x17",
+        "0901234567 102x20",
+        "Nhận đơn 122x40",
+        "Từ chối 124x40"
+      ],
+      "smallInputs": [],
+      "h1": []
+    },
+    {
+      "viewport": "narrow320",
+      "scene": "seller-products",
+      "path": "/seller/products",
+      "screenshot": "narrow320-seller-products.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 320,
+      "headerHeight": 136,
+      "tablesScrolling": [
+        {
+          "scrollWidth": 547,
+          "clientWidth": 286,
+          "hiddenPx": 261
+        }
+      ],
+      "targetsUnder24": [
+        "BUTTON 32x18",
+        "Cà phê sữa đá: đang bán 32x18",
+        "Bạc xỉu: đang bán 32x18",
+        "Nước suối: đang bán 32x18",
+        "Trà đào cam sả: hết món 32x18"
+      ],
+      "targetsUnder44": [
+        "Mở menu 36x36",
+        "BUTTON 32x18",
+        "Bật âm báo 118x32",
+        "Đăng xuất 36x36",
+        "Thêm món 120x36",
+        "Cà phê sữa đá: đang bán 32x18",
+        "Sửa Cà phê sữa đá 67x32",
+        "Bạc xỉu: đang bán 32x18",
+        "Sửa Bạc xỉu 67x32",
+        "Nước suối: đang bán 32x18",
+        "Sửa Nước suối 67x32",
+        "Trà đào cam sả: hết món 32x18",
+        "Sửa Trà đào cam sả 67x32"
+      ],
+      "smallInputs": [],
+      "h1": [
+        "Món"
+      ]
+    },
+    {
+      "viewport": "narrow320",
+      "scene": "seller-product-form",
+      "path": "/seller/products",
+      "screenshot": "narrow320-seller-product-form.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 320,
+      "headerHeight": 136,
+      "tablesScrolling": [
+        {
+          "scrollWidth": 547,
+          "clientWidth": 286,
+          "hiddenPx": 261
+        }
+      ],
+      "targetsUnder24": [
+        "BUTTON 16x16",
+        "INPUT 16x16",
+        "BUTTON 16x16",
+        "INPUT 16x16",
+        "Close 16x16"
+      ],
+      "targetsUnder44": [
+        "INPUT 240x36",
+        "INPUT 114x36",
+        "INPUT 114x36",
+        "https://… 240x36",
+        "BUTTON 16x16",
+        "INPUT 16x16",
+        "BUTTON 16x16",
+        "INPUT 16x16",
+        "Huỷ 240x36",
+        "Lưu 240x36",
+        "Close 16x16"
+      ],
+      "smallInputs": [],
+      "h1": [
+        "Món"
+      ]
+    },
+    {
+      "viewport": "narrow320",
+      "scene": "seller-partners",
+      "path": "/seller/partners",
+      "screenshot": "narrow320-seller-partners.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 320,
+      "headerHeight": 136,
+      "tablesScrolling": [
+        {
+          "scrollWidth": 545,
+          "clientWidth": 286,
+          "hiddenPx": 259
+        }
+      ],
+      "targetsUnder24": [
+        "BUTTON 32x18",
+        "Quán test 66x17"
+      ],
+      "targetsUnder44": [
+        "Mở menu 36x36",
+        "BUTTON 32x18",
+        "Bật âm báo 118x32",
+        "Đăng xuất 36x36",
+        "Thêm quán 124x36",
+        "Quán test 66x17"
+      ],
+      "smallInputs": [],
+      "h1": [
+        "Quán"
+      ]
+    },
+    {
+      "viewport": "narrow320",
+      "scene": "seller-partner-form",
+      "path": "/seller/partners",
+      "screenshot": "narrow320-seller-partner-form.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 320,
+      "headerHeight": 136,
+      "tablesScrolling": [
+        {
+          "scrollWidth": 545,
+          "clientWidth": 286,
+          "hiddenPx": 259
+        }
+      ],
+      "targetsUnder24": [
+        "Theo tuầnTheo tháng 1x1",
+        "BUTTON 32x18",
+        "INPUT 32x18",
+        "BUTTON 16x16",
+        "INPUT 16x16",
+        "BUTTON 16x16",
+        "INPUT 16x16",
+        "BUTTON 16x16",
+        "INPUT 16x16",
+        "BUTTON 16x16",
+        "INPUT 16x16",
+        "Close 16x16"
+      ],
+      "targetsUnder44": [
+        "INPUT 240x36",
+        "INPUT 114x36",
+        "Theo tuần 114x36",
+        "Theo tuầnTheo tháng 1x1",
+        "BUTTON 32x18",
+        "INPUT 32x18",
+        "Khung 1 T2 40x36",
+        "Khung 1 T3 40x36",
+        "Khung 1 T4 40x36",
+        "Khung 1 T5 40x36",
+        "Khung 1 T6 40x36",
+        "Khung 1 T7 40x36",
+        "Khung 1 CN 40x36",
+        "Khung 1 từ 128x36",
+        "Khung 1 đến 128x36",
+        "Xoá khung 1 36x36",
+        "Thêm khung giờ 152x32",
+        "Mọi ngày 11:00–13:30 163x32",
+        "BUTTON 16x16",
+        "INPUT 16x16",
+        "BUTTON 16x16",
+        "INPUT 16x16",
+        "BUTTON 16x16",
+        "INPUT 16x16",
+        "BUTTON 16x16",
+        "INPUT 16x16",
+        "Huỷ 240x36",
+        "Lưu 240x36",
+        "Close 16x16"
+      ],
+      "smallInputs": [],
+      "h1": [
+        "Quán"
+      ]
+    },
+    {
+      "viewport": "narrow320",
+      "scene": "seller-partner-detail",
+      "path": "/seller/partners/00000000-0000-4000-8000-000000000001",
+      "screenshot": "narrow320-seller-partner-detail.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 320,
+      "headerHeight": 136,
+      "tablesScrolling": [
+        {
+          "scrollWidth": 676,
+          "clientWidth": 286,
+          "hiddenPx": 390
+        }
+      ],
+      "targetsUnder24": [
+        "BUTTON 32x18",
+        "http://localhost:5173/t/DEVTEST001 229x17"
+      ],
+      "targetsUnder44": [
+        "Mở menu 36x36",
+        "BUTTON 32x18",
+        "Bật âm báo 118x32",
+        "Đăng xuất 36x36",
+        "Danh sách quán 148x32",
+        "Sửa quán 111x36",
+        "Bàn & mã QR 103x29",
+        "Thông tin 83x29",
+        "Tên bàn mới 176x36",
+        "Thêm bàn 115x36",
+        "In tất cả bàn 131x36",
+        "http://localhost:5173/t/DEVTEST001 229x17",
+        "Xem thẻ 99x32",
+        "Thu hồi 93x32"
+      ],
+      "smallInputs": [],
+      "h1": [
+        "Quán test"
+      ]
+    },
+    {
+      "viewport": "narrow320",
+      "scene": "seller-qr-card",
+      "path": "/seller/partners/00000000-0000-4000-8000-000000000001",
+      "screenshot": "narrow320-seller-qr-card.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 320,
+      "headerHeight": 136,
+      "tablesScrolling": [
+        {
+          "scrollWidth": 676,
+          "clientWidth": 286,
+          "hiddenPx": 390
+        }
+      ],
+      "targetsUnder24": [
+        "Close 16x16"
+      ],
+      "targetsUnder44": [
+        "Tải ảnh 240x36",
+        "Close 16x16"
+      ],
+      "smallInputs": [],
+      "h1": [
+        "Quán test"
+      ]
+    },
+    {
+      "viewport": "narrow320",
+      "scene": "seller-print",
+      "path": "/seller/partners/00000000-0000-4000-8000-000000000001/print",
+      "screenshot": "narrow320-seller-print.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 320,
+      "headerHeight": 136,
+      "tablesScrolling": [],
+      "targetsUnder24": [
+        "BUTTON 32x18"
+      ],
+      "targetsUnder44": [
+        "Mở menu 36x36",
+        "BUTTON 32x18",
+        "Bật âm báo 118x32",
+        "Đăng xuất 36x36",
+        "Về quán 97x32",
+        "In 1 thẻ 95x36"
+      ],
+      "smallInputs": [],
+      "h1": []
+    },
+    {
+      "viewport": "narrow320",
+      "scene": "seller-settings",
+      "path": "/seller/settings",
+      "screenshot": "narrow320-seller-settings.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 320,
+      "headerHeight": 136,
+      "tablesScrolling": [],
+      "targetsUnder24": [
+        "BUTTON 32x18",
+        "BUTTON 32x18",
+        "Vietcombank — Ngân hàng TMCP Ngoại Thương Việt Nam 1x1",
+        "BUTTON 16x16"
+      ],
+      "targetsUnder44": [
+        "Mở menu 36x36",
+        "BUTTON 32x18",
+        "Bật âm báo 118x32",
+        "Đăng xuất 36x36",
+        "BUTTON 32x18",
+        "INPUT 128x36",
+        "Ngân hàng 240x36",
+        "Vietcombank — Ngân hàng TMCP Ngoại Thương Việt Nam 1x1",
+        "Mã BIN ngân hàng 240x36",
+        "INPUT 240x36",
+        "INPUT 240x36",
+        "Lưu cài đặt 104x36",
+        "BUTTON 16x16",
+        "Kết nối Zalo 111x36"
+      ],
+      "smallInputs": [],
+      "h1": [
+        "Cài đặt"
+      ]
+    },
+    {
+      "viewport": "narrow320",
+      "scene": "seller-reports",
+      "path": "/seller/reports",
+      "screenshot": "narrow320-seller-reports.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 320,
+      "headerHeight": 136,
+      "tablesScrolling": [
+        {
+          "scrollWidth": 763,
+          "clientWidth": 286,
+          "hiddenPx": 477
+        }
+      ],
+      "targetsUnder24": [
+        "BUTTON 32x18",
+        "Quán test 1x1"
+      ],
+      "targetsUnder44": [
+        "Mở menu 36x36",
+        "BUTTON 32x18",
+        "Bật âm báo 118x32",
+        "Đăng xuất 36x36",
+        "Hoa hồng 82x29",
+        "Phễu 52x29",
+        "Tất cả quán 208x36",
+        "Kỳ hiện tại 160x36",
+        "Sao chép bản tóm tắt 191x36",
+        "Chọn quán 288x36",
+        "Quán test 1x1",
+        "INPUT 288x36",
+        "INPUT 288x36",
+        "INPUT 288x36",
+        "Ghi điều chỉnh 127x36"
+      ],
+      "smallInputs": [],
+      "h1": [
+        "Báo cáo"
+      ]
+    },
+    {
+      "viewport": "narrow320",
+      "scene": "seller-reports-funnel",
+      "path": "/seller/reports",
+      "screenshot": "narrow320-seller-reports-funnel.png",
+      "title": "Màn người bán",
+      "overflowX": false,
+      "scrollWidth": 320,
+      "headerHeight": 136,
+      "tablesScrolling": [
+        {
+          "scrollWidth": 463,
+          "clientWidth": 286,
+          "hiddenPx": 177
+        }
+      ],
+      "targetsUnder24": [
+        "BUTTON 32x18"
+      ],
+      "targetsUnder44": [
+        "Mở menu 36x36",
+        "BUTTON 32x18",
+        "Bật âm báo 118x32",
+        "Đăng xuất 36x36",
+        "Hoa hồng 82x29",
+        "Phễu 52x29",
+        "Tất cả quán 208x36",
+        "INPUT 160x36",
+        "INPUT 160x36"
+      ],
+      "smallInputs": [],
+      "h1": [
+        "Báo cáo"
+      ]
+    }
+  ],
+  "summary": {
+    "pages": 66,
+    "errors": 0,
+    "overflowX": [],
+    "tablesScrolling": [
+      "tablet/seller-reports hidden=29",
+      "mobile/seller-products hidden=206",
+      "mobile/seller-product-form hidden=206",
+      "mobile/seller-partners hidden=204",
+      "mobile/seller-partner-form hidden=204",
+      "mobile/seller-partner-detail hidden=335",
+      "mobile/seller-qr-card hidden=335",
+      "mobile/seller-reports hidden=422",
+      "mobile/seller-reports-funnel hidden=122",
+      "narrow320/seller-products hidden=261",
+      "narrow320/seller-product-form hidden=261",
+      "narrow320/seller-partners hidden=259",
+      "narrow320/seller-partner-form hidden=259",
+      "narrow320/seller-partner-detail hidden=390",
+      "narrow320/seller-qr-card hidden=390",
+      "narrow320/seller-reports hidden=477",
+      "narrow320/seller-reports-funnel hidden=177"
+    ],
+    "under24": [
+      "desktop/seller-board: BUTTON 32x18 | 0901234567 102x20 | 0901234567 102x20 | 0901234567 102x20 | 0901234567 102x20",
+      "desktop/seller-board-closed: BUTTON 32x18 | 0901234567 102x20",
+      "desktop/seller-vietqr: Close 16x16",
+      "desktop/seller-order-detail: BUTTON 32x18 | ← Bảng đơn 80x17 | 0901234567 102x20",
+      "desktop/seller-products: BUTTON 32x18 | Cà phê sữa đá: đang bán 32x18 | Bạc xỉu: đang bán 32x18 | Nước suối: đang bán 32x18 | Trà đào cam sả: hết món 32x18",
+      "desktop/seller-product-form: BUTTON 16x16 | INPUT 16x16 | BUTTON 16x16 | INPUT 16x16 | Close 16x16",
+      "desktop/seller-partners: BUTTON 32x18 | Quán test 66x17",
+      "desktop/seller-partner-form: Theo tuầnTheo tháng 1x1 | BUTTON 32x18 | INPUT 32x18 | BUTTON 16x16 | INPUT 16x16 | BUTTON 16x16 | INPUT 16x16 | BUTTON 16x16 | INPUT 16x16 | BUTTON 16x16 | INPUT 16x16 | Close 16x16",
+      "desktop/seller-partner-detail: BUTTON 32x18 | Quán test 66x17",
+      "desktop/seller-qr-card: Close 16x16",
+      "desktop/seller-print: BUTTON 32x18",
+      "desktop/seller-settings: BUTTON 32x18 | BUTTON 32x18 | Vietcombank — Ngân hàng TMCP Ngoại Thương Việt Nam 1x1 | BUTTON 16x16",
+      "desktop/seller-reports: BUTTON 32x18 | Quán test 1x1",
+      "desktop/seller-reports-funnel: BUTTON 32x18",
+      "tablet/seller-board: BUTTON 32x18 | 0901234567 102x20 | 0901234567 102x20 | 0901234567 102x20 | 0901234567 102x20",
+      "tablet/seller-board-closed: BUTTON 32x18 | 0901234567 102x20",
+      "tablet/seller-vietqr: Close 16x16",
+      "tablet/seller-order-detail: BUTTON 32x18 | ← Bảng đơn 80x17 | 0901234567 102x20",
+      "tablet/seller-products: BUTTON 32x18 | Cà phê sữa đá: đang bán 32x18 | Bạc xỉu: đang bán 32x18 | Nước suối: đang bán 32x18 | Trà đào cam sả: hết món 32x18",
+      "tablet/seller-product-form: BUTTON 16x16 | INPUT 16x16 | BUTTON 16x16 | INPUT 16x16 | Close 16x16",
+      "tablet/seller-partners: BUTTON 32x18 | Quán test 66x17",
+      "tablet/seller-partner-form: Theo tuầnTheo tháng 1x1 | BUTTON 32x18 | INPUT 32x18 | BUTTON 16x16 | INPUT 16x16 | BUTTON 16x16 | INPUT 16x16 | BUTTON 16x16 | INPUT 16x16 | BUTTON 16x16 | INPUT 16x16 | Close 16x16",
+      "tablet/seller-partner-detail: BUTTON 32x18 | Quán test 66x17",
+      "tablet/seller-qr-card: Close 16x16",
+      "tablet/seller-print: BUTTON 32x18",
+      "tablet/seller-settings: BUTTON 32x18 | BUTTON 32x18 | Vietcombank — Ngân hàng TMCP Ngoại Thương Việt Nam 1x1 | BUTTON 16x16",
+      "tablet/seller-reports: BUTTON 32x18 | Quán test 1x1",
+      "tablet/seller-reports-funnel: BUTTON 32x18",
+      "mobile/seller-board: BUTTON 32x18 | 0901234567 102x20 | 0901234567 102x20 | 0901234567 102x20 | 0901234567 102x20",
+      "mobile/seller-nav-open: BUTTON 32x18 | 0901234567 102x20 | 0901234567 102x20 | 0901234567 102x20 | 0901234567 102x20",
+      "mobile/seller-board-closed: BUTTON 32x18 | 0901234567 102x20",
+      "mobile/seller-vietqr: Close 16x16",
+      "mobile/seller-order-detail: BUTTON 32x18 | ← Bảng đơn 80x17 | 0901234567 102x20",
+      "mobile/seller-products: BUTTON 32x18 | Cà phê sữa đá: đang bán 32x18 | Bạc xỉu: đang bán 32x18 | Nước suối: đang bán 32x18 | Trà đào cam sả: hết món 32x18",
+      "mobile/seller-product-form: BUTTON 16x16 | INPUT 16x16 | BUTTON 16x16 | INPUT 16x16 | Close 16x16",
+      "mobile/seller-partners: BUTTON 32x18 | Quán test 66x17",
+      "mobile/seller-partner-form: Theo tuầnTheo tháng 1x1 | BUTTON 32x18 | INPUT 32x18 | BUTTON 16x16 | INPUT 16x16 | BUTTON 16x16 | INPUT 16x16 | BUTTON 16x16 | INPUT 16x16 | BUTTON 16x16 | INPUT 16x16 | Close 16x16",
+      "mobile/seller-partner-detail: BUTTON 32x18",
+      "mobile/seller-qr-card: Close 16x16",
+      "mobile/seller-print: BUTTON 32x18",
+      "mobile/seller-settings: BUTTON 32x18 | BUTTON 32x18 | Vietcombank — Ngân hàng TMCP Ngoại Thương Việt Nam 1x1 | BUTTON 16x16",
+      "mobile/seller-reports: BUTTON 32x18 | Quán test 1x1",
+      "mobile/seller-reports-funnel: BUTTON 32x18",
+      "narrow320/seller-board: BUTTON 32x18 | 0901234567 102x20 | 0901234567 102x20 | 0901234567 102x20 | 0901234567 102x20",
+      "narrow320/seller-nav-open: BUTTON 32x18 | 0901234567 102x20 | 0901234567 102x20 | 0901234567 102x20 | 0901234567 102x20",
+      "narrow320/seller-board-closed: BUTTON 32x18 | 0901234567 102x20",
+      "narrow320/seller-vietqr: Close 16x16",
+      "narrow320/seller-order-detail: BUTTON 32x18 | ← Bảng đơn 80x17 | 0901234567 102x20",
+      "narrow320/seller-products: BUTTON 32x18 | Cà phê sữa đá: đang bán 32x18 | Bạc xỉu: đang bán 32x18 | Nước suối: đang bán 32x18 | Trà đào cam sả: hết món 32x18",
+      "narrow320/seller-product-form: BUTTON 16x16 | INPUT 16x16 | BUTTON 16x16 | INPUT 16x16 | Close 16x16",
+      "narrow320/seller-partners: BUTTON 32x18 | Quán test 66x17",
+      "narrow320/seller-partner-form: Theo tuầnTheo tháng 1x1 | BUTTON 32x18 | INPUT 32x18 | BUTTON 16x16 | INPUT 16x16 | BUTTON 16x16 | INPUT 16x16 | BUTTON 16x16 | INPUT 16x16 | BUTTON 16x16 | INPUT 16x16 | Close 16x16",
+      "narrow320/seller-partner-detail: BUTTON 32x18 | Quán test 66x17",
+      "narrow320/seller-qr-card: Close 16x16",
+      "narrow320/seller-print: BUTTON 32x18",
+      "narrow320/seller-settings: BUTTON 32x18 | BUTTON 32x18 | Vietcombank — Ngân hàng TMCP Ngoại Thương Việt Nam 1x1 | BUTTON 16x16",
+      "narrow320/seller-reports: BUTTON 32x18 | Quán test 1x1",
+      "narrow320/seller-reports-funnel: BUTTON 32x18"
+    ],
+    "smallInputs": [],
+    "headerHeights": {
+      "desktop": 52,
+      "tablet": 92,
+      "mobile": 96,
+      "narrow320": 136
+    },
+    "titles": {
+      "seller-login": "Gọi nước tại bàn",
+      "seller-board": "Màn người bán",
+      "seller-board-closed": "Màn người bán",
+      "seller-reject-confirm": "Màn người bán",
+      "seller-vietqr": "Màn người bán",
+      "seller-order-detail": "Màn người bán",
+      "seller-products": "Màn người bán",
+      "seller-product-form": "Màn người bán",
+      "seller-partners": "Màn người bán",
+      "seller-partner-form": "Màn người bán",
+      "seller-partner-detail": "Màn người bán",
+      "seller-qr-card": "Màn người bán",
+      "seller-print": "Màn người bán",
+      "seller-settings": "Màn người bán",
+      "seller-reports": "Màn người bán",
+      "seller-reports-funnel": "Màn người bán"
+    },
+    "h1": {
+      "seller-login": "Màn người bán",
+      "seller-board": "",
+      "seller-board-closed": "",
+      "seller-reject-confirm": "",
+      "seller-vietqr": "",
+      "seller-order-detail": "",
+      "seller-products": "Món",
+      "seller-product-form": "Món",
+      "seller-partners": "Quán",
+      "seller-partner-form": "Quán",
+      "seller-partner-detail": "Quán test",
+      "seller-qr-card": "Quán test",
+      "seller-print": "",
+      "seller-settings": "Cài đặt",
+      "seller-reports": "Báo cáo",
+      "seller-reports-funnel": "Báo cáo"
+    },
+    "note": "seller-partner-detail recaptured after a lazy-route race; rows merged from audit-seller-partner-detail.json"
+  }
+}

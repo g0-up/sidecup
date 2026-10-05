@@ -1,0 +1,3448 @@
+{
+  "base": "http://localhost:5173",
+  "capturedAt": "2026-10-05T05:56:34.898Z",
+  "minInputPx": 16,
+  "pages": [
+    {
+      "viewport": "desktop",
+      "width": 1440,
+      "scene": "login",
+      "kind": "manage",
+      "path": "/seller/login",
+      "screenshot": "desktop-seller-login.png",
+      "title": "Đăng nhập người bán — Gọi nước",
+      "h1": [
+        "Màn người bán"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "headerHeight": null,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [
+        {
+          "tag": "button",
+          "label": "Đăng nhập",
+          "width": 286,
+          "height": 40
+        }
+      ],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "desktop",
+      "width": 1440,
+      "scene": "board-open",
+      "kind": "service",
+      "path": "/seller",
+      "screenshot": "desktop-seller-board-open.png",
+      "title": "(4) Bảng đơn — Gọi nước",
+      "h1": [
+        "Bảng đơn"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "headerHeight": 52,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [
+        {
+          "tag": "a",
+          "label": "Đơn",
+          "width": 52,
+          "height": 32
+        },
+        {
+          "tag": "a",
+          "label": "Món",
+          "width": 54,
+          "height": 32
+        },
+        {
+          "tag": "a",
+          "label": "Quán",
+          "width": 59,
+          "height": 32
+        },
+        {
+          "tag": "a",
+          "label": "Cài đặt",
+          "width": 71,
+          "height": 32
+        },
+        {
+          "tag": "a",
+          "label": "Báo cáo",
+          "width": 77,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "Nhận đơn",
+          "width": 173,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Bật âm báo",
+          "width": 118,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "Đăng xuất",
+          "width": 36,
+          "height": 36
+        }
+      ],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "desktop",
+      "width": 1440,
+      "scene": "board-closed",
+      "kind": "service",
+      "path": "/seller",
+      "screenshot": "desktop-seller-board-closed.png",
+      "title": "(4) Bảng đơn — Gọi nước",
+      "h1": [
+        "Bảng đơn"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "headerHeight": 52,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [
+        {
+          "tag": "a",
+          "label": "Đơn",
+          "width": 52,
+          "height": 32
+        },
+        {
+          "tag": "a",
+          "label": "Món",
+          "width": 54,
+          "height": 32
+        },
+        {
+          "tag": "a",
+          "label": "Quán",
+          "width": 59,
+          "height": 32
+        },
+        {
+          "tag": "a",
+          "label": "Cài đặt",
+          "width": 71,
+          "height": 32
+        },
+        {
+          "tag": "a",
+          "label": "Báo cáo",
+          "width": 77,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "Nhận đơn",
+          "width": 173,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Bật âm báo",
+          "width": 118,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "Đăng xuất",
+          "width": 36,
+          "height": 36
+        }
+      ],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "desktop",
+      "width": 1440,
+      "scene": "reject-confirm",
+      "kind": "service",
+      "path": "/seller",
+      "screenshot": "desktop-seller-reject-confirm.png",
+      "title": "(4) Bảng đơn — Gọi nước",
+      "h1": [
+        "Bảng đơn"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "headerHeight": 52,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "desktop",
+      "width": 1440,
+      "scene": "vietqr",
+      "kind": "service",
+      "path": "/seller",
+      "screenshot": "desktop-seller-vietqr.png",
+      "title": "(4) Bảng đơn — Gọi nước",
+      "h1": [
+        "Bảng đơn"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "headerHeight": 52,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [
+        {
+          "tag": "button",
+          "label": "Đóng",
+          "width": 36,
+          "height": 36
+        }
+      ],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "desktop",
+      "width": 1440,
+      "scene": "order-detail",
+      "kind": "service",
+      "path": "/seller/orders/audit-accepted",
+      "screenshot": "desktop-seller-order-detail.png",
+      "title": "Đơn #BREW03 — Gọi nước",
+      "h1": [
+        "Đơn #BREW03"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "headerHeight": 52,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [
+        {
+          "tag": "a",
+          "label": "Đơn",
+          "width": 52,
+          "height": 32
+        },
+        {
+          "tag": "a",
+          "label": "Món",
+          "width": 54,
+          "height": 32
+        },
+        {
+          "tag": "a",
+          "label": "Quán",
+          "width": 59,
+          "height": 32
+        },
+        {
+          "tag": "a",
+          "label": "Cài đặt",
+          "width": 71,
+          "height": 32
+        },
+        {
+          "tag": "a",
+          "label": "Báo cáo",
+          "width": 77,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "Nhận đơn",
+          "width": 173,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Bật âm báo",
+          "width": 118,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "Đăng xuất",
+          "width": 36,
+          "height": 36
+        }
+      ],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "desktop",
+      "width": 1440,
+      "scene": "products",
+      "kind": "manage",
+      "path": "/seller/products",
+      "screenshot": "desktop-seller-products.png",
+      "title": "Món — Gọi nước",
+      "h1": [
+        "Món"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "headerHeight": 52,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [
+        {
+          "tag": "a",
+          "label": "Đơn",
+          "width": 52,
+          "height": 32
+        },
+        {
+          "tag": "a",
+          "label": "Món",
+          "width": 54,
+          "height": 32
+        },
+        {
+          "tag": "a",
+          "label": "Quán",
+          "width": 59,
+          "height": 32
+        },
+        {
+          "tag": "a",
+          "label": "Cài đặt",
+          "width": 71,
+          "height": 32
+        },
+        {
+          "tag": "a",
+          "label": "Báo cáo",
+          "width": 77,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "Nhận đơn",
+          "width": 173,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Bật âm báo",
+          "width": 118,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "Đăng xuất",
+          "width": 36,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Thêm món",
+          "width": 120,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Cà phê sữa đá: đang bán",
+          "width": 204,
+          "height": 24
+        },
+        {
+          "tag": "button",
+          "label": "Sửa Cà phê sữa đá",
+          "width": 67,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "Bạc xỉu: đang bán",
+          "width": 204,
+          "height": 24
+        },
+        {
+          "tag": "button",
+          "label": "Sửa Bạc xỉu",
+          "width": 67,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "Nước suối: đang bán",
+          "width": 204,
+          "height": 24
+        },
+        {
+          "tag": "button",
+          "label": "Sửa Nước suối",
+          "width": 67,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "Trà đào cam sả: hết món",
+          "width": 204,
+          "height": 24
+        },
+        {
+          "tag": "button",
+          "label": "Sửa Trà đào cam sả",
+          "width": 67,
+          "height": 32
+        }
+      ],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "desktop",
+      "width": 1440,
+      "scene": "product-form",
+      "kind": "manage",
+      "path": "/seller/products",
+      "screenshot": "desktop-seller-product-form.png",
+      "title": "Món — Gọi nước",
+      "h1": [
+        "Món"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "headerHeight": 52,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [
+        {
+          "tag": "button",
+          "label": "BUTTON",
+          "width": 143,
+          "height": 24
+        },
+        {
+          "tag": "button",
+          "label": "BUTTON",
+          "width": 108,
+          "height": 24
+        },
+        {
+          "tag": "button",
+          "label": "Huỷ",
+          "width": 61,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Lưu",
+          "width": 57,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Đóng",
+          "width": 36,
+          "height": 36
+        }
+      ],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "desktop",
+      "width": 1440,
+      "scene": "partners",
+      "kind": "manage",
+      "path": "/seller/partners",
+      "screenshot": "desktop-seller-partners.png",
+      "title": "Quán — Gọi nước",
+      "h1": [
+        "Quán"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "headerHeight": 52,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [
+        {
+          "tag": "a",
+          "label": "Đơn",
+          "width": 52,
+          "height": 32
+        },
+        {
+          "tag": "a",
+          "label": "Món",
+          "width": 54,
+          "height": 32
+        },
+        {
+          "tag": "a",
+          "label": "Quán",
+          "width": 59,
+          "height": 32
+        },
+        {
+          "tag": "a",
+          "label": "Cài đặt",
+          "width": 71,
+          "height": 32
+        },
+        {
+          "tag": "a",
+          "label": "Báo cáo",
+          "width": 77,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "Nhận đơn",
+          "width": 173,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Bật âm báo",
+          "width": 118,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "Đăng xuất",
+          "width": 36,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Thêm quán",
+          "width": 124,
+          "height": 36
+        },
+        {
+          "tag": "a",
+          "label": "Quán test",
+          "width": 66,
+          "height": 24
+        }
+      ],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "desktop",
+      "width": 1440,
+      "scene": "partner-form",
+      "kind": "manage",
+      "path": "/seller/partners",
+      "screenshot": "desktop-seller-partner-form.png",
+      "title": "Quán — Gọi nước",
+      "h1": [
+        "Quán"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "headerHeight": 52,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [
+        {
+          "tag": "button",
+          "label": "BUTTON",
+          "width": 433,
+          "height": 24
+        },
+        {
+          "tag": "button",
+          "label": "Khung 1 T2",
+          "width": 40,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Khung 1 T3",
+          "width": 40,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Khung 1 T4",
+          "width": 40,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Khung 1 T5",
+          "width": 40,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Khung 1 T6",
+          "width": 40,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Khung 1 T7",
+          "width": 40,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Khung 1 CN",
+          "width": 40,
+          "height": 36
+        },
+        {
+          "tag": "input",
+          "label": "Khung 1 từ",
+          "width": 128,
+          "height": 36
+        },
+        {
+          "tag": "input",
+          "label": "Khung 1 đến",
+          "width": 128,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Xoá khung 1",
+          "width": 36,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Thêm khung giờ",
+          "width": 152,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "Mọi ngày 11:00–13:30",
+          "width": 163,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "BUTTON",
+          "width": 185,
+          "height": 24
+        },
+        {
+          "tag": "button",
+          "label": "BUTTON",
+          "width": 139,
+          "height": 24
+        },
+        {
+          "tag": "button",
+          "label": "BUTTON",
+          "width": 155,
+          "height": 24
+        },
+        {
+          "tag": "button",
+          "label": "BUTTON",
+          "width": 192,
+          "height": 24
+        },
+        {
+          "tag": "button",
+          "label": "Huỷ",
+          "width": 61,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Lưu",
+          "width": 57,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Đóng",
+          "width": 36,
+          "height": 36
+        }
+      ],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "desktop",
+      "width": 1440,
+      "scene": "partner-detail",
+      "kind": "manage",
+      "path": "/seller/partners/00000000-0000-4000-8000-000000000001",
+      "screenshot": "desktop-seller-partner-detail.png",
+      "title": "Quán test · Quán — Gọi nước",
+      "h1": [
+        "Quán test"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "headerHeight": 52,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [
+        {
+          "tag": "a",
+          "label": "Đơn",
+          "width": 52,
+          "height": 32
+        },
+        {
+          "tag": "a",
+          "label": "Món",
+          "width": 54,
+          "height": 32
+        },
+        {
+          "tag": "a",
+          "label": "Quán",
+          "width": 59,
+          "height": 32
+        },
+        {
+          "tag": "a",
+          "label": "Cài đặt",
+          "width": 71,
+          "height": 32
+        },
+        {
+          "tag": "a",
+          "label": "Báo cáo",
+          "width": 77,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "Nhận đơn",
+          "width": 173,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Bật âm báo",
+          "width": 118,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "Đăng xuất",
+          "width": 36,
+          "height": 36
+        },
+        {
+          "tag": "a",
+          "label": "Danh sách quán",
+          "width": 148,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "Sửa quán",
+          "width": 111,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Bàn & mã QR",
+          "width": 103,
+          "height": 29
+        },
+        {
+          "tag": "button",
+          "label": "Thông tin",
+          "width": 83,
+          "height": 29
+        },
+        {
+          "tag": "input",
+          "label": "Tên bàn mới",
+          "width": 176,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Thêm bàn",
+          "width": 115,
+          "height": 36
+        },
+        {
+          "tag": "a",
+          "label": "In tất cả bàn",
+          "width": 131,
+          "height": 36
+        },
+        {
+          "tag": "a",
+          "label": "http://localhost:5173/t/DEVTEST001",
+          "width": 312,
+          "height": 24
+        },
+        {
+          "tag": "button",
+          "label": "Xem thẻ",
+          "width": 99,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "Thu hồi",
+          "width": 93,
+          "height": 32
+        }
+      ],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "desktop",
+      "width": 1440,
+      "scene": "partner-qr-card",
+      "kind": "manage",
+      "path": "/seller/partners/00000000-0000-4000-8000-000000000001",
+      "screenshot": "desktop-seller-partner-qr-card.png",
+      "title": "Quán test · Quán — Gọi nước",
+      "h1": [
+        "Quán test"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "headerHeight": 52,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [
+        {
+          "tag": "button",
+          "label": "Tải ảnh",
+          "width": 99,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Đóng",
+          "width": 36,
+          "height": 36
+        }
+      ],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "desktop",
+      "width": 1440,
+      "scene": "print",
+      "kind": "manage",
+      "path": "/seller/partners/00000000-0000-4000-8000-000000000001/print",
+      "screenshot": "desktop-seller-print.png",
+      "title": "In thẻ QR · Quán test — Gọi nước",
+      "h1": [
+        "In thẻ QR · Quán test"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "headerHeight": 52,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [
+        {
+          "tag": "a",
+          "label": "Đơn",
+          "width": 52,
+          "height": 32
+        },
+        {
+          "tag": "a",
+          "label": "Món",
+          "width": 54,
+          "height": 32
+        },
+        {
+          "tag": "a",
+          "label": "Quán",
+          "width": 59,
+          "height": 32
+        },
+        {
+          "tag": "a",
+          "label": "Cài đặt",
+          "width": 71,
+          "height": 32
+        },
+        {
+          "tag": "a",
+          "label": "Báo cáo",
+          "width": 77,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "Nhận đơn",
+          "width": 173,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Bật âm báo",
+          "width": 118,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "Đăng xuất",
+          "width": 36,
+          "height": 36
+        },
+        {
+          "tag": "a",
+          "label": "Về quán",
+          "width": 97,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "In 1 thẻ",
+          "width": 95,
+          "height": 36
+        }
+      ],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "desktop",
+      "width": 1440,
+      "scene": "settings",
+      "kind": "manage",
+      "path": "/seller/settings",
+      "screenshot": "desktop-seller-settings.png",
+      "title": "Cài đặt — Gọi nước",
+      "h1": [
+        "Cài đặt"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "headerHeight": 52,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [
+        {
+          "tag": "a",
+          "label": "Đơn",
+          "width": 52,
+          "height": 32
+        },
+        {
+          "tag": "a",
+          "label": "Món",
+          "width": 54,
+          "height": 32
+        },
+        {
+          "tag": "a",
+          "label": "Quán",
+          "width": 59,
+          "height": 32
+        },
+        {
+          "tag": "a",
+          "label": "Cài đặt",
+          "width": 71,
+          "height": 32
+        },
+        {
+          "tag": "a",
+          "label": "Báo cáo",
+          "width": 77,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "Nhận đơn",
+          "width": 173,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Bật âm báo",
+          "width": 118,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "Đăng xuất",
+          "width": 36,
+          "height": 36
+        },
+        {
+          "tag": "input",
+          "label": "Mã BIN ngân hàng",
+          "width": 944,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Lưu cài đặt",
+          "width": 104,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "BUTTON",
+          "width": 944,
+          "height": 39
+        },
+        {
+          "tag": "button",
+          "label": "Kết nối Zalo",
+          "width": 111,
+          "height": 36
+        }
+      ],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "desktop",
+      "width": 1440,
+      "scene": "reports-commission",
+      "kind": "manage",
+      "path": "/seller/reports",
+      "screenshot": "desktop-seller-reports-commission.png",
+      "title": "Báo cáo — Gọi nước",
+      "h1": [
+        "Báo cáo"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "headerHeight": 52,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [
+        {
+          "tag": "a",
+          "label": "Đơn",
+          "width": 52,
+          "height": 32
+        },
+        {
+          "tag": "a",
+          "label": "Món",
+          "width": 54,
+          "height": 32
+        },
+        {
+          "tag": "a",
+          "label": "Quán",
+          "width": 59,
+          "height": 32
+        },
+        {
+          "tag": "a",
+          "label": "Cài đặt",
+          "width": 71,
+          "height": 32
+        },
+        {
+          "tag": "a",
+          "label": "Báo cáo",
+          "width": 77,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "Nhận đơn",
+          "width": 173,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Bật âm báo",
+          "width": 118,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "Đăng xuất",
+          "width": 36,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Hoa hồng",
+          "width": 82,
+          "height": 29
+        },
+        {
+          "tag": "button",
+          "label": "Phễu",
+          "width": 52,
+          "height": 29
+        },
+        {
+          "tag": "button",
+          "label": "Sao chép bản tóm tắt",
+          "width": 191,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Ghi điều chỉnh",
+          "width": 127,
+          "height": 36
+        }
+      ],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "desktop",
+      "width": 1440,
+      "scene": "reports-funnel",
+      "kind": "manage",
+      "path": "/seller/reports",
+      "screenshot": "desktop-seller-reports-funnel.png",
+      "title": "Báo cáo — Gọi nước",
+      "h1": [
+        "Báo cáo"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "headerHeight": 52,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [
+        {
+          "tag": "a",
+          "label": "Đơn",
+          "width": 52,
+          "height": 32
+        },
+        {
+          "tag": "a",
+          "label": "Món",
+          "width": 54,
+          "height": 32
+        },
+        {
+          "tag": "a",
+          "label": "Quán",
+          "width": 59,
+          "height": 32
+        },
+        {
+          "tag": "a",
+          "label": "Cài đặt",
+          "width": 71,
+          "height": 32
+        },
+        {
+          "tag": "a",
+          "label": "Báo cáo",
+          "width": 77,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "Nhận đơn",
+          "width": 173,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Bật âm báo",
+          "width": 118,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "Đăng xuất",
+          "width": 36,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Hoa hồng",
+          "width": 82,
+          "height": 29
+        },
+        {
+          "tag": "button",
+          "label": "Phễu",
+          "width": 52,
+          "height": 29
+        }
+      ],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "tablet",
+      "width": 768,
+      "scene": "login",
+      "kind": "manage",
+      "path": "/seller/login",
+      "screenshot": "tablet-seller-login.png",
+      "title": "Đăng nhập người bán — Gọi nước",
+      "h1": [
+        "Màn người bán"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "headerHeight": null,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [
+        {
+          "tag": "button",
+          "label": "Đăng nhập",
+          "width": 286,
+          "height": 40
+        }
+      ],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "tablet",
+      "width": 768,
+      "scene": "board-open",
+      "kind": "service",
+      "path": "/seller",
+      "screenshot": "tablet-seller-board-open.png",
+      "title": "(4) Bảng đơn — Gọi nước",
+      "h1": [
+        "Bảng đơn"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "headerHeight": 56,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "tablet",
+      "width": 768,
+      "scene": "board-closed",
+      "kind": "service",
+      "path": "/seller",
+      "screenshot": "tablet-seller-board-closed.png",
+      "title": "(4) Bảng đơn — Gọi nước",
+      "h1": [
+        "Bảng đơn"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "headerHeight": 56,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "tablet",
+      "width": 768,
+      "scene": "reject-confirm",
+      "kind": "service",
+      "path": "/seller",
+      "screenshot": "tablet-seller-reject-confirm.png",
+      "title": "(4) Bảng đơn — Gọi nước",
+      "h1": [
+        "Bảng đơn"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "headerHeight": 56,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "tablet",
+      "width": 768,
+      "scene": "vietqr",
+      "kind": "service",
+      "path": "/seller",
+      "screenshot": "tablet-seller-vietqr.png",
+      "title": "(4) Bảng đơn — Gọi nước",
+      "h1": [
+        "Bảng đơn"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "headerHeight": 56,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "tablet",
+      "width": 768,
+      "scene": "order-detail",
+      "kind": "service",
+      "path": "/seller/orders/audit-accepted",
+      "screenshot": "tablet-seller-order-detail.png",
+      "title": "Đơn #BREW03 — Gọi nước",
+      "h1": [
+        "Đơn #BREW03"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "headerHeight": 56,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "tablet",
+      "width": 768,
+      "scene": "menu-open",
+      "kind": "service",
+      "path": "/seller",
+      "screenshot": "tablet-seller-menu-open.png",
+      "title": "(4) Bảng đơn — Gọi nước",
+      "h1": [
+        "Bảng đơn"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "headerHeight": 56,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "tablet",
+      "width": 768,
+      "scene": "products",
+      "kind": "manage",
+      "path": "/seller/products",
+      "screenshot": "tablet-seller-products.png",
+      "title": "Món — Gọi nước",
+      "h1": [
+        "Món"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "headerHeight": 56,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [
+        {
+          "tag": "button",
+          "label": "Thêm món",
+          "width": 120,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Cà phê sữa đá: đang bán",
+          "width": 143,
+          "height": 24
+        },
+        {
+          "tag": "button",
+          "label": "Sửa Cà phê sữa đá",
+          "width": 67,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "Bạc xỉu: đang bán",
+          "width": 143,
+          "height": 24
+        },
+        {
+          "tag": "button",
+          "label": "Sửa Bạc xỉu",
+          "width": 67,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "Nước suối: đang bán",
+          "width": 143,
+          "height": 24
+        },
+        {
+          "tag": "button",
+          "label": "Sửa Nước suối",
+          "width": 67,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "Trà đào cam sả: hết món",
+          "width": 143,
+          "height": 24
+        },
+        {
+          "tag": "button",
+          "label": "Sửa Trà đào cam sả",
+          "width": 67,
+          "height": 32
+        }
+      ],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "tablet",
+      "width": 768,
+      "scene": "product-form",
+      "kind": "manage",
+      "path": "/seller/products",
+      "screenshot": "tablet-seller-product-form.png",
+      "title": "Món — Gọi nước",
+      "h1": [
+        "Món"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "headerHeight": 56,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [
+        {
+          "tag": "button",
+          "label": "BUTTON",
+          "width": 143,
+          "height": 24
+        },
+        {
+          "tag": "button",
+          "label": "BUTTON",
+          "width": 108,
+          "height": 24
+        },
+        {
+          "tag": "button",
+          "label": "Huỷ",
+          "width": 61,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Lưu",
+          "width": 57,
+          "height": 36
+        }
+      ],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "tablet",
+      "width": 768,
+      "scene": "partners",
+      "kind": "manage",
+      "path": "/seller/partners",
+      "screenshot": "tablet-seller-partners.png",
+      "title": "Quán — Gọi nước",
+      "h1": [
+        "Quán"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "headerHeight": 56,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [
+        {
+          "tag": "button",
+          "label": "Thêm quán",
+          "width": 124,
+          "height": 36
+        },
+        {
+          "tag": "a",
+          "label": "Quán test",
+          "width": 66,
+          "height": 24
+        }
+      ],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "tablet",
+      "width": 768,
+      "scene": "partner-form",
+      "kind": "manage",
+      "path": "/seller/partners",
+      "screenshot": "tablet-seller-partner-form.png",
+      "title": "Quán — Gọi nước",
+      "h1": [
+        "Quán"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "headerHeight": 56,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [
+        {
+          "tag": "button",
+          "label": "BUTTON",
+          "width": 433,
+          "height": 24
+        },
+        {
+          "tag": "button",
+          "label": "Khung 1 T2",
+          "width": 40,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Khung 1 T3",
+          "width": 40,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Khung 1 T4",
+          "width": 40,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Khung 1 T5",
+          "width": 40,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Khung 1 T6",
+          "width": 40,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Khung 1 T7",
+          "width": 40,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Khung 1 CN",
+          "width": 40,
+          "height": 36
+        },
+        {
+          "tag": "input",
+          "label": "Khung 1 từ",
+          "width": 128,
+          "height": 36
+        },
+        {
+          "tag": "input",
+          "label": "Khung 1 đến",
+          "width": 128,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Xoá khung 1",
+          "width": 36,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Thêm khung giờ",
+          "width": 152,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "Mọi ngày 11:00–13:30",
+          "width": 163,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "BUTTON",
+          "width": 185,
+          "height": 24
+        },
+        {
+          "tag": "button",
+          "label": "BUTTON",
+          "width": 139,
+          "height": 24
+        },
+        {
+          "tag": "button",
+          "label": "BUTTON",
+          "width": 155,
+          "height": 24
+        },
+        {
+          "tag": "button",
+          "label": "BUTTON",
+          "width": 192,
+          "height": 24
+        },
+        {
+          "tag": "button",
+          "label": "Huỷ",
+          "width": 61,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Lưu",
+          "width": 57,
+          "height": 36
+        }
+      ],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "tablet",
+      "width": 768,
+      "scene": "partner-detail",
+      "kind": "manage",
+      "path": "/seller/partners/00000000-0000-4000-8000-000000000001",
+      "screenshot": "tablet-seller-partner-detail.png",
+      "title": "Quán test · Quán — Gọi nước",
+      "h1": [
+        "Quán test"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "headerHeight": 56,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [
+        {
+          "tag": "a",
+          "label": "Danh sách quán",
+          "width": 148,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "Sửa quán",
+          "width": 111,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Bàn & mã QR",
+          "width": 103,
+          "height": 29
+        },
+        {
+          "tag": "button",
+          "label": "Thông tin",
+          "width": 83,
+          "height": 29
+        },
+        {
+          "tag": "input",
+          "label": "Tên bàn mới",
+          "width": 176,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Thêm bàn",
+          "width": 115,
+          "height": 36
+        },
+        {
+          "tag": "a",
+          "label": "In tất cả bàn",
+          "width": 131,
+          "height": 36
+        },
+        {
+          "tag": "a",
+          "label": "http://localhost:5173/t/DEVTEST001",
+          "width": 227,
+          "height": 24
+        },
+        {
+          "tag": "button",
+          "label": "Xem thẻ",
+          "width": 99,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "Thu hồi",
+          "width": 93,
+          "height": 32
+        }
+      ],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "tablet",
+      "width": 768,
+      "scene": "partner-qr-card",
+      "kind": "manage",
+      "path": "/seller/partners/00000000-0000-4000-8000-000000000001",
+      "screenshot": "tablet-seller-partner-qr-card.png",
+      "title": "Quán test · Quán — Gọi nước",
+      "h1": [
+        "Quán test"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "headerHeight": 56,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [
+        {
+          "tag": "button",
+          "label": "Tải ảnh",
+          "width": 99,
+          "height": 36
+        }
+      ],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "tablet",
+      "width": 768,
+      "scene": "print",
+      "kind": "manage",
+      "path": "/seller/partners/00000000-0000-4000-8000-000000000001/print",
+      "screenshot": "tablet-seller-print.png",
+      "title": "In thẻ QR · Quán test — Gọi nước",
+      "h1": [
+        "In thẻ QR · Quán test"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "headerHeight": 56,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [
+        {
+          "tag": "a",
+          "label": "Về quán",
+          "width": 97,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "In 1 thẻ",
+          "width": 95,
+          "height": 36
+        }
+      ],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "tablet",
+      "width": 768,
+      "scene": "settings",
+      "kind": "manage",
+      "path": "/seller/settings",
+      "screenshot": "tablet-seller-settings.png",
+      "title": "Cài đặt — Gọi nước",
+      "h1": [
+        "Cài đặt"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "headerHeight": 56,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [
+        {
+          "tag": "input",
+          "label": "Mã BIN ngân hàng",
+          "width": 688,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Lưu cài đặt",
+          "width": 104,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "BUTTON",
+          "width": 688,
+          "height": 39
+        },
+        {
+          "tag": "button",
+          "label": "Kết nối Zalo",
+          "width": 111,
+          "height": 36
+        }
+      ],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "tablet",
+      "width": 768,
+      "scene": "reports-commission",
+      "kind": "manage",
+      "path": "/seller/reports",
+      "screenshot": "tablet-seller-reports-commission.png",
+      "title": "Báo cáo — Gọi nước",
+      "h1": [
+        "Báo cáo"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "headerHeight": 56,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [
+        {
+          "tag": "button",
+          "label": "Hoa hồng",
+          "width": 82,
+          "height": 29
+        },
+        {
+          "tag": "button",
+          "label": "Phễu",
+          "width": 52,
+          "height": 29
+        },
+        {
+          "tag": "button",
+          "label": "Sao chép bản tóm tắt",
+          "width": 191,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Ghi điều chỉnh",
+          "width": 127,
+          "height": 36
+        }
+      ],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "tablet",
+      "width": 768,
+      "scene": "reports-funnel",
+      "kind": "manage",
+      "path": "/seller/reports",
+      "screenshot": "tablet-seller-reports-funnel.png",
+      "title": "Báo cáo — Gọi nước",
+      "h1": [
+        "Báo cáo"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "headerHeight": 56,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [
+        {
+          "tag": "button",
+          "label": "Hoa hồng",
+          "width": 82,
+          "height": 29
+        },
+        {
+          "tag": "button",
+          "label": "Phễu",
+          "width": 52,
+          "height": 29
+        }
+      ],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "mobile",
+      "width": 375,
+      "scene": "login",
+      "kind": "manage",
+      "path": "/seller/login",
+      "screenshot": "mobile-seller-login.png",
+      "title": "Đăng nhập người bán — Gọi nước",
+      "h1": [
+        "Màn người bán"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "headerHeight": null,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [
+        {
+          "tag": "button",
+          "label": "Đăng nhập",
+          "width": 277,
+          "height": 40
+        }
+      ],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "mobile",
+      "width": 375,
+      "scene": "board-open",
+      "kind": "service",
+      "path": "/seller",
+      "screenshot": "mobile-seller-board-open.png",
+      "title": "(4) Bảng đơn — Gọi nước",
+      "h1": [
+        "Bảng đơn"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "headerHeight": 56,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "mobile",
+      "width": 375,
+      "scene": "board-closed",
+      "kind": "service",
+      "path": "/seller",
+      "screenshot": "mobile-seller-board-closed.png",
+      "title": "(4) Bảng đơn — Gọi nước",
+      "h1": [
+        "Bảng đơn"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "headerHeight": 56,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "mobile",
+      "width": 375,
+      "scene": "reject-confirm",
+      "kind": "service",
+      "path": "/seller",
+      "screenshot": "mobile-seller-reject-confirm.png",
+      "title": "(4) Bảng đơn — Gọi nước",
+      "h1": [
+        "Bảng đơn"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "headerHeight": 56,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "mobile",
+      "width": 375,
+      "scene": "vietqr",
+      "kind": "service",
+      "path": "/seller",
+      "screenshot": "mobile-seller-vietqr.png",
+      "title": "(4) Bảng đơn — Gọi nước",
+      "h1": [
+        "Bảng đơn"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "headerHeight": 56,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "mobile",
+      "width": 375,
+      "scene": "order-detail",
+      "kind": "service",
+      "path": "/seller/orders/audit-accepted",
+      "screenshot": "mobile-seller-order-detail.png",
+      "title": "Đơn #BREW03 — Gọi nước",
+      "h1": [
+        "Đơn #BREW03"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "headerHeight": 56,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "mobile",
+      "width": 375,
+      "scene": "menu-open",
+      "kind": "service",
+      "path": "/seller",
+      "screenshot": "mobile-seller-menu-open.png",
+      "title": "(4) Bảng đơn — Gọi nước",
+      "h1": [
+        "Bảng đơn"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "headerHeight": 56,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "mobile",
+      "width": 375,
+      "scene": "products",
+      "kind": "manage",
+      "path": "/seller/products",
+      "screenshot": "mobile-seller-products.png",
+      "title": "Món — Gọi nước",
+      "h1": [
+        "Món"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "headerHeight": 56,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [
+        {
+          "tag": "button",
+          "label": "Thêm món",
+          "width": 120,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Cà phê sữa đá: đang bán",
+          "width": 101,
+          "height": 24
+        },
+        {
+          "tag": "button",
+          "label": "Sửa Cà phê sữa đá",
+          "width": 67,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "Bạc xỉu: đang bán",
+          "width": 101,
+          "height": 24
+        },
+        {
+          "tag": "button",
+          "label": "Sửa Bạc xỉu",
+          "width": 67,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "Nước suối: đang bán",
+          "width": 101,
+          "height": 24
+        },
+        {
+          "tag": "button",
+          "label": "Sửa Nước suối",
+          "width": 67,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "Trà đào cam sả: hết món",
+          "width": 96,
+          "height": 24
+        },
+        {
+          "tag": "button",
+          "label": "Sửa Trà đào cam sả",
+          "width": 67,
+          "height": 32
+        }
+      ],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "mobile",
+      "width": 375,
+      "scene": "product-form",
+      "kind": "manage",
+      "path": "/seller/products",
+      "screenshot": "mobile-seller-product-form.png",
+      "title": "Món — Gọi nước",
+      "h1": [
+        "Món"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "headerHeight": 56,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [
+        {
+          "tag": "button",
+          "label": "BUTTON",
+          "width": 143,
+          "height": 24
+        },
+        {
+          "tag": "button",
+          "label": "BUTTON",
+          "width": 108,
+          "height": 24
+        },
+        {
+          "tag": "button",
+          "label": "Huỷ",
+          "width": 295,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Lưu",
+          "width": 295,
+          "height": 36
+        }
+      ],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "mobile",
+      "width": 375,
+      "scene": "partners",
+      "kind": "manage",
+      "path": "/seller/partners",
+      "screenshot": "mobile-seller-partners.png",
+      "title": "Quán — Gọi nước",
+      "h1": [
+        "Quán"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "headerHeight": 56,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [
+        {
+          "tag": "button",
+          "label": "Thêm quán",
+          "width": 124,
+          "height": 36
+        },
+        {
+          "tag": "a",
+          "label": "Quán test",
+          "width": 66,
+          "height": 24
+        }
+      ],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "mobile",
+      "width": 375,
+      "scene": "partner-form",
+      "kind": "manage",
+      "path": "/seller/partners",
+      "screenshot": "mobile-seller-partner-form.png",
+      "title": "Quán — Gọi nước",
+      "h1": [
+        "Quán"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "headerHeight": 56,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [
+        {
+          "tag": "button",
+          "label": "BUTTON",
+          "width": 295,
+          "height": 28
+        },
+        {
+          "tag": "button",
+          "label": "Khung 1 T2",
+          "width": 40,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Khung 1 T3",
+          "width": 40,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Khung 1 T4",
+          "width": 40,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Khung 1 T5",
+          "width": 40,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Khung 1 T6",
+          "width": 40,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Khung 1 T7",
+          "width": 40,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Khung 1 CN",
+          "width": 40,
+          "height": 36
+        },
+        {
+          "tag": "input",
+          "label": "Khung 1 từ",
+          "width": 128,
+          "height": 36
+        },
+        {
+          "tag": "input",
+          "label": "Khung 1 đến",
+          "width": 128,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Xoá khung 1",
+          "width": 36,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Thêm khung giờ",
+          "width": 152,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "Mọi ngày 11:00–13:30",
+          "width": 163,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "BUTTON",
+          "width": 185,
+          "height": 24
+        },
+        {
+          "tag": "button",
+          "label": "BUTTON",
+          "width": 139,
+          "height": 24
+        },
+        {
+          "tag": "button",
+          "label": "BUTTON",
+          "width": 155,
+          "height": 24
+        },
+        {
+          "tag": "button",
+          "label": "BUTTON",
+          "width": 192,
+          "height": 24
+        },
+        {
+          "tag": "button",
+          "label": "Huỷ",
+          "width": 295,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Lưu",
+          "width": 295,
+          "height": 36
+        }
+      ],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "mobile",
+      "width": 375,
+      "scene": "partner-detail",
+      "kind": "manage",
+      "path": "/seller/partners/00000000-0000-4000-8000-000000000001",
+      "screenshot": "mobile-seller-partner-detail.png",
+      "title": "Quán test · Quán — Gọi nước",
+      "h1": [
+        "Quán test"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "headerHeight": 56,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [
+        {
+          "tag": "a",
+          "label": "Danh sách quán",
+          "width": 148,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "Sửa quán",
+          "width": 111,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Bàn & mã QR",
+          "width": 169,
+          "height": 29
+        },
+        {
+          "tag": "button",
+          "label": "Thông tin",
+          "width": 169,
+          "height": 29
+        },
+        {
+          "tag": "input",
+          "label": "Tên bàn mới",
+          "width": 220,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Thêm bàn",
+          "width": 115,
+          "height": 36
+        },
+        {
+          "tag": "a",
+          "label": "In tất cả bàn",
+          "width": 131,
+          "height": 36
+        },
+        {
+          "tag": "a",
+          "label": "http://localhost:5173/t/DEVTEST001",
+          "width": 317,
+          "height": 24
+        },
+        {
+          "tag": "button",
+          "label": "Xem thẻ",
+          "width": 155,
+          "height": 40
+        },
+        {
+          "tag": "button",
+          "label": "Thu hồi",
+          "width": 155,
+          "height": 40
+        }
+      ],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "mobile",
+      "width": 375,
+      "scene": "partner-qr-card",
+      "kind": "manage",
+      "path": "/seller/partners/00000000-0000-4000-8000-000000000001",
+      "screenshot": "mobile-seller-partner-qr-card.png",
+      "title": "Quán test · Quán — Gọi nước",
+      "h1": [
+        "Quán test"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "headerHeight": 56,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [
+        {
+          "tag": "button",
+          "label": "Tải ảnh",
+          "width": 295,
+          "height": 36
+        }
+      ],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "mobile",
+      "width": 375,
+      "scene": "print",
+      "kind": "manage",
+      "path": "/seller/partners/00000000-0000-4000-8000-000000000001/print",
+      "screenshot": "mobile-seller-print.png",
+      "title": "In thẻ QR · Quán test — Gọi nước",
+      "h1": [
+        "In thẻ QR · Quán test"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "headerHeight": 56,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [
+        {
+          "tag": "a",
+          "label": "Về quán",
+          "width": 97,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "In 1 thẻ",
+          "width": 95,
+          "height": 36
+        }
+      ],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "mobile",
+      "width": 375,
+      "scene": "settings",
+      "kind": "manage",
+      "path": "/seller/settings",
+      "screenshot": "mobile-seller-settings.png",
+      "title": "Cài đặt — Gọi nước",
+      "h1": [
+        "Cài đặt"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "headerHeight": 56,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [
+        {
+          "tag": "input",
+          "label": "Mã BIN ngân hàng",
+          "width": 295,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Lưu cài đặt",
+          "width": 104,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Kết nối Zalo",
+          "width": 111,
+          "height": 36
+        }
+      ],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "mobile",
+      "width": 375,
+      "scene": "reports-commission",
+      "kind": "manage",
+      "path": "/seller/reports",
+      "screenshot": "mobile-seller-reports-commission.png",
+      "title": "Báo cáo — Gọi nước",
+      "h1": [
+        "Báo cáo"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "headerHeight": 56,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [
+        {
+          "tag": "button",
+          "label": "Hoa hồng",
+          "width": 82,
+          "height": 29
+        },
+        {
+          "tag": "button",
+          "label": "Phễu",
+          "width": 52,
+          "height": 29
+        },
+        {
+          "tag": "button",
+          "label": "Sao chép bản tóm tắt",
+          "width": 191,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Ghi điều chỉnh",
+          "width": 127,
+          "height": 36
+        }
+      ],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "mobile",
+      "width": 375,
+      "scene": "reports-funnel",
+      "kind": "manage",
+      "path": "/seller/reports",
+      "screenshot": "mobile-seller-reports-funnel.png",
+      "title": "Báo cáo — Gọi nước",
+      "h1": [
+        "Báo cáo"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 375,
+      "clientWidth": 375,
+      "headerHeight": 56,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [
+        {
+          "tag": "button",
+          "label": "Hoa hồng",
+          "width": 82,
+          "height": 29
+        },
+        {
+          "tag": "button",
+          "label": "Phễu",
+          "width": 52,
+          "height": 29
+        }
+      ],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "narrow320",
+      "width": 320,
+      "scene": "login",
+      "kind": "manage",
+      "path": "/seller/login",
+      "screenshot": "narrow320-seller-login.png",
+      "title": "Đăng nhập người bán — Gọi nước",
+      "h1": [
+        "Màn người bán"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 320,
+      "clientWidth": 320,
+      "headerHeight": null,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [
+        {
+          "tag": "button",
+          "label": "Đăng nhập",
+          "width": 222,
+          "height": 40
+        }
+      ],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "narrow320",
+      "width": 320,
+      "scene": "board-open",
+      "kind": "service",
+      "path": "/seller",
+      "screenshot": "narrow320-seller-board-open.png",
+      "title": "(4) Bảng đơn — Gọi nước",
+      "h1": [
+        "Bảng đơn"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 320,
+      "clientWidth": 320,
+      "headerHeight": 56,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "narrow320",
+      "width": 320,
+      "scene": "board-closed",
+      "kind": "service",
+      "path": "/seller",
+      "screenshot": "narrow320-seller-board-closed.png",
+      "title": "(4) Bảng đơn — Gọi nước",
+      "h1": [
+        "Bảng đơn"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 320,
+      "clientWidth": 320,
+      "headerHeight": 56,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "narrow320",
+      "width": 320,
+      "scene": "reject-confirm",
+      "kind": "service",
+      "path": "/seller",
+      "screenshot": "narrow320-seller-reject-confirm.png",
+      "title": "(4) Bảng đơn — Gọi nước",
+      "h1": [
+        "Bảng đơn"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 320,
+      "clientWidth": 320,
+      "headerHeight": 56,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "narrow320",
+      "width": 320,
+      "scene": "vietqr",
+      "kind": "service",
+      "path": "/seller",
+      "screenshot": "narrow320-seller-vietqr.png",
+      "title": "(4) Bảng đơn — Gọi nước",
+      "h1": [
+        "Bảng đơn"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 320,
+      "clientWidth": 320,
+      "headerHeight": 56,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "narrow320",
+      "width": 320,
+      "scene": "order-detail",
+      "kind": "service",
+      "path": "/seller/orders/audit-accepted",
+      "screenshot": "narrow320-seller-order-detail.png",
+      "title": "Đơn #BREW03 — Gọi nước",
+      "h1": [
+        "Đơn #BREW03"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 320,
+      "clientWidth": 320,
+      "headerHeight": 56,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "narrow320",
+      "width": 320,
+      "scene": "menu-open",
+      "kind": "service",
+      "path": "/seller",
+      "screenshot": "narrow320-seller-menu-open.png",
+      "title": "(4) Bảng đơn — Gọi nước",
+      "h1": [
+        "Bảng đơn"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 320,
+      "clientWidth": 320,
+      "headerHeight": 56,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "narrow320",
+      "width": 320,
+      "scene": "products",
+      "kind": "manage",
+      "path": "/seller/products",
+      "screenshot": "narrow320-seller-products.png",
+      "title": "Món — Gọi nước",
+      "h1": [
+        "Món"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 320,
+      "clientWidth": 320,
+      "headerHeight": 56,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [
+        {
+          "tag": "button",
+          "label": "Thêm món",
+          "width": 120,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Cà phê sữa đá: đang bán",
+          "width": 101,
+          "height": 24
+        },
+        {
+          "tag": "button",
+          "label": "Sửa Cà phê sữa đá",
+          "width": 67,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "Bạc xỉu: đang bán",
+          "width": 101,
+          "height": 24
+        },
+        {
+          "tag": "button",
+          "label": "Sửa Bạc xỉu",
+          "width": 67,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "Nước suối: đang bán",
+          "width": 101,
+          "height": 24
+        },
+        {
+          "tag": "button",
+          "label": "Sửa Nước suối",
+          "width": 67,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "Trà đào cam sả: hết món",
+          "width": 96,
+          "height": 24
+        },
+        {
+          "tag": "button",
+          "label": "Sửa Trà đào cam sả",
+          "width": 67,
+          "height": 32
+        }
+      ],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "narrow320",
+      "width": 320,
+      "scene": "product-form",
+      "kind": "manage",
+      "path": "/seller/products",
+      "screenshot": "narrow320-seller-product-form.png",
+      "title": "Món — Gọi nước",
+      "h1": [
+        "Món"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 320,
+      "clientWidth": 320,
+      "headerHeight": 56,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [
+        {
+          "tag": "button",
+          "label": "BUTTON",
+          "width": 143,
+          "height": 24
+        },
+        {
+          "tag": "button",
+          "label": "BUTTON",
+          "width": 108,
+          "height": 24
+        },
+        {
+          "tag": "button",
+          "label": "Huỷ",
+          "width": 240,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Lưu",
+          "width": 240,
+          "height": 36
+        }
+      ],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "narrow320",
+      "width": 320,
+      "scene": "partners",
+      "kind": "manage",
+      "path": "/seller/partners",
+      "screenshot": "narrow320-seller-partners.png",
+      "title": "Quán — Gọi nước",
+      "h1": [
+        "Quán"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 320,
+      "clientWidth": 320,
+      "headerHeight": 56,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [
+        {
+          "tag": "button",
+          "label": "Thêm quán",
+          "width": 124,
+          "height": 36
+        },
+        {
+          "tag": "a",
+          "label": "Quán test",
+          "width": 66,
+          "height": 24
+        }
+      ],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "narrow320",
+      "width": 320,
+      "scene": "partner-form",
+      "kind": "manage",
+      "path": "/seller/partners",
+      "screenshot": "narrow320-seller-partner-form.png",
+      "title": "Quán — Gọi nước",
+      "h1": [
+        "Quán"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 320,
+      "clientWidth": 320,
+      "headerHeight": 56,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [
+        {
+          "tag": "button",
+          "label": "BUTTON",
+          "width": 240,
+          "height": 42
+        },
+        {
+          "tag": "button",
+          "label": "Khung 1 T2",
+          "width": 40,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Khung 1 T3",
+          "width": 40,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Khung 1 T4",
+          "width": 40,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Khung 1 T5",
+          "width": 40,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Khung 1 T6",
+          "width": 40,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Khung 1 T7",
+          "width": 40,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Khung 1 CN",
+          "width": 40,
+          "height": 36
+        },
+        {
+          "tag": "input",
+          "label": "Khung 1 từ",
+          "width": 128,
+          "height": 36
+        },
+        {
+          "tag": "input",
+          "label": "Khung 1 đến",
+          "width": 128,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Xoá khung 1",
+          "width": 36,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Thêm khung giờ",
+          "width": 152,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "Mọi ngày 11:00–13:30",
+          "width": 163,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "BUTTON",
+          "width": 185,
+          "height": 24
+        },
+        {
+          "tag": "button",
+          "label": "BUTTON",
+          "width": 139,
+          "height": 24
+        },
+        {
+          "tag": "button",
+          "label": "BUTTON",
+          "width": 155,
+          "height": 24
+        },
+        {
+          "tag": "button",
+          "label": "BUTTON",
+          "width": 192,
+          "height": 24
+        },
+        {
+          "tag": "button",
+          "label": "Huỷ",
+          "width": 240,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Lưu",
+          "width": 240,
+          "height": 36
+        }
+      ],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "narrow320",
+      "width": 320,
+      "scene": "partner-detail",
+      "kind": "manage",
+      "path": "/seller/partners/00000000-0000-4000-8000-000000000001",
+      "screenshot": "narrow320-seller-partner-detail.png",
+      "title": "Quán test · Quán — Gọi nước",
+      "h1": [
+        "Quán test"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 320,
+      "clientWidth": 320,
+      "headerHeight": 56,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [
+        {
+          "tag": "a",
+          "label": "Danh sách quán",
+          "width": 148,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "Sửa quán",
+          "width": 111,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Bàn & mã QR",
+          "width": 141,
+          "height": 29
+        },
+        {
+          "tag": "button",
+          "label": "Thông tin",
+          "width": 141,
+          "height": 29
+        },
+        {
+          "tag": "input",
+          "label": "Tên bàn mới",
+          "width": 165,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Thêm bàn",
+          "width": 115,
+          "height": 36
+        },
+        {
+          "tag": "a",
+          "label": "In tất cả bàn",
+          "width": 131,
+          "height": 36
+        },
+        {
+          "tag": "a",
+          "label": "http://localhost:5173/t/DEVTEST001",
+          "width": 262,
+          "height": 24
+        },
+        {
+          "tag": "button",
+          "label": "Xem thẻ",
+          "width": 127,
+          "height": 40
+        },
+        {
+          "tag": "button",
+          "label": "Thu hồi",
+          "width": 127,
+          "height": 40
+        }
+      ],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "narrow320",
+      "width": 320,
+      "scene": "partner-qr-card",
+      "kind": "manage",
+      "path": "/seller/partners/00000000-0000-4000-8000-000000000001",
+      "screenshot": "narrow320-seller-partner-qr-card.png",
+      "title": "Quán test · Quán — Gọi nước",
+      "h1": [
+        "Quán test"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 320,
+      "clientWidth": 320,
+      "headerHeight": 56,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [
+        {
+          "tag": "button",
+          "label": "Tải ảnh",
+          "width": 240,
+          "height": 36
+        }
+      ],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "narrow320",
+      "width": 320,
+      "scene": "print",
+      "kind": "manage",
+      "path": "/seller/partners/00000000-0000-4000-8000-000000000001/print",
+      "screenshot": "narrow320-seller-print.png",
+      "title": "In thẻ QR · Quán test — Gọi nước",
+      "h1": [
+        "In thẻ QR · Quán test"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 320,
+      "clientWidth": 320,
+      "headerHeight": 56,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [
+        {
+          "tag": "a",
+          "label": "Về quán",
+          "width": 97,
+          "height": 32
+        },
+        {
+          "tag": "button",
+          "label": "In 1 thẻ",
+          "width": 95,
+          "height": 36
+        }
+      ],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "narrow320",
+      "width": 320,
+      "scene": "settings",
+      "kind": "manage",
+      "path": "/seller/settings",
+      "screenshot": "narrow320-seller-settings.png",
+      "title": "Cài đặt — Gọi nước",
+      "h1": [
+        "Cài đặt"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 320,
+      "clientWidth": 320,
+      "headerHeight": 56,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [
+        {
+          "tag": "input",
+          "label": "Mã BIN ngân hàng",
+          "width": 240,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Lưu cài đặt",
+          "width": 104,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Kết nối Zalo",
+          "width": 111,
+          "height": 36
+        }
+      ],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "narrow320",
+      "width": 320,
+      "scene": "reports-commission",
+      "kind": "manage",
+      "path": "/seller/reports",
+      "screenshot": "narrow320-seller-reports-commission.png",
+      "title": "Báo cáo — Gọi nước",
+      "h1": [
+        "Báo cáo"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 320,
+      "clientWidth": 320,
+      "headerHeight": 56,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [
+        {
+          "tag": "button",
+          "label": "Hoa hồng",
+          "width": 82,
+          "height": 29
+        },
+        {
+          "tag": "button",
+          "label": "Phễu",
+          "width": 52,
+          "height": 29
+        },
+        {
+          "tag": "button",
+          "label": "Sao chép bản tóm tắt",
+          "width": 191,
+          "height": 36
+        },
+        {
+          "tag": "button",
+          "label": "Ghi điều chỉnh",
+          "width": 127,
+          "height": 36
+        }
+      ],
+      "smallInputs": [],
+      "stickyHeadings": []
+    },
+    {
+      "viewport": "narrow320",
+      "width": 320,
+      "scene": "reports-funnel",
+      "kind": "manage",
+      "path": "/seller/reports",
+      "screenshot": "narrow320-seller-reports-funnel.png",
+      "title": "Báo cáo — Gọi nước",
+      "h1": [
+        "Báo cáo"
+      ],
+      "robots": null,
+      "overflowX": false,
+      "scrollWidth": 320,
+      "clientWidth": 320,
+      "headerHeight": 56,
+      "tablesScrolling": [],
+      "under24": [],
+      "under44": [
+        {
+          "tag": "button",
+          "label": "Hoa hồng",
+          "width": 82,
+          "height": 29
+        },
+        {
+          "tag": "button",
+          "label": "Phễu",
+          "width": 52,
+          "height": 29
+        }
+      ],
+      "smallInputs": [],
+      "stickyHeadings": []
+    }
+  ],
+  "summary": {
+    "pages": 67,
+    "errors": 0,
+    "overflowX": [],
+    "tablesScrolling": [],
+    "under24": [],
+    "serviceUnder44": [],
+    "smallInputs": 0,
+    "missingH1": [],
+    "headerHeight": {
+      "desktop": 52,
+      "tablet": 56,
+      "mobile": 56,
+      "narrow320": 56
+    },
+    "stickyHeadings": [],
+    "titles": {
+      "login": "Đăng nhập người bán — Gọi nước",
+      "board-open": "(4) Bảng đơn — Gọi nước",
+      "board-closed": "(4) Bảng đơn — Gọi nước",
+      "reject-confirm": "(4) Bảng đơn — Gọi nước",
+      "vietqr": "(4) Bảng đơn — Gọi nước",
+      "order-detail": "Đơn #BREW03 — Gọi nước",
+      "products": "Món — Gọi nước",
+      "product-form": "Món — Gọi nước",
+      "partners": "Quán — Gọi nước",
+      "partner-form": "Quán — Gọi nước",
+      "partner-detail": "Quán test · Quán — Gọi nước",
+      "partner-qr-card": "Quán test · Quán — Gọi nước",
+      "print": "In thẻ QR · Quán test — Gọi nước",
+      "settings": "Cài đặt — Gọi nước",
+      "reports-commission": "Báo cáo — Gọi nước",
+      "reports-funnel": "Báo cáo — Gọi nước"
+    }
+  }
+}
