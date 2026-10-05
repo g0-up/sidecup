@@ -3,6 +3,7 @@ import * as React from "react"
 import { cn } from "@/shared/lib/utils"
 import { AlertDialog as AlertDialogPrimitive } from "radix-ui"
 
+import { useReturnFocus } from "@/shared/hooks/use-return-focus"
 import { Button } from "@/shared/ui/button"
 
 function AlertDialog({
@@ -46,10 +47,13 @@ function AlertDialogOverlay({
 function AlertDialogContent({
   className,
   size = "default",
+  onOpenAutoFocus,
+  onCloseAutoFocus,
   ...props
 }: React.ComponentProps<typeof AlertDialogPrimitive.Content> & {
   size?: "default" | "sm"
 }) {
+  const focus = useReturnFocus(onOpenAutoFocus, onCloseAutoFocus)
   return (
     <AlertDialogPortal>
       <AlertDialogOverlay />
@@ -61,6 +65,7 @@ function AlertDialogContent({
           className
         )}
         {...props}
+        {...focus}
       />
     </AlertDialogPortal>
   )
@@ -151,10 +156,9 @@ function AlertDialogAction({
 }: React.ComponentProps<typeof AlertDialogPrimitive.Action> &
   Pick<React.ComponentProps<typeof Button>, "variant" | "size">) {
   return (
-    <Button variant={variant} size={size} asChild>
+    <Button variant={variant} size={size} className={className} asChild>
       <AlertDialogPrimitive.Action
         data-slot="alert-dialog-action"
-        className={cn(className)}
         {...props}
       />
     </Button>
@@ -169,10 +173,9 @@ function AlertDialogCancel({
 }: React.ComponentProps<typeof AlertDialogPrimitive.Cancel> &
   Pick<React.ComponentProps<typeof Button>, "variant" | "size">) {
   return (
-    <Button variant={variant} size={size} asChild>
+    <Button variant={variant} size={size} className={className} asChild>
       <AlertDialogPrimitive.Cancel
         data-slot="alert-dialog-cancel"
-        className={cn(className)}
         {...props}
       />
     </Button>

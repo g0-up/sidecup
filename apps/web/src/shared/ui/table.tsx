@@ -1,7 +1,16 @@
 import * as React from "react"
 import { cn } from "@/shared/lib/utils"
 
-function Table({ className, ...props }: React.ComponentProps<"table">) {
+// stacked: dưới sm mỗi hàng thành một khối lưới (ẩn hàng tiêu đề, ô không còn nowrap) thay vì cuộn ngang;
+// trang tự đặt khuôn lưới cho hàng (max-sm:grid-cols-…) và vị trí từng ô.
+const stackedTable =
+  "max-sm:block max-sm:[&_thead]:hidden max-sm:[&_tbody]:block max-sm:[&_tfoot]:block max-sm:[&_tr]:grid max-sm:[&_tr]:items-center max-sm:[&_tr]:gap-x-3 max-sm:[&_tr]:gap-y-1 max-sm:[&_tr]:p-3 max-sm:[&_td]:block max-sm:[&_td]:p-0 max-sm:[&_td]:whitespace-normal"
+
+function Table({
+  className,
+  stacked = false,
+  ...props
+}: React.ComponentProps<"table"> & { stacked?: boolean }) {
   return (
     <div
       data-slot="table-container"
@@ -9,7 +18,7 @@ function Table({ className, ...props }: React.ComponentProps<"table">) {
     >
       <table
         data-slot="table"
-        className={cn("w-full caption-bottom text-sm", className)}
+        className={cn("w-full caption-bottom text-sm", stacked && stackedTable, className)}
         {...props}
       />
     </div>

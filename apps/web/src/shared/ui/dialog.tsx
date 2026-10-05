@@ -4,6 +4,7 @@ import { cn } from "@/shared/lib/utils"
 import { XIcon } from "lucide-react"
 import { Dialog as DialogPrimitive } from "radix-ui"
 
+import { useReturnFocus } from "@/shared/hooks/use-return-focus"
 import { Button } from "@/shared/ui/button"
 
 function Dialog({
@@ -50,10 +51,13 @@ function DialogContent({
   className,
   children,
   showCloseButton = true,
+  onOpenAutoFocus,
+  onCloseAutoFocus,
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Content> & {
   showCloseButton?: boolean
 }) {
+  const focus = useReturnFocus(onOpenAutoFocus, onCloseAutoFocus)
   return (
     <DialogPortal data-slot="dialog-portal">
       <DialogOverlay />
@@ -64,15 +68,16 @@ function DialogContent({
           className
         )}
         {...props}
+        {...focus}
       >
         {children}
         {showCloseButton && (
           <DialogPrimitive.Close
             data-slot="dialog-close"
-            className="absolute top-4 right-4 rounded-xs opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
+            className="absolute top-3 right-3 inline-flex size-11 items-center justify-center rounded-md opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:ring-2 focus:ring-ring focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 lg:size-9"
           >
             <XIcon />
-            <span className="sr-only">Close</span>
+            <span className="sr-only">Đóng</span>
           </DialogPrimitive.Close>
         )}
       </DialogPrimitive.Content>
@@ -84,7 +89,7 @@ function DialogHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="dialog-header"
-      className={cn("flex flex-col gap-2 text-center sm:text-left", className)}
+      className={cn("flex flex-col gap-2 px-8 text-center sm:pr-8 sm:pl-0 sm:text-left", className)}
       {...props}
     />
   )
@@ -110,7 +115,7 @@ function DialogFooter({
       {children}
       {showCloseButton && (
         <DialogPrimitive.Close asChild>
-          <Button variant="outline">Close</Button>
+          <Button variant="outline">Đóng</Button>
         </DialogPrimitive.Close>
       )}
     </div>
