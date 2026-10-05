@@ -1,6 +1,6 @@
 import type { SellerOrder } from "@/shared/api/orders";
 import { isOpen, type OrderStatus } from "@/shared/lib/order-status";
-import { serverClock, type ServerClock } from "@/shared/lib/time";
+import { elapsedMs, serverClock, type ServerClock } from "@/shared/lib/time";
 import { MSG, type WsMessage } from "@/shared/realtime/messages";
 
 export interface BoardState {
@@ -82,6 +82,13 @@ export function closedSince(state: BoardState, since: number): SellerOrder[] {
     .sort((a, b) => Date.parse(b.closed_at!) - Date.parse(a.closed_at!));
 }
 
+// Đơn chờ nhận quá 60 giây: khách đang thấy cảnh báo "Quán chưa xác nhận".
+export const LATE_MS = 60_000;
+
+export function isLate(order: SellerOrder, clock: ServerClock | null, now: number): boolean {
+  return order.status === "sent" && clock !== null && elapsedMs(order.created_at, clock, now) >= LATE_MS;
+}
+
 // startOfDayVN trả mốc 00:00 Asia/Ho_Chi_Minh (UTC+7, không có giờ mùa hè) của thời điểm ms.
 export function startOfDayVN(ms: number): number {
   const offset = 7 * 3600_000;
@@ -92,7 +99,9 @@ export function startOfDayVN(ms: number): number {
 export interface ActionSpec {
   to: OrderStatus;
   label: string;
-  variant: "default" | "outline" | "destructive";
+  variant: "default" | "outline";
+  // danger: bước không quay lại được; nút đầu viền + chữ đỏ, nền đỏ chỉ ở bước xác nhận.
+  danger?: boolean;
   payment?: "cash" | "transfer";
   confirm?: string;
   vietqr?: boolean;
@@ -103,7 +112,7 @@ export function actionsFor(status: OrderStatus): ActionSpec[] {
     case "sent":
       return [
         { to: "accepted", label: "Nhận đơn", variant: "default" },
-        { to: "rejected", label: "Từ chối", variant: "outline", confirm: "Từ chối đơn này? Khách sẽ nhận tin quán từ chối." },
+        { to: "rejected", label: "Từ chối", variant: "outline", danger: true, confirm: "Từ chối đơn này? Khách sẽ nhận tin quán từ chối." },
       ];
     case "accepted":
       return [{ to: "delivering", label: "Mang ra bàn", variant: "default" }];
@@ -114,7 +123,8 @@ export function actionsFor(status: OrderStatus): ActionSpec[] {
         {
           to: "failed",
           label: "Không gặp khách",
-          variant: "destructive",
+          variant: "outline",
+          danger: true,
           confirm: "Đánh dấu không gặp khách? Đơn sẽ đóng và không quay lại được.",
         },
       ];

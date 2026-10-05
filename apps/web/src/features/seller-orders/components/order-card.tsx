@@ -7,9 +7,8 @@ import { cancelReasonLabel, isOpen, SELLER_STATUS_LABEL } from "@/shared/lib/ord
 import { elapsedMs, formatElapsed, formatTime, type ServerClock } from "@/shared/lib/time";
 import { cn } from "@/shared/lib/utils";
 import { Badge } from "@/shared/ui/badge";
+import { isLate } from "../store";
 import { OrderActions } from "./order-actions";
-
-const LATE_MS = 60_000;
 
 interface Props {
   order: SellerOrder;
@@ -23,12 +22,13 @@ export function OrderCard({ order, clock, unseen, onSeen, linkToDetail = true }:
   const now = useNow(1000);
   const open = isOpen(order.status);
   const elapsed = clock ? elapsedMs(order.created_at, clock, now) : 0;
-  // Đơn chờ nhận quá 60 giây: khách đang thấy cảnh báo "Quán chưa xác nhận".
-  const late = order.status === "sent" && elapsed >= LATE_MS;
+  const late = isLate(order, clock, now);
 
   return (
+    // Chạm hoặc đưa focus bàn phím vào thẻ đều tính là đã xem.
     <article
       onClick={onSeen}
+      onFocus={onSeen}
       className={cn(
         "space-y-3 rounded-xl border bg-card p-4 shadow-sm",
         late && "border-2 border-warning",
@@ -40,7 +40,7 @@ export function OrderCard({ order, clock, unseen, onSeen, linkToDetail = true }:
         <div>
           <p className="flex items-center gap-2">
             {linkToDetail ? (
-              <Link to={`/seller/orders/${order.id}`} className="font-mono text-lg font-semibold">
+              <Link to={`/seller/orders/${order.id}`} className="-my-2 inline-flex min-h-11 items-center font-mono text-lg font-semibold">
                 #{order.code}
               </Link>
             ) : (
@@ -78,7 +78,7 @@ export function OrderCard({ order, clock, unseen, onSeen, linkToDetail = true }:
           <a
             href={`tel:${order.customer_phone}`}
             onClick={(e) => e.stopPropagation()}
-            className="inline-flex items-center gap-1 text-sm font-medium text-primary"
+            className="-mr-2 inline-flex min-h-11 items-center gap-1 px-2 text-sm font-medium text-primary"
           >
             <Phone className="size-4" aria-hidden /> {order.customer_phone}
           </a>

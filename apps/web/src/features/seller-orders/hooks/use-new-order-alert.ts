@@ -19,21 +19,21 @@ export function useNewOrderAlert(unseen: number, soundOn: boolean) {
     return () => clearInterval(t);
   }, [unseen, soundOn]);
 
+  // Nháy xen kẽ "(n) Đơn mới" với tiêu đề của trang đang mở; trang đổi tiêu đề giữa chừng thì nhịp sau lấy tiêu đề mới.
   useEffect(() => {
-    const base = "Màn người bán";
-    if (unseen === 0) {
-      document.title = base;
-      return;
-    }
+    if (unseen === 0) return;
+    const alert = `(${unseen}) Đơn mới`;
+    let base = document.title;
     let on = true;
-    document.title = `(${unseen}) Đơn mới`;
+    document.title = alert;
     const t = setInterval(() => {
+      if (document.title !== alert) base = document.title;
       on = !on;
-      document.title = on ? `(${unseen}) Đơn mới` : base;
+      document.title = on ? alert : base;
     }, BLINK_MS);
     return () => {
       clearInterval(t);
-      document.title = base;
+      if (document.title === alert) document.title = base;
     };
   }, [unseen]);
 }

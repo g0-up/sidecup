@@ -10,6 +10,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/shared/ui/alert-dialog";
+import { cn } from "@/shared/lib/utils";
 import { Button } from "@/shared/ui/button";
 import { useSellerBoard } from "../board-context";
 import { actionsFor, type ActionSpec } from "../store";
@@ -49,7 +50,7 @@ export function OrderActions({ order }: { order: SellerOrder }) {
             key={a.label}
             variant={a.variant}
             size="lg"
-            className="min-w-28 flex-1"
+            className={cn("h-11 min-w-28 flex-1", a.danger && "text-destructive hover:text-destructive")}
             disabled={busy}
             onClick={(e) => {
               e.stopPropagation();
@@ -70,9 +71,12 @@ export function OrderActions({ order }: { order: SellerOrder }) {
             <AlertDialogDescription>{confirming?.confirm}</AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel disabled={busy}>Quay lại</AlertDialogCancel>
+            <AlertDialogCancel className="h-11" disabled={busy}>
+              Quay lại
+            </AlertDialogCancel>
             <AlertDialogAction
-              className="bg-destructive text-white hover:bg-destructive/90"
+              variant="destructive"
+              className="h-11"
               disabled={busy}
               onClick={(e) => {
                 e.preventDefault();
@@ -86,7 +90,13 @@ export function OrderActions({ order }: { order: SellerOrder }) {
       </AlertDialog>
 
       {transfer && (
-        <VietQrDialog order={order} open={qrOpen} onOpenChange={setQrOpen} busy={busy} onPaid={() => void run(transfer)} />
+        <VietQrDialog
+          order={order}
+          open={qrOpen}
+          onOpenChange={setQrOpen}
+          busy={busy}
+          onPaid={() => void run(transfer)}
+        />
       )}
     </>
   );

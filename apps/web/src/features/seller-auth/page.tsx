@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router";
 import { isApiError } from "@/shared/api/errors";
+import { useDocumentHead } from "@/shared/hooks/use-document-head";
 import { Button } from "@/shared/ui/button";
 import { Input } from "@/shared/ui/input";
 import { Label } from "@/shared/ui/label";
@@ -13,6 +14,7 @@ export function Component() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  useDocumentHead({ title: "Đăng nhập người bán — Gọi nước" });
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();

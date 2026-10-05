@@ -136,6 +136,39 @@ describe("bảng đơn người bán", () => {
     await waitFor(() => expect(db.orders.find((x) => x.id === "f")!.status).toBe("rejected"));
   });
 
+  it("từ chối rồi Quay lại: focus trở về nút Từ chối", async () => {
+    const user = userEvent.setup();
+    seed("f", "sent", "FFF666");
+    renderBoard();
+    const card = await screen.findByRole("article", { name: "Đơn FFF666" });
+    const reject = within(card).getByRole("button", { name: "Từ chối" });
+    await user.click(reject);
+    const dialog = await screen.findByRole("alertdialog");
+    expect(within(dialog).getByRole("button", { name: "Quay lại" })).toHaveFocus();
+    await user.click(within(dialog).getByRole("button", { name: "Quay lại" }));
+    await waitFor(() => expect(reject).toHaveFocus());
+  });
+
+  it("bộ chọn cột: mặc định Đã gửi, chấm báo đơn trễ, chọn cột khác thì đổi cột hiện", async () => {
+    const user = userEvent.setup();
+    seed("h", "sent", "HHH888").created_at = new Date(Date.now() - 120_000).toISOString();
+    seed("i", "accepted", "III999");
+    renderBoard();
+    const picker = await screen.findByRole("group", { name: "Chọn cột" });
+    const sentBtn = within(picker).getByRole("button", { name: /^Đã gửi \(1\)/ });
+    const brewBtn = within(picker).getByRole("button", { name: /^Đang pha \(1\)/ });
+    expect(sentBtn).toHaveAttribute("aria-pressed", "true");
+    expect(sentBtn).toHaveAccessibleName(/có đơn cần xử lý$/);
+    expect(brewBtn).not.toHaveAccessibleName(/có đơn cần xử lý/);
+    expect(screen.getByRole("region", { name: "Đang pha" })).toHaveClass("hidden");
+
+    await user.click(brewBtn);
+    expect(brewBtn).toHaveAttribute("aria-pressed", "true");
+    expect(sentBtn).toHaveAttribute("aria-pressed", "false");
+    expect(screen.getByRole("region", { name: "Đang pha" })).not.toHaveClass("hidden");
+    expect(screen.getByRole("region", { name: "Đã gửi" })).toHaveClass("hidden");
+  });
+
   it("resync khi nối lại: đơn mới trong lúc mất kết nối hiện kèm Mới, đơn đã đóng rời bảng", async () => {
     const closing = seed("g", "accepted", "GGG777");
     renderBoard();

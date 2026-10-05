@@ -45,26 +45,27 @@ export function VietQrDialog({ order, open, onOpenChange, onPaid, busy }: Props)
         {qr.isError && !notConfigured && <p className="text-sm text-destructive">Không tạo được mã, thử lại sau.</p>}
         {qr.data && (
           <div className="flex flex-col items-center gap-3">
-            <div className="rounded-lg bg-white p-3">
-              <QRCodeSVG value={qr.data.payload} size={240} level="M" marginSize={2} title="Mã VietQR" />
+            {/* Mã co theo bề rộng hộp thoại (màn 320 px) nhưng không quá 240 px. */}
+            <div className="w-full max-w-60 rounded-lg bg-white p-3">
+              <QRCodeSVG value={qr.data.payload} size={240} level="M" marginSize={2} title="Mã VietQR" className="h-auto w-full" />
             </div>
-            <dl className="grid w-full grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-sm">
+            <dl className="grid w-full min-w-0 grid-cols-[auto_minmax(0,1fr)] gap-x-3 gap-y-1 text-sm">
               <dt className="text-muted-foreground">Số tiền</dt>
               <dd className="text-right text-lg font-semibold tabular-nums">{formatVND(qr.data.amount)}</dd>
               <dt className="text-muted-foreground">Nội dung</dt>
-              <dd className="text-right font-mono">{qr.data.purpose}</dd>
+              <dd className="text-right font-mono break-all">{qr.data.purpose}</dd>
               <dt className="text-muted-foreground">Người nhận</dt>
-              <dd className="text-right">{qr.data.bank_account_name || "—"}</dd>
+              <dd className="text-right break-words">{qr.data.bank_account_name || "—"}</dd>
               <dt className="text-muted-foreground">Tài khoản</dt>
-              <dd className="text-right font-mono">{qr.data.bank_account}</dd>
+              <dd className="text-right font-mono break-all">{qr.data.bank_account}</dd>
             </dl>
           </div>
         )}
         <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>
+          <Button variant="outline" className="h-11" onClick={() => onOpenChange(false)}>
             Đóng
           </Button>
-          <Button onClick={onPaid} disabled={busy || !qr.data}>
+          <Button className="h-11" onClick={onPaid} disabled={busy || !qr.data}>
             {busy ? "Đang lưu…" : "Đã nhận tiền"}
           </Button>
         </DialogFooter>

@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { SellerOrder } from "@/shared/api/orders";
-import { actionsFor, boardReducer, closedSince, initialBoard, openColumns, startOfDayVN, type BoardState } from "./store";
+import { serverClock } from "@/shared/lib/time";
+import { actionsFor, boardReducer, closedSince, initialBoard, isLate, openColumns, startOfDayVN, type BoardState } from "./store";
 
 function order(id: string, status: SellerOrder["status"], updated = "2026-10-01T05:00:00Z", extra: Partial<SellerOrder> = {}): SellerOrder {
   return {
@@ -106,6 +107,25 @@ describe("selectors", () => {
   it("đầu ngày theo giờ Việt Nam", () => {
     // 18:30 UTC 30/09 = 01:30 01/10 giờ VN → đầu ngày là 17:00 UTC 30/09.
     expect(new Date(startOfDayVN(Date.parse("2026-09-30T18:30:00Z"))).toISOString()).toBe("2026-09-30T17:00:00.000Z");
+  });
+});
+
+describe("isLate", () => {
+  // Đơn tạo lúc 05:00:00 giờ server; đồng hồ nhận server_time 05:01:00 tại mốc 1000 ms.
+  const clock = serverClock("2026-10-01T05:01:00Z", 1000);
+
+  it("đơn Đã gửi trễ từ đúng 60 giây", () => {
+    expect(isLate(order("a", "sent"), clock, 999)).toBe(false);
+    expect(isLate(order("a", "sent"), clock, 1000)).toBe(true);
+  });
+
+  it("chưa có đồng hồ server thì không coi là trễ", () => {
+    expect(isLate(order("a", "sent"), null, 1000)).toBe(false);
+  });
+
+  it("chỉ đơn chờ nhận mới trễ", () => {
+    expect(isLate(order("a", "accepted"), clock, 60_000)).toBe(false);
+    expect(isLate(order("a", "delivering"), clock, 60_000)).toBe(false);
   });
 });
 
