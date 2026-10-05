@@ -1,26 +1,16 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
+import { useQuery } from "@tanstack/react-query";
 import { errorMessage } from "@/shared/api/errors";
-import { getSettings, settingsKey, updateSettings } from "@/shared/api/settings";
+import { getSettings, settingsKey } from "@/shared/api/settings";
+import { useDocumentHead } from "@/shared/hooks/use-document-head";
+import { cn } from "@/shared/lib/utils";
 import { Button } from "@/shared/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/ui/card";
-import { Label } from "@/shared/ui/label";
-import { Switch } from "@/shared/ui/switch";
 import { SettingsForm } from "./components/settings-form";
 import { ZaloCard } from "./components/zalo-card";
 
 export function Component() {
-  const qc = useQueryClient();
   const { data, isPending, error, refetch } = useQuery({ queryKey: settingsKey, queryFn: getSettings });
-
-  const accepting = useMutation({
-    mutationFn: (v: boolean) => updateSettings({ accepting_orders: v }),
-    onSuccess: (s) => {
-      qc.setQueryData(settingsKey, s);
-      toast.success(s.accepting_orders ? "Đã mở nhận đơn" : "Đã tạm ngưng nhận đơn");
-    },
-    onError: (err) => toast.error(errorMessage(err)),
-  });
+  useDocumentHead({ title: "Cài đặt — Gọi nước" });
 
   return (
     <div className="mx-auto max-w-5xl space-y-6 p-4">
@@ -41,14 +31,12 @@ export function Component() {
               <CardTitle>Nhận đơn</CardTitle>
               <CardDescription>Tắt khi hết hàng hoặc bận; mọi quán sẽ hiện “Tạm ngưng nhận đơn”.</CardDescription>
             </CardHeader>
-            <CardContent className="flex items-center gap-3">
-              <Switch
-                id="settings-accepting"
-                checked={accepting.isPending ? accepting.variables : data.accepting_orders}
-                disabled={accepting.isPending}
-                onCheckedChange={(v) => accepting.mutate(v)}
-              />
-              <Label htmlFor="settings-accepting">{data.accepting_orders ? "Đang nhận đơn" : "Đang tạm ngưng"}</Label>
+            {/* Chỉ một công tắc nhận đơn (trên thanh đầu trang) để hai nơi không lệch nhau; ở đây chỉ báo trạng thái. */}
+            <CardContent className="space-y-1">
+              <p className={cn("font-medium", data.accepting_orders ? "text-success" : "text-destructive")}>
+                {data.accepting_orders ? "Đang nhận đơn" : "Đang tạm ngưng nhận đơn"}
+              </p>
+              <p className="text-sm text-muted-foreground">Bật hoặc tắt bằng công tắc “Nhận đơn” trên thanh đầu trang.</p>
             </CardContent>
           </Card>
           <Card>

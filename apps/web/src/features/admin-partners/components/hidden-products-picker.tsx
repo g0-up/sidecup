@@ -35,7 +35,7 @@ export function HiddenProductsPicker({ value, onChange, error }: Props) {
           {data.map((p) => (
             <li key={p.id} className="flex items-center gap-2">
               <Checkbox id={`hide-${p.id}`} checked={hidden.has(p.id)} onCheckedChange={(c) => toggle(p.id, c === true)} />
-              <Label htmlFor={`hide-${p.id}`} className="font-normal">
+              <Label htmlFor={`hide-${p.id}`} className="min-h-6 font-normal">
                 {p.name} <span className="text-muted-foreground">· {formatVND(p.price)}</span>
               </Label>
             </li>

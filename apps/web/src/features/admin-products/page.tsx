@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
 import { useMemo, useState } from "react";
 import { errorMessage } from "@/shared/api/errors";
+import { useDocumentHead } from "@/shared/hooks/use-document-head";
 import { Button } from "@/shared/ui/button";
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/shared/ui/table";
 import { listProducts, productsKey, type Product } from "./api";
@@ -12,6 +13,7 @@ import { useToggleAvailability } from "./hooks/use-toggle-availability";
 export function Component() {
   const { data, isPending, error, refetch } = useQuery({ queryKey: productsKey, queryFn: ({ signal }) => listProducts(signal) });
   const toggle = useToggleAvailability();
+  useDocumentHead({ title: "Món — Gọi nước" });
   const [target, setTarget] = useState<Product | "new" | null>(null);
 
   const products = useMemo(
@@ -45,7 +47,7 @@ export function Component() {
         <p className="text-muted-foreground">Chưa có món nào. Bấm “Thêm món” để bắt đầu.</p>
       ) : (
         <div className="rounded-lg border bg-background">
-          <Table>
+          <Table stacked>
             <TableHeader>
               <TableRow>
                 <TableHead>Thứ tự</TableHead>

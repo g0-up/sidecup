@@ -10,6 +10,7 @@ import { FieldError } from "@/features/admin-products/form-field";
 import { applyServerErrors } from "@/features/admin-products/server-errors";
 import { errorMessage } from "@/shared/api/errors";
 import { formatDate } from "@/shared/lib/time";
+import { cn } from "@/shared/lib/utils";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -89,7 +90,7 @@ export function TableList({ partner }: { partner: Pick<Partner, "id" | "name"> }
         <p className="text-muted-foreground">Quán chưa có bàn nào. Thêm bàn để tạo mã QR.</p>
       ) : (
         <div className="rounded-lg border bg-background">
-          <Table>
+          <Table stacked>
             <TableHeader>
               <TableRow>
                 <TableHead>Bàn</TableHead>
@@ -101,34 +102,46 @@ export function TableList({ partner }: { partner: Pick<Partner, "id" | "name"> }
             </TableHeader>
             <TableBody>
               {data.map((q) => (
-                <TableRow key={q.token} className={q.active ? undefined : "text-muted-foreground"}>
-                  <TableCell className="font-medium">{q.table_label}</TableCell>
-                  <TableCell className="font-mono text-xs">{q.token}</TableCell>
-                  <TableCell className="max-w-56 truncate">
-                    <a href={q.url} target="_blank" rel="noreferrer" className="text-primary underline-offset-4 hover:underline">
+                // Dưới sm: bàn + trạng thái, mã, đường dẫn một dòng, rồi hai nút rộng.
+                <TableRow
+                  key={q.token}
+                  className={cn("max-sm:grid-cols-[minmax(0,1fr)_auto]", !q.active && "text-muted-foreground")}
+                >
+                  <TableCell className="font-medium max-sm:col-start-1 max-sm:row-start-1">{q.table_label}</TableCell>
+                  <TableCell className="font-mono text-xs max-sm:col-span-2 max-sm:row-start-2">{q.token}</TableCell>
+                  <TableCell className="max-w-56 max-sm:col-span-2 max-sm:row-start-3 max-sm:max-w-none">
+                    <a
+                      href={q.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="block truncate py-0.5 text-primary underline-offset-4 hover:underline"
+                    >
                       {q.url}
                     </a>
                   </TableCell>
-                  <TableCell>
+                  <TableCell className="max-sm:col-start-2 max-sm:row-start-1">
                     {q.active ? (
                       <Badge>Đang dùng</Badge>
                     ) : (
                       <Badge variant="secondary">Đã thu hồi{q.revoked_at ? ` ${formatDate(q.revoked_at)}` : ""}</Badge>
                     )}
                   </TableCell>
-                  <TableCell>
-                    <div className="flex justify-end gap-1">
-                      {q.active && (
-                        <>
-                          <Button variant="ghost" size="sm" onClick={() => setViewing(q)}>
-                            <QrIcon /> Xem thẻ
-                          </Button>
-                          <Button variant="ghost" size="sm" className="text-destructive" onClick={() => setRevoking(q)}>
-                            <Ban /> Thu hồi
-                          </Button>
-                        </>
-                      )}
-                    </div>
+                  <TableCell className="max-sm:col-span-2 max-sm:row-start-4 max-sm:empty:hidden">
+                    {q.active && (
+                      <div className="flex justify-end gap-1 max-sm:grid max-sm:grid-cols-2 max-sm:gap-2">
+                        <Button variant="ghost" size="sm" className="max-sm:h-10 max-sm:border" onClick={() => setViewing(q)}>
+                          <QrIcon /> Xem thẻ
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-destructive max-sm:h-10 max-sm:border"
+                          onClick={() => setRevoking(q)}
+                        >
+                          <Ban /> Thu hồi
+                        </Button>
+                      </div>
+                    )}
                   </TableCell>
                 </TableRow>
               ))}
@@ -203,12 +216,12 @@ function AddTableForm({ partnerId, onAdded }: { partnerId: string; onAdded: (cod
   });
 
   return (
-    <form onSubmit={handleSubmit((v) => add.mutate(v.table_label))} noValidate className="space-y-1">
+    <form onSubmit={handleSubmit((v) => add.mutate(v.table_label))} noValidate className="space-y-1 max-sm:w-full">
       <div className="flex gap-2">
         <Input
           aria-label="Tên bàn mới"
           placeholder="Ví dụ: Bàn 5"
-          className="w-44"
+          className="min-w-0 flex-1 sm:w-44 sm:flex-none"
           aria-invalid={!!errors.table_label}
           {...register("table_label")}
         />

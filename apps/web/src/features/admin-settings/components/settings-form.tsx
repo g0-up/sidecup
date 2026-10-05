@@ -89,7 +89,7 @@ export function SettingsForm({ settings }: { settings: Settings }) {
           inputMode="numeric"
           min={1}
           max={60}
-          className="w-32"
+          className="w-full sm:w-32"
           aria-invalid={!!errors.eta_minutes}
           {...register("eta_minutes", { valueAsNumber: true })}
         />

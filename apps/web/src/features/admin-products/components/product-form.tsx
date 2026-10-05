@@ -147,7 +147,7 @@ function ProductForm({ product, nextSort, onDone }: { product: Product | null; n
           render={({ field }) => (
             <div className="flex items-center gap-2">
               <Checkbox id="product-sweet" checked={field.value} onCheckedChange={(c) => field.onChange(c === true)} />
-              <Label htmlFor="product-sweet">Cho chọn độ ngọt</Label>
+              <Label htmlFor="product-sweet" className="min-h-6">Cho chọn độ ngọt</Label>
             </div>
           )}
         />
@@ -157,7 +157,7 @@ function ProductForm({ product, nextSort, onDone }: { product: Product | null; n
           render={({ field }) => (
             <div className="flex items-center gap-2">
               <Checkbox id="product-ice" checked={field.value} onCheckedChange={(c) => field.onChange(c === true)} />
-              <Label htmlFor="product-ice">Cho chọn đá</Label>
+              <Label htmlFor="product-ice" className="min-h-6">Cho chọn đá</Label>
             </div>
           )}
         />

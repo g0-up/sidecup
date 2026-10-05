@@ -23,11 +23,11 @@ export function ReportFilters({ value, onChange, partners }: Props) {
 
   return (
     <div className="space-y-2">
-      <div className="flex flex-wrap items-end gap-3">
+      <div className="grid gap-3 sm:flex sm:flex-wrap sm:items-end">
         <div className="space-y-1.5">
           <Label htmlFor="report-partner">Quán</Label>
           <Select value={value.partnerId ?? ALL} onValueChange={(v) => set({ partnerId: v === ALL ? null : v })}>
-            <SelectTrigger id="report-partner" className="w-52">
+            <SelectTrigger id="report-partner" className="w-full sm:w-52">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -43,7 +43,7 @@ export function ReportFilters({ value, onChange, partners }: Props) {
         <div className="space-y-1.5">
           <Label htmlFor="report-mode">Thời gian</Label>
           <Select value={value.mode} onValueChange={(v) => set({ mode: v as PeriodMode })}>
-            <SelectTrigger id="report-mode" className="w-40">
+            <SelectTrigger id="report-mode" className="w-full sm:w-40">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -58,18 +58,18 @@ export function ReportFilters({ value, onChange, partners }: Props) {
         {value.mode === "day" && (
           <div className="space-y-1.5">
             <Label htmlFor="report-day">Ngày</Label>
-            <Input id="report-day" type="date" className="w-40" value={value.day} onChange={(e) => set({ day: e.target.value })} />
+            <Input id="report-day" type="date" className="w-full sm:w-40" value={value.day} onChange={(e) => set({ day: e.target.value })} />
           </div>
         )}
         {value.mode === "range" && (
           <>
             <div className="space-y-1.5">
               <Label htmlFor="report-from">Từ ngày</Label>
-              <Input id="report-from" type="date" className="w-40" value={value.from} onChange={(e) => set({ from: e.target.value })} />
+              <Input id="report-from" type="date" className="w-full sm:w-40" value={value.from} onChange={(e) => set({ from: e.target.value })} />
             </div>
             <div className="space-y-1.5">
               <Label htmlFor="report-to">Đến ngày</Label>
-              <Input id="report-to" type="date" className="w-40" value={value.to} onChange={(e) => set({ to: e.target.value })} />
+              <Input id="report-to" type="date" className="w-full sm:w-40" value={value.to} onChange={(e) => set({ to: e.target.value })} />
             </div>
           </>
         )}

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { listPartners, partnersKey } from "@/features/admin-partners/api";
 import { FieldError } from "@/features/admin-products/form-field";
 import { errorMessage } from "@/shared/api/errors";
+import { useDocumentHead } from "@/shared/hooks/use-document-head";
 import { Input } from "@/shared/ui/input";
 import { Label } from "@/shared/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/shared/ui/select";
@@ -28,6 +29,7 @@ export function Component() {
   const options: PartnerOption[] = [...(partners.data ?? [])]
     .sort((a, b) => Number(b.active) - Number(a.active) || a.name.localeCompare(b.name, "vi"))
     .map((p) => ({ id: p.id, name: p.active ? p.name : `${p.name} (ngừng)` }));
+  useDocumentHead({ title: "Báo cáo — Gọi nước" });
 
   return (
     <div className="mx-auto max-w-5xl space-y-6 p-4">
@@ -132,11 +134,11 @@ function FunnelTab({ partners }: { partners: PartnerOption[] }) {
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap items-end gap-3">
+      <div className="grid gap-3 sm:flex sm:flex-wrap sm:items-end">
         <div className="space-y-1.5">
           <Label htmlFor="funnel-partner">Quán</Label>
           <Select value={partnerId ?? ALL} onValueChange={(v) => setPartnerId(v === ALL ? null : v)}>
-            <SelectTrigger id="funnel-partner" className="w-52">
+            <SelectTrigger id="funnel-partner" className="w-full sm:w-52">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -154,7 +156,7 @@ function FunnelTab({ partners }: { partners: PartnerOption[] }) {
           <Input
             id="funnel-from"
             type="date"
-            className="w-40"
+            className="w-full sm:w-40"
             value={range.from}
             onChange={(e) => setRange((r) => ({ ...r, from: e.target.value }))}
           />
@@ -164,7 +166,7 @@ function FunnelTab({ partners }: { partners: PartnerOption[] }) {
           <Input
             id="funnel-to"
             type="date"
-            className="w-40"
+            className="w-full sm:w-40"
             value={range.to}
             onChange={(e) => setRange((r) => ({ ...r, to: e.target.value }))}
           />

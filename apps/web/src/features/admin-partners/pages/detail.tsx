@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Link, useParams } from "react-router";
 import { listProducts, productsKey } from "@/features/admin-products/api";
 import { errorMessage, isApiError } from "@/shared/api/errors";
+import { useDocumentHead } from "@/shared/hooks/use-document-head";
 import { Badge } from "@/shared/ui/badge";
 import { Button } from "@/shared/ui/button";
 import { Card, CardContent } from "@/shared/ui/card";
@@ -17,6 +18,7 @@ import { summarizeOpenHours } from "../open-hours";
 export function Component() {
   const { id = "" } = useParams();
   const { data, isPending, error, refetch } = useQuery({ queryKey: partnerKey(id), queryFn: ({ signal }) => getPartner(id, signal) });
+  useDocumentHead({ title: data ? `${data.name} · Quán — Gọi nước` : "Quán — Gọi nước" });
 
   return (
     <div className="mx-auto max-w-5xl space-y-6 p-4">
@@ -61,7 +63,7 @@ function PartnerDetail({ partner }: { partner: Partner }) {
       </div>
 
       <Tabs defaultValue="tables">
-        <TabsList>
+        <TabsList className="max-sm:w-full">
           <TabsTrigger value="tables">Bàn &amp; mã QR</TabsTrigger>
           <TabsTrigger value="info">Thông tin</TabsTrigger>
         </TabsList>

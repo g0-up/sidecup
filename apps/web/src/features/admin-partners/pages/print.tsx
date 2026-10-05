@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { ArrowLeft, Printer } from "lucide-react";
 import { Link, useParams } from "react-router";
 import { errorMessage } from "@/shared/api/errors";
+import { useDocumentHead } from "@/shared/hooks/use-document-head";
 import { Button } from "@/shared/ui/button";
 import { getPartner, listQrCodes, partnerKey, qrcodesKey } from "../api";
 import { QrPrintCard } from "../components/qr-print-card";
@@ -16,10 +17,13 @@ export function Component() {
   const codes = useQuery({ queryKey: qrcodesKey(id), queryFn: ({ signal }) => listQrCodes(id, signal) });
   const active = (codes.data ?? []).filter((q) => q.active);
   const error = partner.error ?? codes.error;
+  const heading = partner.data ? `In thẻ QR · ${partner.data.name}` : "In thẻ QR";
+  useDocumentHead({ title: `${heading} — Gọi nước` });
 
   return (
     <div className="qr-print-root mx-auto max-w-5xl space-y-6 p-4">
       <style>{PAGE_RULE}</style>
+      <h1 className="sr-only">{heading}</h1>
       <div className="no-print flex flex-wrap items-center justify-between gap-2">
         <Button variant="ghost" size="sm" asChild>
           <Link to={`/seller/partners/${encodeURIComponent(id)}`}>

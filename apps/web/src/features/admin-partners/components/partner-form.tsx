@@ -170,7 +170,7 @@ function PartnerForm({
         name="active"
         render={({ field }) => (
           <div className="flex items-center gap-2">
-            <Switch id="partner-active" checked={field.value} onCheckedChange={field.onChange} />
+            <Switch size="lg" id="partner-active" checked={field.value} onCheckedChange={field.onChange} />
             <Label htmlFor="partner-active">Đang hợp tác (tắt để ngừng nhận đơn ở mọi bàn của quán)</Label>
           </div>
         )}
