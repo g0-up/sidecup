@@ -1,6 +1,6 @@
 # Rà soát UX/AX màn khách
 
-Dùng khi đổi giao diện hoặc route của khách, trước khi merge. Quy tắc thiết kế được chấm ở đây nằm trong [design.md](./design.md).
+Dùng khi đổi giao diện hoặc route của khách, trước khi merge; màn người bán có checklist riêng ở [Màn người bán](#màn-người-bán). Quy tắc thiết kế được chấm ở đây nằm trong [design.md](./design.md).
 
 ## Thang chấm
 
@@ -93,3 +93,29 @@ curl -s -H 'Host: <tên-miền>' http://localhost:8081/sitemap.xml
 - [`apps/web/nginx.conf`](../apps/web/nginx.conf) gửi `X-Robots-Tag: noindex, nofollow` cho `/t/`, `/o/`, `/seller` và `/revoked`, và trả `robots.txt`, `sitemap.xml` thật (sitemap chỉ có `/`). `robots.txt` **không** `Disallow` các route đó, để bot đọc được header `noindex`.
 - Page tương ứng gọi `useDocumentHead({ noindex: true })` làm lớp dự phòng khi trang chạy sau một proxy khác.
 - Thêm route khách mới: quyết định nó có được lập chỉ mục không, rồi sửa regex trong `nginx.conf`, sitemap và page cùng lúc. Kiểm bằng `curl -sI <host>/<route>`.
+
+## Màn người bán
+
+Dùng khi đổi giao diện `/seller/*`. Chấm theo cùng thang 0–3 ở trên, bỏ "Nhận diện thương hiệu"; quy tắc được chấm nằm ở [design.md](./design.md#màn-người-bán). Rõ ràng, Đáp ứng bề rộng và Trợ năng phải đạt ít nhất 2. Lần rà đầu: `plans/reports/enhance-ux-ax-261005-1017-seller-responsive.md`.
+
+[`apps/web/scripts/capture-seller-audit.mjs`](../apps/web/scripts/capture-seller-audit.mjs) tự đăng nhập, gieo năm đơn mẫu (có một đơn trễ) vào dữ liệu giả rồi chụp 17 màn ở bốn khung nhìn: đăng nhập, bảng đơn (đang mở, đã đóng), xác nhận từ chối, VietQR, chi tiết đơn, menu, món và form món, quán, form quán, chi tiết quán, thẻ QR, trang in, cài đặt, hai tab báo cáo.
+
+```sh
+cd apps/web
+VITE_USE_MOCK=1 pnpm dev                       # terminal 1, cổng 5173
+node scripts/capture-seller-audit.mjs http://localhost:5173 ../../plans/reports/<tên-báo-cáo>/round-N
+```
+
+`summary` trong `audit.json` đạt khi:
+
+- `errors` bằng 0; `overflowX`, `tablesScrolling` (bảng cuộn ngang dưới 1024 px), `under24`, `serviceUnder44` (màn giao dưới 1024 px), `missingH1` và `stickyHeadings` rỗng; `smallInputs` bằng 0;
+- `headerHeight` ở `mobile` và `narrow320` ≤ 64 px;
+- mỗi màn trong `titles` có tiêu đề riêng.
+
+Script không chụp được tất cả. Xem ảnh bằng mắt ở 320 px và 768 px (nút bị cắt, nhãn đè nhau, nút đỏ đặc ngoài bước xác nhận), rồi kiểm bằng bàn phím và giảm chuyển động:
+
+- dưới `lg`: Enter trên "Mở menu" mở menu (`aria-expanded` thành `true`), Tab không thoát khỏi menu, Esc đóng và focus về "Mở menu";
+- "Từ chối" mở hộp xác nhận với focus trên "Quay lại", Tab không thoát khỏi hộp, Esc đóng và focus về "Từ chối"; đóng VietQR thì focus về "Chuyển khoản"; "Đăng xuất" hỏi lại với focus trên "Ở lại";
+- `reducedMotion: "reduce"`: `animation-name` của nút "Chạm để bật lại âm" là `none`.
+
+Tắt dev server khi xong. Script chạy dữ liệu giả nên MSW ghi `public/mockServiceWorker.js`; tệp này không được commit.

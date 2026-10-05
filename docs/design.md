@@ -1,6 +1,6 @@
 # Thiết kế giao diện khách
 
-Quy tắc cho mọi màn khách (`/`, `/t/:token`, `/o/:id`, `/revoked`, 404). Màn người bán dùng chung token và component nhưng không bắt buộc theo phần "Giọng văn" và "Thương hiệu". Giá trị token chỉ nằm trong code; tài liệu này nói **khi nào dùng cái gì**.
+Quy tắc cho mọi màn khách (`/`, `/t/:token`, `/o/:id`, `/revoked`, 404). Màn người bán dùng chung token và component nhưng không bắt buộc theo phần "Giọng văn" và "Thương hiệu"; quy tắc riêng của chúng ở [Màn người bán](#màn-người-bán). Giá trị token chỉ nằm trong code; tài liệu này nói **khi nào dùng cái gì**.
 
 | Nguồn | Nội dung |
 |-------|----------|
@@ -68,3 +68,18 @@ Tiếng Việt ngắn, thân thiện, nói kết quả trước, xưng "bạn" v
 - Không hứa một giờ đã qua: quá giờ dự kiến mà quán chưa mang ra thì câu trạng thái là "Quán đang pha, sắp xong".
 - Màn đơn nói rõ khách có cần giữ trang mở không ("Bạn sẽ nhận tin Zalo khi trạng thái đổi, có thể đóng trang này." hoặc "Giữ trang này mở để theo dõi đơn.").
 - Không có ảnh sản phẩm trong cả menu thì không vẽ ô ảnh; chỉ khi một số món có ảnh mới dùng ô chữ cái làm chỗ trống.
+
+## Màn người bán
+
+Màn người bán (`/seller/*`) dùng chung token, phần "Màu và hình khối" và "Chuyển động" ở trên. Người bán dùng điện thoại vừa cầm ly vừa bấm, nên các quy tắc dưới đây ưu tiên chạm nhanh và không phải cuộn ngang. Cách rà nằm ở [review.md](./review.md#màn-người-bán).
+
+- **Đích chạm chia hai mức.** Điều khiển phục vụ (bảng đơn, chi tiết đơn, nút trong hộp thoại, nút Đóng của dialog và sheet, nút menu, âm báo) ≥ 44 px dưới `lg`, viết bằng `h-11`, `size-11` hoặc `max-lg:h-11`. Trang quản trị (món, quán, cài đặt, báo cáo) ≥ 24 px; nhãn của checkbox và switch thêm `min-h-6` để vùng bấm gồm cả chữ.
+- **Bảng không cuộn ngang trên điện thoại.** Dùng `<Table stacked>` ([`table.tsx`](../apps/web/src/shared/ui/table.tsx)): dưới `sm` mỗi hàng thành một khối lưới và hàng tiêu đề bị ẩn. Page tự đặt khuôn lưới cho hàng (`max-sm:grid-cols-…`) và vị trí từng ô (`max-sm:col-span-…`, `max-sm:row-start-…`). Ô số cần nhãn hiện rõ (`sm:hidden`) vì tiêu đề cột đã ẩn. Từ `sm` tới `lg`, tiêu đề cột được xuống dòng (`max-lg:[&_th]:whitespace-normal`) thay vì đẩy bảng tràn.
+- **Ô lọc và ô nhập rộng hết hàng dưới `sm`** (`w-full sm:w-52`), không đặt bề rộng cố định.
+- **Màu nguy hiểm theo quy tắc chung:** nút mở bước nguy hiểm ("Từ chối", "Không gặp khách", "Thu hồi") là `outline` hoặc `ghost` + `text-destructive`; nút đỏ đặc (`variant="destructive"`) chỉ ở bước xác nhận. Focus đầu tiên trong hộp xác nhận nằm trên nút quay lại ("Quay lại", "Ở lại", "Giữ lại").
+- **Header một hàng trên điện thoại**, cao ≤ 64 px. Dưới `lg`, điều hướng và "Đăng xuất" nằm trong menu trượt (`Sheet`) mở bằng nút "Mở menu"; công tắc "Nhận đơn" và âm báo luôn ở trên header. Đăng xuất ở mọi bề rộng đều hỏi lại, vì sau đó màn thôi báo đơn mới.
+- **Chỉ có một công tắc "Nhận đơn"**, trên header. Trang Cài đặt chỉ hiện trạng thái và chỉ về header; e2e cũng dựa vào việc chỉ có một switch.
+- **Bảng đơn dưới `lg` chỉ hiện một cột**, chọn bằng nhóm nút "Chọn cột" có chấm đỏ báo cột có đơn mới hoặc trễ. Lần tải đầu mở cột có đơn trễ lâu nhất. Bảng đơn rộng tối đa `max-w-7xl` để mỗi thẻ đủ chỗ cho ba nút giao; trang quản trị dùng `max-w-5xl`.
+- **Tiêu đề tab có dạng "<Trang> — Gọi nước"** (ví dụ "Món — Gọi nước", "Đơn #ABC123 — Gọi nước"); bảng đơn thêm số đơn đang mở ở đầu, "(4) Bảng đơn — Gọi nước". Mỗi route có một `h1`; bảng đơn dùng `h1` ẩn (`sr-only`). Route `/seller` không lập chỉ mục nhờ header nginx (xem [review.md](./review.md#không-lập-chỉ-mục-route-theo-token)).
+- **Hộp thoại trả focus về nút đã mở nó.** Radix chỉ trả focus về Trigger của nó, nên `DialogContent` và `AlertDialogContent` dùng [`useReturnFocus`](../apps/web/src/shared/hooks/use-return-focus.ts) để ghi lại phần tử có focus lúc mở và trả về đó khi đóng. Hộp mở bằng state không cần làm gì thêm. Nếu nút đã mở hộp bị gỡ khỏi trang (ví dụ sau khi thu hồi mã), focus rơi về `<body>` như mặc định của Radix.
+- Hiệu ứng lặp (nút âm báo nhấp nháy khi trình duyệt chặn âm thanh) viết `motion-safe:animate-pulse`.
