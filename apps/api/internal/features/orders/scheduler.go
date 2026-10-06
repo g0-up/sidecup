@@ -14,13 +14,13 @@ import (
 
 const (
 	SentTimeout      = 5 * time.Minute
-	ContactRetention = 90 * 24 * time.Hour
+	PhoneRetention   = 90 * 24 * time.Hour
 	schedulerTick    = 15 * time.Second
 	purgeHour        = 3
 	expiredBatchSize = 100
 )
 
-// Scheduler tự huỷ đơn `sent` quá 5 phút và xoá SĐT, địa chỉ người nhận quá 90 ngày (03:00 theo APP_TZ).
+// Scheduler tự huỷ đơn `sent` quá 5 phút và xoá SĐT quá 90 ngày (03:00 theo APP_TZ).
 // Chỉ đúng khi chạy một instance API; nhiều instance cần bọc bằng pg_advisory_lock.
 type Scheduler struct {
 	svc       *Service
@@ -79,20 +79,20 @@ func (s *Scheduler) maybePurge(ctx context.Context) {
 	if now.Hour() < purgeHour || !s.lastPurge.Before(today) {
 		return
 	}
-	orders, outbox, err := s.PurgeCustomerContact(ctx)
+	orders, outbox, err := s.PurgePhones(ctx)
 	if err != nil {
-		slog.ErrorContext(ctx, "scheduler purge customer contact", "err", err)
+		slog.ErrorContext(ctx, "scheduler purge phones", "err", err)
 		return
 	}
 	s.lastPurge = today
-	slog.InfoContext(ctx, "scheduler purged customer contact", "orders", orders, "outbox", outbox)
+	slog.InfoContext(ctx, "scheduler purged phones", "orders", orders, "outbox", outbox)
 }
 
-func (s *Scheduler) PurgeCustomerContact(ctx context.Context) (orders, outbox int64, err error) {
-	before := s.svc.clock.Now().Add(-ContactRetention)
+func (s *Scheduler) PurgePhones(ctx context.Context) (orders, outbox int64, err error) {
+	before := s.svc.clock.Now().Add(-PhoneRetention)
 	err = db.WithTx(ctx, s.svc.db, func(tx *gorm.DB) error {
 		var err error
-		if orders, err = s.svc.writer.ClearCustomerContact(ctx, tx, before); err != nil {
+		if orders, err = s.svc.writer.ClearCustomerPhone(ctx, tx, before); err != nil {
 			return err
 		}
 		outbox, err = s.svc.outbox.PurgeRecipients(ctx, tx, before)

@@ -18,7 +18,7 @@ import (
 //
 // Bất biến đơn `paid` nằm ở đây: không có DELETE, mọi UPDATE kèm `WHERE status = $from`
 // và `$from` không bao giờ là `paid`, nên không câu lệnh nào của ứng dụng chạm được đơn đã thu tiền.
-// Ngoại lệ duy nhất là ClearCustomerContact (xoá SĐT và địa chỉ sau 90 ngày), chỉ set đúng hai cột đó.
+// Ngoại lệ duy nhất là ClearCustomerPhone (xoá SĐT sau 90 ngày), chỉ set đúng cột đó.
 // Quy ước review: chỉ file này được chứa `INSERT INTO orders` / `UPDATE orders`.
 type Writer struct{}
 
@@ -74,9 +74,9 @@ func (s SetClause) build(id any, from Status) (string, []any, error) {
 func (Writer) Insert(ctx context.Context, tx *gorm.DB, o *Order) (*Order, bool, error) {
 	tx = tx.WithContext(ctx)
 	const sql = `INSERT INTO orders (
-		code, qr_token, partner_id, partner_name, table_label, items, note, recipient_address, total, discount_total,
+		code, qr_token, partner_id, partner_name, table_label, items, note, total, discount_total,
 		status, customer_phone, client_id, idempotency_key, created_at, updated_at
-	) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0, 'sent', ?, ?, ?, ?, ?)
+	) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 0, 'sent', ?, ?, ?, ?, ?)
 	ON CONFLICT (idempotency_key) DO NOTHING
 	RETURNING *`
 
@@ -86,7 +86,7 @@ func (Writer) Insert(ctx context.Context, tx *gorm.DB, o *Order) (*Order, bool, 
 			return nil, false, err
 		}
 		var out Order
-		res := tx.Raw(sql, code, o.QRToken, o.PartnerID, o.PartnerName, o.TableLabel, o.Items, o.Note, o.RecipientAddress, o.Total,
+		res := tx.Raw(sql, code, o.QRToken, o.PartnerID, o.PartnerName, o.TableLabel, o.Items, o.Note, o.Total,
 			o.CustomerPhone, o.ClientID, o.IdempotencyKey, o.CreatedAt, o.CreatedAt).Scan(&out)
 		if res.Error != nil {
 			if isUniqueViolation(res.Error, "orders_code_key") && attempt < maxCodeAttempts {
@@ -125,11 +125,10 @@ func (Writer) UpdateWhereStatus(ctx context.Context, tx *gorm.DB, id any, from S
 	return &out, nil
 }
 
-// ClearCustomerContact xoá SĐT và địa chỉ người nhận của đơn đã đóng (hoặc tạo) trước mốc closedBefore,
-// kể cả đơn `paid`.
-func (Writer) ClearCustomerContact(ctx context.Context, tx *gorm.DB, closedBefore time.Time) (int64, error) {
-	res := tx.WithContext(ctx).Exec(`UPDATE orders SET customer_phone = NULL, recipient_address = NULL, updated_at = now()
-		WHERE (customer_phone IS NOT NULL OR recipient_address IS NOT NULL) AND COALESCE(closed_at, created_at) < ?`, closedBefore)
+// ClearCustomerPhone xoá SĐT của đơn đã đóng (hoặc tạo) trước mốc closedBefore, kể cả đơn `paid`.
+func (Writer) ClearCustomerPhone(ctx context.Context, tx *gorm.DB, closedBefore time.Time) (int64, error) {
+	res := tx.WithContext(ctx).Exec(`UPDATE orders SET customer_phone = NULL, updated_at = now()
+		WHERE customer_phone IS NOT NULL AND COALESCE(closed_at, created_at) < ?`, closedBefore)
 	return res.RowsAffected, res.Error
 }
 

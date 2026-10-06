@@ -9,24 +9,22 @@ import (
 
 // OrderView là phần đơn mà cả khách lẫn người bán đều thấy: không SĐT, không client_id.
 type OrderView struct {
-	ID     uuid.UUID  `json:"id"`
-	Code   string     `json:"code"`
-	Status Status     `json:"status"`
-	Items  OrderItems `json:"items"`
-	Note   *string    `json:"note"`
-	// RecipientAddress khách tự nhập; đơn quá 90 ngày thì bị xoá như SĐT.
-	RecipientAddress *string    `json:"recipient_address"`
-	Total            int64      `json:"total"`
-	PartnerName      string     `json:"partner_name"`
-	TableLabel       string     `json:"table_label"`
-	CancelReason     *string    `json:"cancel_reason"`
-	PaymentMethod    *string    `json:"payment_method"`
-	CreatedAt        time.Time  `json:"created_at"`
-	AcceptedAt       *time.Time `json:"accepted_at"`
-	DeliveringAt     *time.Time `json:"delivering_at"`
-	PaidAt           *time.Time `json:"paid_at"`
-	ClosedAt         *time.Time `json:"closed_at"`
-	UpdatedAt        time.Time  `json:"updated_at"`
+	ID            uuid.UUID  `json:"id"`
+	Code          string     `json:"code"`
+	Status        Status     `json:"status"`
+	Items         OrderItems `json:"items"`
+	Note          *string    `json:"note"`
+	Total         int64      `json:"total"`
+	PartnerName   string     `json:"partner_name"`
+	TableLabel    string     `json:"table_label"`
+	CancelReason  *string    `json:"cancel_reason"`
+	PaymentMethod *string    `json:"payment_method"`
+	CreatedAt     time.Time  `json:"created_at"`
+	AcceptedAt    *time.Time `json:"accepted_at"`
+	DeliveringAt  *time.Time `json:"delivering_at"`
+	PaidAt        *time.Time `json:"paid_at"`
+	ClosedAt      *time.Time `json:"closed_at"`
+	UpdatedAt     time.Time  `json:"updated_at"`
 	// MenuPath là đường tương đối về menu của bàn, để trang đơn có nút gọi thêm; origin web tự ghép.
 	MenuPath string `json:"menu_path"`
 }
@@ -55,7 +53,7 @@ func toView(o Order) OrderView {
 		items = OrderItems{}
 	}
 	return OrderView{
-		ID: o.ID, Code: o.Code, Status: o.Status, Items: items, Note: o.Note, RecipientAddress: o.RecipientAddress, Total: o.Total,
+		ID: o.ID, Code: o.Code, Status: o.Status, Items: items, Note: o.Note, Total: o.Total,
 		PartnerName: o.PartnerName, TableLabel: o.TableLabel, CancelReason: o.CancelReason, PaymentMethod: o.PaymentMethod,
 		CreatedAt: o.CreatedAt, AcceptedAt: o.AcceptedAt, DeliveringAt: o.DeliveringAt, PaidAt: o.PaidAt,
 		ClosedAt: o.ClosedAt, UpdatedAt: o.UpdatedAt, MenuPath: "/t/" + url.PathEscape(o.QRToken),
@@ -94,8 +92,6 @@ type listResp struct {
 type CreateReq struct {
 	Items []LineReq `json:"items" validate:"required,min=1,max=30,dive"`
 	Note  *string   `json:"note" validate:"omitempty,max=200"`
-	// RecipientAddress không bắt buộc, chữ tự do.
-	RecipientAddress *string `json:"recipient_address" validate:"omitempty,max=200"`
 	// Phone không bắt buộc: bỏ trống thì khách không nhận tin trạng thái đơn qua Zalo.
 	Phone string `json:"phone" validate:"omitempty,max=20"`
 }

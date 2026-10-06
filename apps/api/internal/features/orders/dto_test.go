@@ -29,13 +29,6 @@ func TestToPublicEscapesMenuPathAndHidesPrivateFields(t *testing.T) {
 	assert.Equal(t, "/t/ab%2Fc%20d%3F", fields["menu_path"])
 }
 
-func TestRecipientAddressIsVisibleToCustomerAndSeller(t *testing.T) {
-	address := "Phòng 302, toà B"
-	o := Order{QRToken: "TOK1", RecipientAddress: &address}
-	assert.Equal(t, &address, ToPublic(o, 5, false).RecipientAddress)
-	assert.Equal(t, &address, ToSeller(o).RecipientAddress)
-}
-
 func TestSellerViewHasNoCustomerOnlyFields(t *testing.T) {
 	body, err := json.Marshal(ToSeller(Order{QRToken: "TOK1"}))
 	require.NoError(t, err)

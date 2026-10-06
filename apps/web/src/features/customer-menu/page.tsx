@@ -40,7 +40,6 @@ function MenuPage({ token }: { token: string }) {
   const [picking, setPicking] = useState<MenuProduct | null>(null);
   const [cartOpen, setCartOpen] = useState(false);
   const [note, setNote] = useState("");
-  const [address, setAddress] = useState("");
   const [savedPhone, savePhone] = useLocalStorage("sc_phone");
   const [phone, setPhone] = useState(savedPhone);
   const [submit, dispatchSubmit] = useReducer(submitReducer, { status: "idle" });
@@ -87,7 +86,6 @@ function MenuPage({ token }: { token: string }) {
             ...(l.ice ? { ice: l.ice } : {}),
           })),
           note: note.trim() || undefined,
-          recipient_address: address.trim() || undefined,
           // SĐT không bắt buộc: bỏ trống thì không gửi field, khách không nhận tin Zalo.
           ...(normalizePhone(phone) ? { phone: normalizePhone(phone) } : {}),
         },
@@ -151,8 +149,6 @@ function MenuPage({ token }: { token: string }) {
         orderingMessage={blocked}
         note={note}
         onNote={setNote}
-        address={address}
-        onAddress={setAddress}
         phone={phone}
         onPhone={(v) => {
           setPhone(v);

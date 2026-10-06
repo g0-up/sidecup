@@ -141,12 +141,11 @@ Database **không có trigger** (architecture A14). Bất biến "đơn `paid` k
 - Không `UPDATE`/`DELETE` bảng `orders`, `order_events` bằng tay ở production.
 - Sai số tiền sau khi đã thu → tạo **điều chỉnh** (trang Báo cáo → Điều chỉnh, hoặc `POST /api/seller/adjustments`) với số âm/dương và lý do. Báo cáo hiện điều chỉnh riêng và trừ/cộng vào "Phải trả".
 - `order_events` là dấu vết kiểm toán: mọi chuyển trạng thái có thời điểm và người bấm (`customer`, `seller`, `system`).
-- Nếu cần chốt chặn ở DB, thêm một migration mới tạo trigger chặn `UPDATE/DELETE` khi `OLD.status = 'paid'` (ngoại lệ cột `customer_phone`, `recipient_address`, `updated_at`); không phải sửa code ứng dụng.
+- Nếu cần chốt chặn ở DB, thêm một migration mới tạo trigger chặn `UPDATE/DELETE` khi `OLD.status = 'paid'` (ngoại lệ cột `customer_phone`, `updated_at`); không phải sửa code ứng dụng.
 
 ## Dữ liệu cá nhân
 
 - SĐT khách chỉ lưu ở `orders.customer_phone` và `notification_outbox.recipient`. Mỗi ngày lúc 03:00 (giờ Việt Nam) scheduler xoá SĐT của đơn quá 90 ngày và của tin đã xử lý quá 90 ngày.
-- Địa chỉ người nhận (khách tự nhập, không bắt buộc) chỉ lưu ở `orders.recipient_address`; cùng lượt 03:00 đó scheduler xoá địa chỉ của đơn quá 90 ngày. Địa chỉ hiện trên trang đơn của khách (ai có link đơn đều xem được) và trên bảng đơn người bán.
 - SĐT không có trong view công khai, báo cáo, bản export cho chủ quán, log HTTP (logger không ghi body, cookie, header `Authorization`, và GORM không in giá trị tham số).
 
 ## Zalo gửi tin cho khách

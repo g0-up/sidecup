@@ -133,7 +133,6 @@ Mỗi bàn có một mã QR chứa link cố định trên tên miền riêng c�
 - \[ \] Mỗi món chọn được độ ngọt (Ít ngọt / Vừa / Ngọt) và đá (Không đá / Ít đá / Bình thường) nếu món có tuỳ chọn đó; mặc định là Vừa và Bình thường.
 - \[ \] Số ly từ 1 đến 20 mỗi dòng; cùng món, cùng tuỳ chọn thì gộp dòng.
 - \[ \] Ghi chú tối đa 200 ký tự, không bắt buộc.
-- \[ \] Địa chỉ người nhận nằm dưới ô Ghi chú, chữ tự do tối đa 200 ký tự, không bắt buộc.
 - \[ \] Giỏ hiện tổng tiền; món vừa hết khi đang trong giỏ thì bị đánh dấu và chặn đặt cho tới khi bỏ món đó.
 
 ### P0-4. Đặt đơn không bị trùng
@@ -304,7 +303,7 @@ Hệ thống nhỏ, một máy chủ là đủ; ưu tiên ít thành phần đ�
 | Trình duyệt hỗ trợ                   | Safari iOS, Chrome Android, trình duyệt nhúng của Zalo trên cả hai hệ điều hành                                                                                                                                                                                            |
 | Sẵn sàng                             | Chạy ổn định trong giờ bán; có cảnh báo cho người vận hành khi máy chủ hoặc dịch vụ gửi tin ngừng                                                                                                                                                                          |
 | Bảo mật                              | Mã QR không đoán được; giới hạn tần suất gọi API theo thiết bị; trang quản trị có đăng nhập; phiên đăng nhập của tài khoản Zalo gửi tin lưu bí mật, không nằm trong mã nguồn                                                                                               |
-| Dữ liệu cá nhân                      | Chỉ thu số điện thoại của khách, dùng duy nhất để báo trạng thái đơn và để người bán gọi khi không tìm thấy khách, và địa chỉ người nhận khách tự nhập (không bắt buộc) để người bán mang nước tới; không thu tên hay vị trí tự động. Số điện thoại và địa chỉ người nhận bị xoá khỏi đơn sau 90 ngày. Phải tuân thủ quy định bảo vệ dữ liệu cá nhân hiện hành (xem Câu hỏi mở) |
+| Dữ liệu cá nhân                      | Chỉ thu số điện thoại của khách, dùng duy nhất để báo trạng thái đơn và để người bán gọi khi không tìm thấy khách; không thu tên hay vị trí. Số điện thoại bị xoá khỏi đơn sau 90 ngày (đề xuất). Phải tuân thủ quy định bảo vệ dữ liệu cá nhân hiện hành (xem Câu hỏi mở) |
 | Sao lưu                              | Sao lưu cơ sở dữ liệu hằng ngày ra nơi khác máy chủ; dữ liệu đơn giữ ít nhất 12 tháng để đối soát                                                                                                                                                                          |
 | Tên miền                             | Tên miền riêng của người bán, đăng ký dài hạn; link trên mã QR không bao giờ đổi                                                                                                                                                                                           |
 
@@ -325,7 +324,7 @@ partner_hidden  (partner_id, product_id)
 qr_codes        (token PK, partner_id, table_label, active, created_at, revoked_at)
 products        (id, name, price, image_url, has_sweet, has_ice, available, sort)
 orders          (id, code, qr_token, partner_id, table_label,      -- ghi cứng lúc tạo
-                 items JSON, note, recipient_address, total, commission_rate,
+                 items JSON, note, total, commission_rate,
                  status, cancel_reason, payment_method,
                  created_at, accepted_at, delivering_at, paid_at, closed_at,
                  customer_phone, client_id, idempotency_key UNIQUE)

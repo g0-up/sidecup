@@ -71,11 +71,10 @@ Menu của bàn. Ghi một page view (mỗi mã QR, mỗi ngày theo `APP_TZ`, m
 Header `Idempotency-Key: <uuid>`. Rate limit 10/phút theo `client_id` và 30/phút theo IP.
 
 ```json
-{ "items": [{ "product_id": "…", "qty": 2, "sweet": "less", "ice": "none" }], "note": "ít đá", "recipient_address": "Phòng 302, toà B", "phone": "0901234567" }
+{ "items": [{ "product_id": "…", "qty": 2, "sweet": "less", "ice": "none" }], "note": "ít đá", "phone": "0901234567" }
 ```
 
 - `qty` 1..20 (sau khi gộp dòng cùng món + tuỳ chọn); 1..30 dòng; `note` ≤ 200 ký tự.
-- `recipient_address` (địa chỉ người nhận) không bắt buộc, chữ tự do ≤ 200 ký tự: vắng, rỗng hoặc chỉ có khoảng trắng → `null`; có giá trị thì được bỏ khoảng trắng hai đầu. Hiện ở cả view công khai lẫn view người bán và bị xoá cùng SĐT sau 90 ngày.
 - `sweet ∈ {less, medium, sweet}`, `ice ∈ {none, less, normal}`; chỉ gửi khi món có tuỳ chọn đó, vắng thì mặc định `medium`/`normal`.
 - `phone` không bắt buộc: vắng, rỗng hoặc chỉ có khoảng trắng → `customer_phone = null` và khách không nhận tin trạng thái. Có giá trị thì phải là 10 số bắt đầu bằng 0 sau khi bỏ khoảng trắng/dấu chấm/gạch; `+84` được đổi thành `0`.
 - Server tự tra giá và gộp dòng. `201` đơn mới; `200` khi key đã dùng (trả lại đơn cũ, bỏ qua body).
@@ -89,7 +88,7 @@ View công khai (không có SĐT, không có `client_id`):
 {
   "id": "…", "code": "AB12CD", "status": "sent",
   "items": [{ "product_id": "…", "name": "Bạc xỉu", "unit_price": 29000, "qty": 2, "sweet": "less", "ice": "normal", "line_total": 58000 }],
-  "note": null, "recipient_address": null, "total": 58000, "partner_name": "Quán test", "table_label": "Bàn 1",
+  "note": null, "total": 58000, "partner_name": "Quán test", "table_label": "Bàn 1",
   "cancel_reason": null, "payment_method": null,
   "created_at": "…", "accepted_at": null, "delivering_at": null, "paid_at": null, "closed_at": null, "updated_at": "…",
   "menu_path": "/t/AbC123", "eta_minutes": 7, "notify_zalo": true,
