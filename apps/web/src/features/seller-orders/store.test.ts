@@ -10,6 +10,7 @@ function order(id: string, status: SellerOrder["status"], updated = "2026-10-01T
     status,
     items: [],
     note: null,
+    recipient_address: null,
     total: 45000,
     partner_name: "Quán test",
     table_label: "Bàn 1",

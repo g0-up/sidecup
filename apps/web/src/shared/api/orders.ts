@@ -17,6 +17,7 @@ interface OrderBase {
   status: OrderStatus;
   items: OrderItem[];
   note: string | null;
+  recipient_address: string | null;
   total: number;
   partner_name: string;
   table_label: string;

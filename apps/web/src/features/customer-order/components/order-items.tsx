@@ -22,6 +22,9 @@ export function OrderItems({ order }: { order: PublicOrder }) {
         })}
       </ul>
       {order.note && <p className="border-t p-3 text-sm text-muted-foreground">Ghi chú: {order.note}</p>}
+      {order.recipient_address && (
+        <p className="border-t p-3 text-sm text-muted-foreground">Địa chỉ người nhận: {order.recipient_address}</p>
+      )}
       <div className="flex justify-between border-t p-3 font-semibold">
         <span>Tổng</span>
         <span className="tabular-nums">{formatVND(order.total)}</span>

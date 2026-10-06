@@ -71,6 +71,9 @@ export function OrderCard({ order, clock, unseen, onSeen, linkToDetail = true }:
         ))}
       </ul>
       {order.note && <p className="rounded-md bg-secondary px-3 py-2 text-sm">Ghi chú: {order.note}</p>}
+      {order.recipient_address && (
+        <p className="rounded-md bg-secondary px-3 py-2 text-sm">Địa chỉ người nhận: {order.recipient_address}</p>
+      )}
 
       <div className="flex items-center justify-between">
         <span className="text-lg font-semibold tabular-nums">{formatVND(order.total)}</span>

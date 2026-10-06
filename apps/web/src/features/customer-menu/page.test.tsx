@@ -84,6 +84,32 @@ describe("trang menu khách", () => {
     await waitFor(() => expect(router.state.location.pathname).toMatch(/^\/o\//));
     expect(db.orders[0].customer_phone).toBeNull();
     expect(bodies[0]).not.toHaveProperty("phone");
+    expect(bodies[0]).not.toHaveProperty("recipient_address");
+    expect(db.orders[0].recipient_address).toBeNull();
+    server.events.removeAllListeners();
+  });
+
+  it("địa chỉ người nhận nằm dưới Ghi chú, không bắt buộc; nhập thì gửi bản đã bỏ khoảng trắng", async () => {
+    const user = userEvent.setup();
+    const bodies: Record<string, unknown>[] = [];
+    server.events.on("request:start", async ({ request }) => {
+      if (request.method === "POST") bodies.push((await request.clone().json()) as Record<string, unknown>);
+    });
+    renderMenu();
+    await addToCart(user, "Cà phê sữa đá");
+    await user.click(screen.getByRole("button", { name: /Xem giỏ · 1 ly/ }));
+    const sheet = await screen.findByRole("dialog");
+    const note = within(sheet).getByLabelText("Ghi chú");
+    const address = within(sheet).getByLabelText("Địa chỉ người nhận");
+    expect(note.compareDocumentPosition(address) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(address).toHaveAttribute("maxlength", "200");
+    expect(address).not.toBeRequired();
+
+    await user.type(address, "  Phòng 302, toà B  ");
+    await user.click(within(sheet).getByRole("button", { name: "Đặt nước" }));
+    await waitFor(() => expect(db.orders).toHaveLength(1));
+    expect(bodies[0].recipient_address).toBe("Phòng 302, toà B");
+    expect(db.orders[0].recipient_address).toBe("Phòng 302, toà B");
     server.events.removeAllListeners();
   });
 

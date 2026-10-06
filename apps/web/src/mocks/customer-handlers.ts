@@ -60,6 +60,7 @@ export const customerHandlers = [
       status: "sent",
       items,
       note: body.note ?? null,
+      recipient_address: body.recipient_address ?? null,
       total: items.reduce((s, i) => s + i.line_total, 0),
       partner_name: "Quán test",
       table_label: "Bàn 1",

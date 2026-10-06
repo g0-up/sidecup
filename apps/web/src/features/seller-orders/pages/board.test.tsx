@@ -18,6 +18,7 @@ function seed(id: string, status: SellerOrder["status"], code: string): SellerOr
     status,
     items: [{ product_id: "p-cfsd", name: "Cà phê sữa đá", unit_price: 25000, qty: 2, sweet: "less", ice: "normal", line_total: 50000 }],
     note: "ít đá",
+    recipient_address: "Phòng 302, toà B",
     total: 50000,
     partner_name: "Quán test",
     table_label: "Bàn 3",
@@ -64,7 +65,7 @@ describe("bảng đơn người bán", () => {
     setMockLoggedIn(true);
   });
 
-  it("chia đơn theo cột, hiện SĐT dạng tel: và ghi chú", async () => {
+  it("chia đơn theo cột, hiện SĐT dạng tel:, ghi chú và địa chỉ người nhận", async () => {
     seed("a", "sent", "AAA111");
     seed("b", "delivering", "BBB222");
     renderBoard();
@@ -73,6 +74,7 @@ describe("bảng đơn người bán", () => {
     expect(within(screen.getByRole("region", { name: "Đang mang ra" })).getByText("#BBB222")).toBeInTheDocument();
     expect(within(sent).getByRole("link", { name: /0901234567/ })).toHaveAttribute("href", "tel:0901234567");
     expect(within(sent).getByText(/ít đá/)).toBeInTheDocument();
+    expect(within(sent).getByText("Địa chỉ người nhận: Phòng 302, toà B")).toBeInTheDocument();
     expect(within(sent).queryByText("Mới")).not.toBeInTheDocument();
   });
 

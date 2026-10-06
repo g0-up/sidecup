@@ -7,7 +7,10 @@ import type { OrderStatus } from "@/shared/lib/order-status";
 import { renderRoutes, stubWebSocket } from "@/test/render";
 import * as orderPage from "./page";
 
-function seedOrder(status: OrderStatus, opts: { phone?: string | null; ageSec?: number } = {}): SellerOrder {
+function seedOrder(
+  status: OrderStatus,
+  opts: { phone?: string | null; address?: string | null; ageSec?: number } = {},
+): SellerOrder {
   const created = new Date(Date.now() - (opts.ageSec ?? 5) * 1000).toISOString();
   const order: SellerOrder = {
     id: "o-1",
@@ -15,6 +18,7 @@ function seedOrder(status: OrderStatus, opts: { phone?: string | null; ageSec?: 
     status,
     items: [{ product_id: "p-cfsd", name: "Cà phê sữa đá", unit_price: 25000, qty: 1, sweet: "medium", ice: "normal", line_total: 25000 }],
     note: null,
+    recipient_address: opts.address ?? null,
     total: 25000,
     partner_name: "Quán test",
     table_label: "Bàn 1",
@@ -60,6 +64,12 @@ describe("trang đơn khách", () => {
     const reorder = screen.getByRole("link", { name: "Gọi thêm nước" });
     expect(reorder).toHaveAttribute("href", `/t/${MOCK_TOKEN}`);
     expect(reorder).toHaveAttribute("data-variant", "outline");
+  });
+
+  it("hiện địa chỉ người nhận khi khách có nhập", async () => {
+    seedOrder("sent", { address: "Phòng 302, toà B" });
+    renderOrder();
+    expect(await screen.findByText("Địa chỉ người nhận: Phòng 302, toà B")).toBeInTheDocument();
   });
 
   it("đơn đã nhận nước: gọi thêm là nút chính duy nhất", async () => {

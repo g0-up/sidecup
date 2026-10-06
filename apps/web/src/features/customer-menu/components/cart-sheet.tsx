@@ -13,6 +13,7 @@ import type { SubmitState } from "../submit";
 import { QtyStepper } from "./qty-stepper";
 
 export const NOTE_MAX = 200;
+export const ADDRESS_MAX = 200;
 
 interface Props {
   open: boolean;
@@ -23,6 +24,8 @@ interface Props {
   orderingMessage: string | null;
   note: string;
   onNote: (v: string) => void;
+  address: string;
+  onAddress: (v: string) => void;
   phone: string;
   onPhone: (v: string) => void;
   submit: SubmitState;
@@ -111,6 +114,21 @@ export function CartSheet(p: Props) {
           />
           <p className="text-right text-xs text-muted-foreground">
             {p.note.length}/{NOTE_MAX}
+          </p>
+        </div>
+        <div className="space-y-1.5">
+          <Label htmlFor="recipient-address">Địa chỉ người nhận</Label>
+          <Textarea
+            id="recipient-address"
+            value={p.address}
+            maxLength={ADDRESS_MAX}
+            rows={2}
+            autoComplete="street-address"
+            placeholder="Ví dụ: Phòng 302, toà B"
+            onChange={(e) => p.onAddress(e.target.value)}
+          />
+          <p className="text-right text-xs text-muted-foreground">
+            {p.address.length}/{ADDRESS_MAX}
           </p>
         </div>
         <div className="space-y-1.5">
