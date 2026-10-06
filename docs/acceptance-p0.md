@@ -35,6 +35,7 @@ Kết quả ngày 01/10/2026: Go 15 package xanh (`-race -tags integration`, Pos
 | Độ ngọt/đá theo món, mặc định Vừa / Bình thường | Tự động: `orders/TestMergeLinesMergesSameOptionsAndDefaults`, `TestMergeLinesRejectsOptionsOnUnsupportedProduct` |
 | 1..20 ly mỗi dòng, gộp dòng cùng món + tuỳ chọn | Tự động: `web/customer-menu/cart.test.ts`, `orders/TestMergeLinesQtyLimitAppliesAfterMerge`, `app/TestCreateOrderPricesMergesAndIsIdempotent` |
 | Ghi chú ≤ 200 ký tự, không bắt buộc | Tự động: schema `CHECK (length(note) <= 200)`, validate `max=200`; ô nhập `maxLength=200` có đếm ký tự |
+| Địa chỉ người nhận nằm dưới Ghi chú, chữ tự do ≤ 200 ký tự, không bắt buộc; hiện cho khách và người bán; xoá sau 90 ngày | Tự động: `web/customer-menu/page.test.tsx`, `web/customer-order/page.test.tsx`, `web/seller-orders/pages/board.test.tsx`, `app/TestCreateOrderRecipientAddressIsOptional` (vắng/rỗng/khoảng trắng → `null`, 201 ký tự → 422), `app/TestPurgeCustomerContactAfter90Days`, `orders/TestClearCustomerContactTouchesOnlyPhoneAndAddress` |
 | Giỏ hiện tổng; món vừa hết trong giỏ bị đánh dấu và chặn đặt | Tự động: `e2e/unavailable-product.spec.ts`, `web/customer-menu/page.test.tsx` |
 
 ## P0-4. Đặt đơn không bị trùng

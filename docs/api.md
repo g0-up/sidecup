@@ -20,6 +20,7 @@ Hợp đồng HTTP và WebSocket của `apps/api`. Nguồn chân lý là code (`
 | `CLIENT_ID_REQUIRED` | 400 | Route khách thiếu `X-Client-Id` dạng UUID |
 | `IDEMPOTENCY_KEY_REQUIRED` | 400 | POST đơn thiếu `Idempotency-Key` dạng UUID |
 | `INVALID_JSON` | 400 | Body không phải JSON hợp lệ hoặc có field lạ |
+| `UPLOAD_READ` | 400 | Body ảnh tải lên bị đứt giữa chừng (mạng chập chờn, quá thời gian đọc) |
 | `UNAUTHENTICATED` | 401 | Thiếu/hết hạn cookie phiên, hoặc sai bearer `/internal` |
 | `INVALID_PASSWORD` | 401 | Đăng nhập sai mật khẩu |
 | `NOT_OWNER` | 403 | Khách huỷ đơn của máy khác |
@@ -31,6 +32,9 @@ Hợp đồng HTTP và WebSocket của `apps/api`. Nguồn chân lý là code (`
 | `INVALID_TRANSITION` | 409 | Chuyển trạng thái không hợp lệ hoặc thua cuộc đua; `details.current_status` |
 | `BANK_NOT_CONFIGURED` | 409 | VietQR khi chưa cài tài khoản ngân hàng |
 | `VALIDATION` | 422 | |
+| `FILE_TOO_LARGE` | 413 | Ảnh tải lên quá 5 MB |
+| `UPLOAD_FAILED` | 502 | Kho ảnh (R2) lỗi khi lưu ảnh |
+| `UPLOAD_DISABLED` | 503 | API chạy không có cấu hình `R2_*` |
 | `RATE_LIMITED` | 429 | Có header `Retry-After` |
 
 ## Vận hành
@@ -67,10 +71,11 @@ Menu của bàn. Ghi một page view (mỗi mã QR, mỗi ngày theo `APP_TZ`, m
 Header `Idempotency-Key: <uuid>`. Rate limit 10/phút theo `client_id` và 30/phút theo IP.
 
 ```json
-{ "items": [{ "product_id": "…", "qty": 2, "sweet": "less", "ice": "none" }], "note": "ít đá", "phone": "0901234567" }
+{ "items": [{ "product_id": "…", "qty": 2, "sweet": "less", "ice": "none" }], "note": "ít đá", "recipient_address": "Phòng 302, toà B", "phone": "0901234567" }
 ```
 
 - `qty` 1..20 (sau khi gộp dòng cùng món + tuỳ chọn); 1..30 dòng; `note` ≤ 200 ký tự.
+- `recipient_address` (địa chỉ người nhận) không bắt buộc, chữ tự do ≤ 200 ký tự: vắng, rỗng hoặc chỉ có khoảng trắng → `null`; có giá trị thì được bỏ khoảng trắng hai đầu. Hiện ở cả view công khai lẫn view người bán và bị xoá cùng SĐT sau 90 ngày.
 - `sweet ∈ {less, medium, sweet}`, `ice ∈ {none, less, normal}`; chỉ gửi khi món có tuỳ chọn đó, vắng thì mặc định `medium`/`normal`.
 - `phone` không bắt buộc: vắng, rỗng hoặc chỉ có khoảng trắng → `customer_phone = null` và khách không nhận tin trạng thái. Có giá trị thì phải là 10 số bắt đầu bằng 0 sau khi bỏ khoảng trắng/dấu chấm/gạch; `+84` được đổi thành `0`.
 - Server tự tra giá và gộp dòng. `201` đơn mới; `200` khi key đã dùng (trả lại đơn cũ, bỏ qua body).
@@ -84,7 +89,7 @@ View công khai (không có SĐT, không có `client_id`):
 {
   "id": "…", "code": "AB12CD", "status": "sent",
   "items": [{ "product_id": "…", "name": "Bạc xỉu", "unit_price": 29000, "qty": 2, "sweet": "less", "ice": "normal", "line_total": 58000 }],
-  "note": null, "total": 58000, "partner_name": "Quán test", "table_label": "Bàn 1",
+  "note": null, "recipient_address": null, "total": 58000, "partner_name": "Quán test", "table_label": "Bàn 1",
   "cancel_reason": null, "payment_method": null,
   "created_at": "…", "accepted_at": null, "delivering_at": null, "paid_at": null, "closed_at": null, "updated_at": "…",
   "menu_path": "/t/AbC123", "eta_minutes": 7, "notify_zalo": true,
@@ -112,7 +117,8 @@ Cookie HttpOnly, SameSite=Lax, Secure khi `PUBLIC_BASE_URL` là https, hạn 30 
 | POST | `/api/seller/orders/{id}/transition` | `{to, expected_from, payment_method?, reason?}`; `payment_method ∈ {cash, transfer}` bắt buộc khi `to=paid`, cấm khi khác |
 | GET | `/api/seller/orders/{id}/vietqr` | `{payload, amount, purpose, bank_bin, bank_account, bank_account_name}` |
 | GET / PUT | `/api/seller/settings` | `{accepting_orders, eta_minutes, bank_bin, bank_account, bank_account_name, updated_at}`. PUT cập nhật từng phần; chuỗi rỗng xoá thông tin ngân hàng |
-| GET / POST | `/api/seller/products` | `{products:[…]}` / tạo (201). Body `{name, price, image_url? (chỉ https://), has_sweet, has_ice, available?, sort}` |
+| GET / POST | `/api/seller/products` | `{products:[…]}` / tạo (201). Body `{name, price, image_url? (chỉ https://), has_sweet, has_ice, available?, sort}`. Form người bán đặt `image_url` bằng URL nhận từ route tải ảnh bên dưới |
+| POST | `/api/seller/products/images` | `multipart/form-data`, field `file`: ảnh JPG, PNG hoặc WebP ≤ 5 MB (loại xác định từ nội dung, không theo header) → `201 {url}` với `url = R2_PUBLIC_BASE_URL/R2_FOLDER/<uuid>.<ext>`. Lỗi: `400 UPLOAD_READ`; `413 FILE_TOO_LARGE`; `422 VALIDATION` với `fields.file` khi thiếu file hoặc sai loại; `502 UPLOAD_FAILED` (kể cả R2 không trả lời trong 20 giây); `503 UPLOAD_DISABLED`. Ảnh cũ không bị xoá khi đổi |
 | PUT | `/api/seller/products/{id}` | Thay toàn bộ |
 | PATCH | `/api/seller/products/{id}/availability` | `{available}` |
 | GET / POST | `/api/seller/partners` | `{partners:[…]}` / tạo. Body `{name, commission_rate (0..1, ≤ 4 chữ số thập phân), payout_period: week\|month, open_hours, active?, hidden_product_ids}` |

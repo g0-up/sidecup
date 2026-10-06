@@ -11,6 +11,7 @@ Một VPS chạy `infra/docker-compose.prod.yml`: Caddy (TLS tự động) → `
    - `SESSION_SECRET`: `openssl rand -base64 48`.
    - `NOTIFIER_TOKEN`: `openssl rand -hex 32` (đưa cùng giá trị cho dịch vụ notifier).
    - `ZALO_CREDENTIAL_KEY` (không bắt buộc): `openssl rand -base64 48`. Bỏ trống thì không gửi tin Zalo cho khách; xem [Zalo gửi tin cho khách](#zalo-gửi-tin-cho-khách).
+   - `R2_*` (không bắt buộc): kho ảnh món. Bỏ trống thì nút "Chọn ảnh" báo chưa cấu hình; xem [Kho ảnh món](#kho-ảnh-món-cloudflare-r2).
    - `SELLER_PASSWORD_HASH`: xem mục [Mật khẩu người bán](#mật-khẩu-người-bán).
    - `chmod 600 infra/.env`.
 3. `make prod-up` (tương đương `docker compose -f infra/docker-compose.prod.yml --env-file infra/.env up -d --build`). API tự chạy migration khi khởi động (`MIGRATE_ON_START=true`, có advisory lock).
@@ -19,7 +20,7 @@ Một VPS chạy `infra/docker-compose.prod.yml`: Caddy (TLS tự động) → `
    - `curl -s -o /dev/null -w '%{http_code}' https://$DOMAIN/internal/notifications/pending` → `404`.
    - Mở `https://$DOMAIN/seller/login`, đăng nhập, tạo quán, món, bàn; quét thẻ QR bằng điện thoại.
 
-API từ chối khởi động khi thiếu biến hoặc sai định dạng (hash không phải 32 hex, `SESSION_SECRET` < 32 byte, `NOTIFIER_TOKEN` < 16 ký tự, `ZALO_CREDENTIAL_KEY` có giá trị nhưng < 32 byte). Xem lỗi bằng `docker compose -f infra/docker-compose.prod.yml logs api`.
+API từ chối khởi động khi thiếu biến hoặc sai định dạng (hash không phải 32 hex, `SESSION_SECRET` < 32 byte, `NOTIFIER_TOKEN` < 16 ký tự, `ZALO_CREDENTIAL_KEY` có giá trị nhưng < 32 byte, `R2_*` đặt dở dang hoặc sai định dạng). Xem lỗi bằng `docker compose -f infra/docker-compose.prod.yml logs api`.
 
 ## Triển khai homelab (Traefik)
 
@@ -115,11 +116,12 @@ Database **không có trigger** (architecture A14). Bất biến "đơn `paid` k
 - Không `UPDATE`/`DELETE` bảng `orders`, `order_events` bằng tay ở production.
 - Sai số tiền sau khi đã thu → tạo **điều chỉnh** (trang Báo cáo → Điều chỉnh, hoặc `POST /api/seller/adjustments`) với số âm/dương và lý do. Báo cáo hiện điều chỉnh riêng và trừ/cộng vào "Phải trả".
 - `order_events` là dấu vết kiểm toán: mọi chuyển trạng thái có thời điểm và người bấm (`customer`, `seller`, `system`).
-- Nếu cần chốt chặn ở DB, thêm một migration mới tạo trigger chặn `UPDATE/DELETE` khi `OLD.status = 'paid'` (ngoại lệ cột `customer_phone`, `updated_at`); không phải sửa code ứng dụng.
+- Nếu cần chốt chặn ở DB, thêm một migration mới tạo trigger chặn `UPDATE/DELETE` khi `OLD.status = 'paid'` (ngoại lệ cột `customer_phone`, `recipient_address`, `updated_at`); không phải sửa code ứng dụng.
 
 ## Dữ liệu cá nhân
 
 - SĐT khách chỉ lưu ở `orders.customer_phone` và `notification_outbox.recipient`. Mỗi ngày lúc 03:00 (giờ Việt Nam) scheduler xoá SĐT của đơn quá 90 ngày và của tin đã xử lý quá 90 ngày.
+- Địa chỉ người nhận (khách tự nhập, không bắt buộc) chỉ lưu ở `orders.recipient_address`; cùng lượt 03:00 đó scheduler xoá địa chỉ của đơn quá 90 ngày. Địa chỉ hiện trên trang đơn của khách (ai có link đơn đều xem được) và trên bảng đơn người bán.
 - SĐT không có trong view công khai, báo cáo, bản export cho chủ quán, log HTTP (logger không ghi body, cookie, header `Authorization`, và GORM không in giá trị tham số).
 
 ## Zalo gửi tin cho khách
@@ -142,6 +144,20 @@ Dấu hiệu: màn người bán hiện banner đỏ "Phiên Zalo đã hết h�
 2. Người bán mở **Cài đặt** → thẻ Zalo hiện "Phiên hết hạn" → **Quét lại mã QR** bằng app Zalo trên điện thoại phụ → xác nhận đăng nhập.
 3. Banner tắt trong vài giây. Tin chưa gửi còn trong hạn 30 phút được gửi tiếp (phiên hết hạn không làm tốn lượt thử); tin quá 30 phút bị đánh dấu `failed` với `last_error = expired`.
 4. Nếu quét lại vẫn hỏng hoặc tài khoản bị khoá: **Ngắt kết nối** rồi kết nối một tài khoản phụ khác.
+
+## Kho ảnh món (Cloudflare R2)
+
+Nút "Chọn ảnh" trong **Thêm món / Sửa món** thu nhỏ ảnh trên trình duyệt (cạnh dài ≤ 1200 px, WebP hoặc JPEG) rồi gửi lên API; API lưu vào R2 và trả URL công khai để lưu vào `image_url`. Thiếu cấu hình thì API vẫn chạy, nút báo "Chưa cấu hình kho ảnh".
+
+1. Cloudflare → R2 → tạo bucket. **Settings → Custom Domains**: gắn một hostname (ví dụ `img.example.vn`) để đọc công khai. `r2.dev` chỉ dùng để thử: bị giới hạn tốc độ.
+2. R2 → **Manage API tokens** → tạo token quyền **Object Read & Write**, chỉ áp cho bucket đó. Ghi lại Access Key ID và Secret Access Key (chỉ hiện một lần); Account ID nằm ở trang tổng quan R2.
+3. Điền vào `infra/.env` (không commit): `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_BUCKET`, `R2_PUBLIC_BASE_URL=https://img.example.vn`, `R2_FOLDER=sidecup/products`. Đặt thiếu biến nào, `R2_ACCOUNT_ID` không phải 32 ký tự hex, URL không phải https, hoặc URL ảnh (gốc + thư mục + tên file) dài quá 500 ký tự thì `api` không khởi động và log nói rõ biến nào sai. `make prod-up` (homelab: `make homelab-up`) để khởi động lại `api`.
+4. Kiểm tra: vào **Món** → **Thêm món** → chọn một ảnh từ điện thoại → **Lưu**. Mở URL ảnh trên trình duyệt (phải trả ảnh, không 404), rồi mở menu khách để thấy ảnh.
+
+- Đổi `R2_FOLDER` chỉ áp cho ảnh tải lên sau đó; URL cũ vẫn chạy vì nằm nguyên trong bucket.
+- Đổi hoặc xoá ảnh của món không xoá file cũ trong R2. Muốn dọn thì xoá tay trong bucket những file không còn món nào dùng.
+- Lộ khoá: xoá token trong Cloudflare, tạo token mới, cập nhật `infra/.env`, khởi động lại `api`. Ảnh đã lưu không bị ảnh hưởng.
+- Log `upload product image` (kèm `request_id`) chỉ ghi key và lỗi của R2, không ghi khoá. Tải ảnh báo "Không tải được ảnh lên" thường do token sai/hết hạn, bucket sai tên, hoặc R2 không trả lời trong 20 giây.
 
 ## Khi notifier Zalo chết
 
