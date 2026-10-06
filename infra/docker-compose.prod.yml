@@ -1,7 +1,9 @@
-name: sidecup-prod
+# Mỗi khách hàng một stack riêng (api, web, postgres, volume): CUSTOMER trong file env đặt tên project.
+# Không đặt CUSTOMER (infra/.env cũ) thì vẫn là project sidecup-prod.
+name: sidecup-${CUSTOMER:-prod}
 
 # Một VPS: Caddy (TLS tự động) → web (nginx tĩnh) và api; Postgres không mở cổng ra ngoài.
-# Biến môi trường đọc từ infra/.env (xem infra/.env.example và docs/runbook.md).
+# Biến môi trường đọc từ infra/.env hoặc infra/customers/<khách>/.env (xem infra/.env.example và docs/runbook.md).
 
 services:
   postgres:

@@ -1,8 +1,11 @@
 COMPOSE      = docker compose -f infra/docker-compose.yml
-COMPOSE_PROD = docker compose -f infra/docker-compose.prod.yml --env-file infra/.env
-COMPOSE_HOMELAB = docker compose -f infra/docker-compose.prod.yml -f infra/docker-compose.homelab.yml --env-file infra/.env
+# Mỗi khách hàng một stack: CUSTOMER=<khách> đọc infra/customers/<khách>/.env; bỏ trống = stack cũ đọc infra/.env.
+CUSTOMER ?=
+ENV_FILE = $(if $(CUSTOMER),infra/customers/$(CUSTOMER)/.env,infra/.env)
+COMPOSE_PROD = docker compose -f infra/docker-compose.prod.yml --env-file $(ENV_FILE)
+COMPOSE_HOMELAB = docker compose -f infra/docker-compose.prod.yml -f infra/docker-compose.homelab.yml --env-file $(ENV_FILE)
 
-.PHONY: help dev dev-api dev-web db-up down check-ports migrate-up migrate-down seed test test-api test-web lint build size e2e prod-up prod-down homelab-config homelab-up homelab-down
+.PHONY: help dev dev-api dev-web db-up down check-ports check-env migrate-up migrate-down seed test test-api test-web lint build size e2e prod-up prod-down homelab-config homelab-up homelab-up-all homelab-down
 
 help:
 	@echo "make dev          Postgres (docker) + API (go run) + web (vite); Ctrl-C dừng API/web"
@@ -12,6 +15,8 @@ help:
 	@echo "make test | lint | build | size | e2e"
 	@echo "make prod-up | prod-down   (infra/docker-compose.prod.yml + infra/.env)"
 	@echo "make homelab-config | homelab-up | homelab-down   (prod + infra/docker-compose.homelab.yml, sau Traefik)"
+	@echo "   thêm CUSTOMER=<khách> để dùng infra/customers/<khách>/.env (stack sidecup-<khách>)"
+	@echo "make homelab-up-all   homelab-up cho mọi khách trong infra/customers/"
 
 # Không tự đổi cổng khi bị chiếm: báo rõ tiến trình đang giữ cổng để dừng đúng nó.
 check-ports:
@@ -77,17 +82,30 @@ e2e:
 	cd apps/web && E2E_BASE_URL=http://localhost:8081 E2E_DATABASE_URL=postgres://sidecup:sidecup@localhost:5432/sidecup?sslmode=disable pnpm e2e; \
 		status=$$?; cd ../.. && $(COMPOSE) --profile full down; exit $$status
 
-prod-up:
+# CUSTOMER trong file env đặt tên project docker: lệch tên thư mục là ghi đè nhầm stack (và volume DB) của khách khác.
+check-env:
+	@test -f $(ENV_FILE) || { echo "Thiếu $(ENV_FILE) (copy từ infra/.env.example)"; exit 1; }
+	@got=$$(sed -n 's/^CUSTOMER=//p' $(ENV_FILE) | tail -n 1); \
+	 if [ "$$got" != "$(CUSTOMER)" ]; then echo "CUSTOMER trong $(ENV_FILE) là '$$got', khác '$(CUSTOMER)'"; exit 1; fi
+
+prod-up: check-env
 	$(COMPOSE_PROD) up -d --build
 
-prod-down:
+prod-down: check-env
 	$(COMPOSE_PROD) down
 
-homelab-config:
+homelab-config: check-env
 	$(COMPOSE_HOMELAB) config --quiet
 
-homelab-up:
+homelab-up: check-env
 	$(COMPOSE_HOMELAB) up -d --build
 
-homelab-down:
+# Không gồm stack cũ đọc infra/.env.
+homelab-up-all:
+	@for d in infra/customers/*/; do \
+		c=$$(basename $$d); echo "== $$c"; \
+		$(MAKE) --no-print-directory homelab-up CUSTOMER=$$c || exit 1; \
+	done
+
+homelab-down: check-env
 	$(COMPOSE_HOMELAB) down
