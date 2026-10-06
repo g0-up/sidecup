@@ -1,6 +1,7 @@
 package config
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -63,4 +64,69 @@ func TestZaloCredentialKey(t *testing.T) {
 	cfg, err = Load()
 	require.NoError(t, err)
 	assert.True(t, cfg.ZaloEnabled())
+}
+
+func setR2Env(t *testing.T) {
+	t.Setenv("R2_ACCOUNT_ID", "0123456789abcdef0123456789abcdef")
+	t.Setenv("R2_ACCESS_KEY_ID", "key")
+	t.Setenv("R2_SECRET_ACCESS_KEY", "secret")
+	t.Setenv("R2_BUCKET", "sidecup")
+	t.Setenv("R2_PUBLIC_BASE_URL", "https://img.sidecup.example/")
+}
+
+func TestR2Disabled(t *testing.T) {
+	setValidEnv(t)
+	cfg, err := Load()
+	require.NoError(t, err)
+	assert.False(t, cfg.R2Enabled(), "rỗng là hợp lệ, tính năng tắt")
+	assert.Equal(t, "products", cfg.R2Folder)
+}
+
+func TestR2Enabled(t *testing.T) {
+	setValidEnv(t)
+	setR2Env(t)
+	t.Setenv("R2_FOLDER", " /sidecup/products/ ")
+	t.Setenv("R2_SECRET_ACCESS_KEY", "secret\r\n")
+	cfg, err := Load()
+	require.NoError(t, err)
+	assert.True(t, cfg.R2Enabled())
+	assert.Equal(t, "secret", cfg.R2SecretAccessKey, "bỏ khoảng trắng/CR dán kèm khoá")
+	assert.Equal(t, "https://img.sidecup.example", cfg.R2PublicBaseURL)
+	assert.Equal(t, "sidecup/products", cfg.R2Folder)
+
+	t.Setenv("R2_FOLDER", "")
+	cfg, err = Load()
+	require.NoError(t, err)
+	assert.Equal(t, "products", cfg.R2Folder, "compose truyền chuỗi rỗng thì dùng mặc định")
+}
+
+func TestR2RejectsBadConfig(t *testing.T) {
+	cases := map[string]struct {
+		key, value, want string
+	}{
+		"partial":         {"R2_BUCKET", "", "R2_BUCKET"},
+		"http base":       {"R2_PUBLIC_BASE_URL", "http://img.sidecup.example", "R2_PUBLIC_BASE_URL"},
+		"relative base":   {"R2_PUBLIC_BASE_URL", "img.sidecup.example", "R2_PUBLIC_BASE_URL"},
+		"dot dot folder":  {"R2_FOLDER", "products/../x", "R2_FOLDER"},
+		"space in folder": {"R2_FOLDER", "my products", "R2_FOLDER"},
+		"empty segment":   {"R2_FOLDER", "a//b", "R2_FOLDER"},
+		"bad account id":  {"R2_ACCOUNT_ID", "acc123", "R2_ACCOUNT_ID"},
+		"url too long":    {"R2_FOLDER", strings.Repeat("a", 460), "quá dài"},
+	}
+	for name, tc := range cases {
+		t.Run(name, func(t *testing.T) {
+			setValidEnv(t)
+			setR2Env(t)
+			t.Setenv(tc.key, tc.value)
+			_, err := Load()
+			assert.ErrorContains(t, err, tc.want)
+		})
+	}
+
+	t.Run("only one var set", func(t *testing.T) {
+		setValidEnv(t)
+		t.Setenv("R2_ACCOUNT_ID", "0123456789abcdef0123456789abcdef")
+		_, err := Load()
+		assert.ErrorContains(t, err, "R2_SECRET_ACCESS_KEY")
+	})
 }

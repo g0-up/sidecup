@@ -1,18 +1,28 @@
 package products
 
 import (
+	"errors"
+	"log/slog"
+
 	"github.com/gin-gonic/gin"
 
 	"sidecup/api/internal/platform/httpx"
 )
 
-type Handler struct{ svc *Service }
+// Handler: images nil (chưa cấu hình R2) thì route tải ảnh vẫn đăng ký nhưng trả 503.
+type Handler struct {
+	svc    *Service
+	images *ImageService
+}
 
-func NewHandler(svc *Service) *Handler { return &Handler{svc: svc} }
+func NewHandler(svc *Service, images *ImageService) *Handler {
+	return &Handler{svc: svc, images: images}
+}
 
 func (h *Handler) RegisterSeller(g *gin.RouterGroup) {
 	g.GET("/products", h.list)
 	g.POST("/products", h.create)
+	g.POST("/products/images", h.uploadImage)
 	g.PUT("/products/:id", h.update)
 	g.PATCH("/products/:id/availability", h.availability)
 }
@@ -76,4 +86,26 @@ func (h *Handler) availability(c *gin.Context) {
 		return
 	}
 	httpx.OK(c, v)
+}
+
+func (h *Handler) uploadImage(c *gin.Context) {
+	if h.images == nil {
+		httpx.Fail(c, ErrUploadDisabled)
+		return
+	}
+	data, err := readImage(c)
+	if err != nil {
+		httpx.Fail(c, err)
+		return
+	}
+	url, err := h.images.Upload(c.Request.Context(), data)
+	if err != nil {
+		if errors.Is(err, errUploadFailed) {
+			// Không ghi khoá R2: chỉ key và lỗi của kho.
+			slog.ErrorContext(c.Request.Context(), "upload product image", "err", err, "request_id", c.GetString(httpx.RequestIDKey))
+		}
+		httpx.Fail(c, err)
+		return
+	}
+	httpx.Created(c, gin.H{"url": url})
 }

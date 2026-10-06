@@ -13,12 +13,12 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
+	"sidecup/api/internal/app"
 	"sidecup/api/internal/features/notifications"
 	"sidecup/api/internal/features/zalo"
-	"sidecup/api/internal/platform/config"
 )
 
-func withZaloKey(cfg *config.Config) { cfg.ZaloCredentialKey = strings.Repeat("k", 32) }
+func withZaloKey(d *app.Deps) { d.Config.ZaloCredentialKey = strings.Repeat("k", 32) }
 
 func TestCreateOrderWithoutPhoneSendsNoCustomerMessages(t *testing.T) {
 	h := newHarness(t)

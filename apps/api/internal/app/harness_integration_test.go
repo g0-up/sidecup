@@ -39,23 +39,26 @@ type harness struct {
 	Loc   *time.Location
 }
 
-// newHarness dựng app trên DB thật; configure (nếu có) chỉnh cấu hình trước khi dựng.
-func newHarness(t *testing.T, configure ...func(*config.Config)) *harness {
+// newHarness dựng app trên DB thật; configure (nếu có) chỉnh cấu hình và phụ thuộc trước khi dựng.
+func newHarness(t *testing.T, configure ...func(*app.Deps)) *harness {
 	t.Helper()
 	gdb := testdb.Open(t)
 	loc, err := time.LoadLocation("Asia/Ho_Chi_Minh")
 	require.NoError(t, err)
 	clk := clock.NewFake(time.Now(), loc)
 	hub := realtime.NewHub(clk.Now)
-	cfg := config.Config{
-		AppEnv: "test", AppTZ: loc.String(), Location: loc,
-		PublicBaseURL: "http://sidecup.test", PublicHost: "sidecup.test",
-		SellerPasswordHash: testPasswordHash, SessionSecret: strings.Repeat("s", 32), NotifierToken: "notifier-token-123456",
+	deps := app.Deps{
+		Config: config.Config{
+			AppEnv: "test", AppTZ: loc.String(), Location: loc,
+			PublicBaseURL: "http://sidecup.test", PublicHost: "sidecup.test",
+			SellerPasswordHash: testPasswordHash, SessionSecret: strings.Repeat("s", 32), NotifierToken: "notifier-token-123456",
+		},
+		DB: gdb, Clock: clk, Hub: hub,
 	}
 	for _, fn := range configure {
-		fn(&cfg)
+		fn(&deps)
 	}
-	a, err := app.New(app.Deps{Config: cfg, DB: gdb, Clock: clk, Hub: hub})
+	a, err := app.New(deps)
 	require.NoError(t, err)
 	a.Menu.Sync = true
 	srv := httptest.NewServer(a.Engine)

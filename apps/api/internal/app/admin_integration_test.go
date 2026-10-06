@@ -3,14 +3,20 @@
 package app_test
 
 import (
+	"bytes"
+	"context"
 	"encoding/json"
+	"io"
+	"mime/multipart"
 	"net/http"
 	"regexp"
+	"sync"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
+	"sidecup/api/internal/app"
 	"sidecup/api/internal/platform/realtime"
 )
 
@@ -205,4 +211,97 @@ func TestCustomerWebSocketAuthorization(t *testing.T) {
 		_, _, err := conn.Read(t.Context())
 		assert.Equal(t, realtime.CloseForbidden, websocketStatus(err), q)
 	}
+}
+
+type recordedPut struct{ key, contentType string }
+
+// memStore thay R2: ghi lại key và Content-Type để kiểm tra mà không gọi mạng.
+type memStore struct {
+	mu   sync.Mutex
+	puts []recordedPut
+}
+
+func (m *memStore) Put(_ context.Context, key, contentType string, _ []byte) error {
+	m.mu.Lock()
+	defer m.mu.Unlock()
+	m.puts = append(m.puts, recordedPut{key, contentType})
+	return nil
+}
+
+func withImageStore(store *memStore) func(*app.Deps) {
+	return func(d *app.Deps) {
+		d.Images = store
+		d.Config.R2PublicBaseURL = "https://img.sidecup.test"
+		d.Config.R2Folder = "sidecup/products"
+	}
+}
+
+// upload gửi multipart với một file dưới tên field cho trước.
+func (c *client) upload(field string, data []byte) resp {
+	c.h.t.Helper()
+	var buf bytes.Buffer
+	mw := multipart.NewWriter(&buf)
+	fw, err := mw.CreateFormFile(field, "photo.webp")
+	require.NoError(c.h.t, err)
+	_, err = fw.Write(data)
+	require.NoError(c.h.t, err)
+	require.NoError(c.h.t, mw.Close())
+	req, err := http.NewRequest(http.MethodPost, c.h.Srv.URL+"/api/seller/products/images", &buf)
+	require.NoError(c.h.t, err)
+	req.Header.Set("Content-Type", mw.FormDataContentType())
+	res, err := c.http.Do(req)
+	require.NoError(c.h.t, err)
+	defer func() { _ = res.Body.Close() }()
+	b, err := io.ReadAll(res.Body)
+	require.NoError(c.h.t, err)
+	return resp{Code: res.StatusCode, Body: b, Header: res.Header}
+}
+
+var webpImage = append([]byte("RIFF\x00\x00\x00\x00WEBPVP8 "), make([]byte, 64)...)
+
+func TestProductImageUpload(t *testing.T) {
+	store := &memStore{}
+	h := newHarness(t, withImageStore(store))
+
+	assert.Equal(t, http.StatusUnauthorized, h.client(nil).upload("file", webpImage).Code)
+
+	s := h.seller()
+	r := s.upload("file", webpImage)
+	require.Equal(t, http.StatusCreated, r.Code, string(r.Body))
+	var out struct {
+		URL string `json:"url"`
+	}
+	r.JSON(t, &out)
+	require.Len(t, store.puts, 1)
+	assert.Regexp(t, `^sidecup/products/[0-9a-f-]{36}\.webp$`, store.puts[0].key)
+	assert.Equal(t, "image/webp", store.puts[0].contentType)
+	assert.Equal(t, "https://img.sidecup.test/"+store.puts[0].key, out.URL)
+
+	r = s.post("/api/seller/products", map[string]any{"name": "Trà đào", "price": 25000, "image_url": out.URL})
+	require.Equal(t, http.StatusCreated, r.Code, string(r.Body))
+	assert.Equal(t, out.URL, r.Map(t)["image_url"])
+
+	r = s.upload("file", bytes.Repeat([]byte{0xFF}, 5<<20+1))
+	assert.Equal(t, http.StatusRequestEntityTooLarge, r.Code)
+	assert.Equal(t, "FILE_TOO_LARGE", r.ErrCode(t))
+
+	for name, tc := range map[string]struct {
+		field string
+		data  []byte
+	}{
+		"missing file": {"photo", webpImage},
+		"not an image": {"file", []byte("<svg xmlns='http://www.w3.org/2000/svg'/>")},
+	} {
+		r = s.upload(tc.field, tc.data)
+		assert.Equal(t, http.StatusUnprocessableEntity, r.Code, name)
+		assert.Contains(t, r.Map(t)["error"].(map[string]any)["details"].(map[string]any)["fields"], "file", name)
+	}
+	assert.Len(t, store.puts, 1, "chỉ ảnh hợp lệ mới được ghi")
+}
+
+func TestProductImageUploadDisabled(t *testing.T) {
+	h := newHarness(t)
+	r := h.seller().upload("file", webpImage)
+	assert.Equal(t, http.StatusServiceUnavailable, r.Code)
+	assert.Equal(t, "UPLOAD_DISABLED", r.ErrCode(t))
 }

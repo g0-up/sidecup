@@ -26,6 +26,7 @@ import (
 	"sidecup/api/internal/platform/db"
 	"sidecup/api/internal/platform/httpx"
 	"sidecup/api/internal/platform/middleware"
+	"sidecup/api/internal/platform/objectstore"
 	"sidecup/api/internal/platform/realtime"
 	"sidecup/api/internal/platform/secrets"
 )
@@ -35,6 +36,8 @@ type Deps struct {
 	DB     *gorm.DB
 	Clock  clock.Clock
 	Hub    *realtime.Hub
+	// Images thay kho ảnh R2 (test truyền bản giả); nil thì dựng R2 từ cấu hình nếu đã đặt R2_*.
+	Images products.ObjectStore
 }
 
 // App giữ router và các tiến trình nền mà main cần chạy/dừng cùng server.
@@ -77,7 +80,7 @@ func New(d Deps) (*App, error) {
 
 	authH := auth.NewHandler(authSvc, cfg.SecureCookies())
 	settingsH := settings.NewHandler(settings.NewService(d.DB, d.Hub, menuCast))
-	productsH := products.NewHandler(products.NewService(d.DB, menuCast))
+	productsH := products.NewHandler(products.NewService(d.DB, menuCast), newImages(cfg, d.Images))
 	partnersH := partners.NewHandler(partners.NewService(d.DB, menuCast))
 	qrH := qrcodes.NewHandler(qrcodes.NewService(d.DB, d.Clock, d.Hub, cfg.PublicBaseURL))
 	menuH := menu.NewHandler(menu.NewService(d.DB, d.Clock))
@@ -149,6 +152,17 @@ func New(d Deps) (*App, error) {
 		Orders:     orderSvc,
 		Zalo:       zaloSvc,
 	}, nil
+}
+
+// newImages trả nil khi không có kho ảnh: route tải ảnh báo 503 thay vì làm hỏng cả trang món.
+func newImages(cfg config.Config, store products.ObjectStore) *products.ImageService {
+	if store == nil && cfg.R2Enabled() {
+		store = objectstore.NewR2(cfg.R2AccountID, cfg.R2AccessKeyID, cfg.R2SecretAccessKey, cfg.R2Bucket)
+	}
+	if store == nil {
+		return nil
+	}
+	return products.NewImageService(store, cfg.R2PublicBaseURL, cfg.R2Folder)
 }
 
 // zaloLinked cho trang đơn biết khách có SĐT sẽ nhận tin: Zalo đã bật, đã liên kết và phiên chưa hết hạn.
