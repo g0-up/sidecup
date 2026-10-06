@@ -19,14 +19,14 @@ import (
 
 func insertSentOrder(t *testing.T, gdb *gorm.DB, partnerID uuid.UUID, key string) *Order {
 	t.Helper()
-	phone := "0901234567"
+	phone, address := "0901234567", "Phòng 302"
 	var out *Order
 	require.NoError(t, db.WithTx(context.Background(), gdb, func(tx *gorm.DB) error {
 		o, inserted, err := Writer{}.Insert(context.Background(), tx, &Order{
 			QRToken: "TESTTOKEN1", PartnerID: partnerID, PartnerName: "Quán test", TableLabel: "Bàn 1",
-			Items:         OrderItems{{ProductID: uuid.New(), Name: "Trà đá", UnitPrice: 15000, Qty: 3, LineTotal: 45000}},
-			Total:         45000,
-			CustomerPhone: &phone, ClientID: uuid.NewString(), IdempotencyKey: key,
+			Items:            OrderItems{{ProductID: uuid.New(), Name: "Trà đá", UnitPrice: 15000, Qty: 3, LineTotal: 45000}},
+			Total:            45000,
+			RecipientAddress: &address, CustomerPhone: &phone, ClientID: uuid.NewString(), IdempotencyKey: key,
 			CreatedAt: time.Now(),
 		})
 		if err != nil {
@@ -112,7 +112,7 @@ func TestPaidOrderCannotBeChangedThroughWriterOrORM(t *testing.T) {
 	assert.Equal(t, paid.UpdatedAt.UTC(), after.UpdatedAt.UTC())
 }
 
-func TestClearCustomerPhoneTouchesOnlyPhone(t *testing.T) {
+func TestClearCustomerContactTouchesOnlyPhoneAndAddress(t *testing.T) {
 	gdb := testdb.Open(t)
 	ctx := context.Background()
 	pid := testdb.SeedPartner(t, gdb, testdb.PartnerOpts{})
@@ -121,19 +121,20 @@ func TestClearCustomerPhoneTouchesOnlyPhone(t *testing.T) {
 	fresh := insertSentOrder(t, gdb, pid, "key-fresh")
 
 	time.Sleep(10 * time.Millisecond)
-	n, err := Writer{}.ClearCustomerPhone(ctx, gdb, time.Now())
+	n, err := Writer{}.ClearCustomerContact(ctx, gdb, time.Now())
 	require.NoError(t, err)
 	assert.Equal(t, int64(2), n)
 
 	var after Order
 	require.NoError(t, gdb.First(&after, "id = ?", old.ID).Error)
 	assert.Nil(t, after.CustomerPhone)
+	assert.Nil(t, after.RecipientAddress)
 	assert.Equal(t, StatusPaid, after.Status)
 	assert.Equal(t, paid.Total, after.Total)
 	assert.True(t, after.UpdatedAt.After(paid.UpdatedAt))
 
 	// Mốc trong quá khứ: không đơn nào đủ cũ.
-	_, err = Writer{}.ClearCustomerPhone(ctx, gdb, fresh.CreatedAt.Add(-time.Hour))
+	_, err = Writer{}.ClearCustomerContact(ctx, gdb, fresh.CreatedAt.Add(-time.Hour))
 	require.NoError(t, err)
 }
 

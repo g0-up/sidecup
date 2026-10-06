@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/url"
+	"strings"
 	"sync"
 	"testing"
 	"time"
@@ -27,6 +28,7 @@ type orderView struct {
 	Status        string  `json:"status"`
 	Total         int64   `json:"total"`
 	Note          *string `json:"note"`
+	Address       *string `json:"recipient_address"`
 	CancelReason  *string `json:"cancel_reason"`
 	CustomerPhone *string `json:"customer_phone"`
 	Items         []struct {
@@ -111,6 +113,7 @@ func TestCreateOrderPricesMergesAndIsIdempotent(t *testing.T) {
 	require.Len(t, o.Items, 2)
 	assert.Equal(t, 3, o.Items[0].Qty, "hai dòng cùng tuỳ chọn được gộp")
 	assert.Equal(t, "ít đá giúp em", *o.Note)
+	assert.Equal(t, "Phòng 302, toà B", *o.Address)
 	assert.Nil(t, o.CustomerPhone, "view công khai không có SĐT")
 	assert.False(t, o.ServerTime.IsZero())
 
@@ -175,6 +178,30 @@ func TestCreateOrderConcurrentSameKeyMakesOneOrder(t *testing.T) {
 	var n int64
 	h.DB.Table("orders").Count(&n)
 	assert.Equal(t, int64(1), n)
+}
+
+func TestCreateOrderRecipientAddressIsOptional(t *testing.T) {
+	h := newHarness(t)
+	f := h.fixture()
+	cust, _ := h.customer()
+
+	for _, address := range []any{nil, "", "   "} {
+		body := map[string]any{"items": []any{line(f.Tea, 1)}}
+		if address != nil {
+			body["recipient_address"] = address
+		}
+		r, _ := cust.placeOrder(f.Token, body)
+		require.Equal(t, http.StatusCreated, r.Code, string(r.Body))
+		var o orderView
+		r.JSON(t, &o)
+		assert.Nil(t, o.Address, "address=%v", address)
+	}
+
+	body := orderBody(line(f.Tea, 1))
+	body["recipient_address"] = strings.Repeat("a", 201)
+	r, _ := cust.placeOrder(f.Token, body)
+	assert.Equal(t, http.StatusUnprocessableEntity, r.Code)
+	assert.Contains(t, string(r.Body), `"recipient_address"`)
 }
 
 func TestCreateOrderRejections(t *testing.T) {
@@ -431,7 +458,7 @@ func TestSchedulerCancelsExpiredSentOrders(t *testing.T) {
 	assert.Contains(t, string(m.Data), `"cancelled"`)
 }
 
-func TestPurgePhonesAfter90Days(t *testing.T) {
+func TestPurgeCustomerContactAfter90Days(t *testing.T) {
 	h := newHarness(t)
 	f := h.fixture()
 	cust, _ := h.customer()
@@ -441,20 +468,21 @@ func TestPurgePhonesAfter90Days(t *testing.T) {
 	h.DB.Exec("UPDATE notification_outbox SET status = 'sent' WHERE order_id = ? AND kind = 'customer_status'", id)
 
 	h.Clock.Advance(89 * 24 * time.Hour)
-	orders, outbox, err := h.App.Scheduler.PurgePhones(t.Context())
+	orders, outbox, err := h.App.Scheduler.PurgeCustomerContact(t.Context())
 	require.NoError(t, err)
 	assert.Zero(t, orders)
 	assert.Zero(t, outbox)
 
 	h.Clock.Advance(2 * 24 * time.Hour)
-	orders, outbox, err = h.App.Scheduler.PurgePhones(t.Context())
+	orders, outbox, err = h.App.Scheduler.PurgeCustomerContact(t.Context())
 	require.NoError(t, err)
 	assert.Equal(t, int64(1), orders)
 	assert.Equal(t, int64(1), outbox)
 
-	var row struct{ CustomerPhone *string }
-	h.DB.Raw("SELECT customer_phone FROM orders WHERE id = ?", id).Scan(&row)
+	var row struct{ CustomerPhone, RecipientAddress *string }
+	h.DB.Raw("SELECT customer_phone, recipient_address FROM orders WHERE id = ?", id).Scan(&row)
 	assert.Nil(t, row.CustomerPhone)
+	assert.Nil(t, row.RecipientAddress)
 	var recipients []string
 	h.DB.Table("notification_outbox").Where("order_id = ?", id).Order("id").Pluck("recipient", &recipients)
 	assert.Equal(t, []string{"seller", ""}, recipients)

@@ -102,6 +102,7 @@ type Order struct {
 	TableLabel       string              `gorm:"column:table_label"`
 	Items            OrderItems          `gorm:"column:items;type:jsonb"`
 	Note             *string             `gorm:"column:note"`
+	RecipientAddress *string             `gorm:"column:recipient_address"`
 	Total            int64               `gorm:"column:total"`
 	DiscountTotal    int64               `gorm:"column:discount_total"`
 	Status           Status              `gorm:"column:status"`

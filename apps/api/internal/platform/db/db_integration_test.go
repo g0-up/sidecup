@@ -36,7 +36,7 @@ func TestMigrateRoundTrip(t *testing.T) {
 	require.NoError(t, db.Migrate(url, db.Up))
 	v, _, err = db.Version(url)
 	require.NoError(t, err)
-	assert.Equal(t, uint(3), v)
+	assert.Equal(t, uint(4), v)
 }
 
 func TestSchemaHasNoTriggersOrFunctions(t *testing.T) {

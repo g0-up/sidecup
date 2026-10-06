@@ -219,7 +219,7 @@ func (h *harness) fixture() fixture {
 }
 
 func orderBody(items ...map[string]any) map[string]any {
-	return map[string]any{"items": items, "phone": "0901 234 567", "note": "  ít đá giúp em  "}
+	return map[string]any{"items": items, "phone": "0901 234 567", "note": "  ít đá giúp em  ", "recipient_address": "  Phòng 302, toà B  "}
 }
 
 func line(id uuid.UUID, qty int) map[string]any { return map[string]any{"product_id": id, "qty": qty} }

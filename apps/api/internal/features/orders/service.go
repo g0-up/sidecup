@@ -73,6 +73,17 @@ func NormalizePhone(raw string) (string, bool) {
 	return p, phoneRe.MatchString(p)
 }
 
+// trimmedOrNil bỏ khoảng trắng hai đầu; chuỗi rỗng coi như không nhập.
+func trimmedOrNil(s *string) *string {
+	if s == nil {
+		return nil
+	}
+	if t := strings.TrimSpace(*s); t != "" {
+		return &t
+	}
+	return nil
+}
+
 // Create tạo đơn idempotent. created=false nghĩa là trả lại đơn đã có cùng Idempotency-Key (200).
 func (s *Service) Create(ctx context.Context, token, clientID, idemKey string, req CreateReq) (PublicView, bool, error) {
 	var phone *string
@@ -83,12 +94,8 @@ func (s *Service) Create(ctx context.Context, token, clientID, idemKey string, r
 		}
 		phone = &p
 	}
-	var note *string
-	if req.Note != nil {
-		if n := strings.TrimSpace(*req.Note); n != "" {
-			note = &n
-		}
-	}
+	note := trimmedOrNil(req.Note)
+	address := trimmedOrNil(req.RecipientAddress)
 
 	var (
 		order   *Order
@@ -137,7 +144,7 @@ func (s *Service) Create(ctx context.Context, token, clientID, idemKey string, r
 
 		inserted, ok, err := s.writer.Insert(ctx, tx, &Order{
 			QRToken: qr.Token, PartnerID: table.Partner.ID, PartnerName: table.Partner.Name, TableLabel: qr.TableLabel,
-			Items: items, Note: note, Total: total, CustomerPhone: phone,
+			Items: items, Note: note, RecipientAddress: address, Total: total, CustomerPhone: phone,
 			ClientID: clientID, IdempotencyKey: idemKey, CreatedAt: now,
 		})
 		if err != nil {
