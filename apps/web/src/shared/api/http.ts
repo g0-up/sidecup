@@ -22,12 +22,14 @@ export function setUnauthorizedHandler(fn: UnauthorizedHandler | null) {
 
 async function send(path: string, opts: RequestOptions): Promise<Response> {
   const headers: Record<string, string> = { Accept: "application/json", "X-Client-Id": getClientId(), ...opts.headers };
-  if (opts.body !== undefined) headers["Content-Type"] = "application/json";
+  // FormData (tải ảnh) gửi nguyên: trình duyệt tự đặt Content-Type multipart kèm boundary.
+  const isForm = opts.body instanceof FormData;
+  if (opts.body !== undefined && !isForm) headers["Content-Type"] = "application/json";
   try {
     return await fetch(API_ORIGIN + path, {
       method: opts.method ?? "GET",
       headers,
-      body: opts.body === undefined ? undefined : JSON.stringify(opts.body),
+      body: opts.body === undefined ? undefined : isForm ? (opts.body as FormData) : JSON.stringify(opts.body),
       // API khác hostname (cùng site) vẫn cần cookie phiên; cùng origin thì "include" như "same-origin".
       credentials: "include",
       signal: opts.signal,

@@ -1,5 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useCallback, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -10,6 +11,7 @@ import { Input } from "@/shared/ui/input";
 import { Label } from "@/shared/ui/label";
 import { createProduct, productsKey, updateProduct, type Product, type ProductInput } from "../api";
 import { FormField } from "../form-field";
+import { ProductImageField } from "./product-image-field";
 import { applyServerErrors } from "../server-errors";
 
 const schema = z.object({
@@ -19,6 +21,7 @@ const schema = z.object({
     .int("Giá là số nguyên (đồng)")
     .min(0, "Giá không được âm")
     .max(10_000_000, "Giá tối đa 10.000.000đ"),
+  // Ảnh tải lên luôn là URL https của kho ảnh; luật này giữ cho đường dẫn cũ nhập tay vẫn được kiểm.
   image_url: z
     .string()
     .trim()
@@ -67,6 +70,7 @@ function ProductForm({ product, nextSort, onDone }: { product: Product | null; n
     control,
     handleSubmit,
     setError,
+    clearErrors,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(schema),
@@ -79,6 +83,13 @@ function ProductForm({ product, nextSort, onDone }: { product: Product | null; n
       sort: product?.sort ?? nextSort,
     },
   });
+
+  const [uploading, setUploading] = useState(false);
+  const onImageError = useCallback(
+    (message: string | null) =>
+      message ? setError("image_url", { type: "upload", message }) : clearErrors("image_url"),
+    [setError, clearErrors],
+  );
 
   const save = useMutation({
     mutationFn: (v: FormValues) => {
@@ -130,16 +141,22 @@ function ProductForm({ product, nextSort, onDone }: { product: Product | null; n
           />
         </FormField>
       </div>
-      <FormField id="product-image" label="Ảnh (đường dẫn, không bắt buộc)" error={errors.image_url?.message}>
-        <Input
-          id="product-image"
-          type="url"
-          inputMode="url"
-          placeholder="https://…"
-          aria-invalid={!!errors.image_url}
-          {...register("image_url")}
-        />
-      </FormField>
+      <Controller
+        control={control}
+        name="image_url"
+        render={({ field }) => (
+          <FormField id="product-image" label="Ảnh (không bắt buộc)" error={errors.image_url?.message}>
+            <ProductImageField
+              id="product-image"
+              value={field.value}
+              error={errors.image_url?.message}
+              onChange={field.onChange}
+              onError={onImageError}
+              onBusyChange={setUploading}
+            />
+          </FormField>
+        )}
+      />
       <div className="flex flex-wrap gap-6">
         <Controller
           control={control}
@@ -167,7 +184,7 @@ function ProductForm({ product, nextSort, onDone }: { product: Product | null; n
         <Button type="button" variant="outline" onClick={onDone}>
           Huỷ
         </Button>
-        <Button type="submit" disabled={save.isPending}>
+        <Button type="submit" disabled={save.isPending || uploading}>
           {save.isPending ? "Đang lưu…" : "Lưu"}
         </Button>
       </DialogFooter>

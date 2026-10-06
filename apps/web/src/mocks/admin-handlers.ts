@@ -108,6 +108,12 @@ export const adminHandlers: HttpHandler[] = [
     state.products.push(p);
     return HttpResponse.json(p, { status: 201 });
   }),
+  // Ảnh tải lên: dev mock không có kho ảnh nên trả về một ảnh mẫu https.
+  http.post("/api/seller/products/images", async ({ request }) => {
+    const file = (await request.formData()).get("file");
+    if (!(file instanceof Blob) || file.size === 0) return invalid({ file: "Chọn ảnh" });
+    return HttpResponse.json({ url: `https://picsum.photos/seed/${newId()}/600/600.webp` }, { status: 201 });
+  }),
   http.put("/api/seller/products/:id", async ({ params, request }) => {
     const p = state.products.find((x) => x.id === params.id);
     if (!p) return err(404, "PRODUCT_NOT_FOUND", "Không tìm thấy món");

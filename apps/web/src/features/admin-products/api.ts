@@ -44,3 +44,10 @@ export function setProductAvailability(id: string, available: boolean) {
     body: { available },
   });
 }
+
+// uploadProductImage gửi ảnh (đã thu nhỏ) lên kho ảnh và trả URL công khai để gán vào image_url.
+export async function uploadProductImage(file: Blob) {
+  const body = new FormData();
+  body.append("file", file, "image");
+  return (await request<{ url: string }>("/api/seller/products/images", { method: "POST", body })).url;
+}
