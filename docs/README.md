@@ -24,7 +24,7 @@ apps/web/   React 19, Vite 7, Tailwind 4, shadcn/ui, React Router 7, TanStack Qu
   src/features/         customer-menu, customer-order, seller-auth, seller-orders, admin-*
   src/shared/           api client, realtime (WebSocket + fallback polling), ui, lib
   e2e/                  Playwright
-infra/      docker-compose.yml (dev, profile full cho E2E), docker-compose.prod.yml, docker-compose.homelab.yml (overlay Traefik), caddy/
+infra/      docker-compose.yml (dev, profile full cho E2E), docker-compose.prod.yml, docker-compose.homelab.yml (overlay Traefik), caddy/, customers/<khách>/.env (mỗi khách một stack, không commit)
 ```
 
 Mỗi feature API có `handler.go` (Gin) → `service.go` (nghiệp vụ, không biết Gin) → repository/SQL. Mọi ghi vào bảng `orders` đi qua `orders.Writer`.
@@ -38,7 +38,7 @@ cp apps/api/.env.example apps/api/.env   # sửa SELLER_PASSWORD_HASH, SESSION_S
 cp apps/web/.env.example apps/web/.env
 (cd apps/web && pnpm install)
 make dev        # Postgres (docker) + migrate + API :8080 + web :5173 (proxy /api, /ws)
-make seed       # Quán test, bàn DEVTEST001..003 (menu mặc định có từ migrate-up) → http://localhost:5173/t/DEVTEST001
+make seed       # Menu mẫu 18 món, Quán test, bàn DEVTEST001..003 (migrate-up chỉ tạo bảng, menu trống) → http://localhost:5173/t/DEVTEST001
 ```
 
 - `make dev` không hot reload Go: đổi code API thì Ctrl-C rồi chạy lại, hoặc `make dev-api` ở terminal riêng.

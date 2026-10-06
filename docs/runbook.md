@@ -24,15 +24,15 @@ API từ chối khởi động khi thiếu biến hoặc sai định dạng (has
 
 ## Triển khai homelab (Traefik)
 
-Thay cho Caddy trên VPS: ghép `infra/docker-compose.homelab.yml` **sau** file production. Caddy không chạy; Traefik định tuyến hai hostname (ghi cứng trong overlay):
+Thay cho Caddy trên VPS: ghép `infra/docker-compose.homelab.yml` **sau** file production. Caddy không chạy; Traefik định tuyến hai hostname lấy từ file env của stack (`DOMAIN`, `API_DOMAIN`). Ví dụ stack cũ:
 
 | Hostname | Tới | Ghi chú |
 |----------|-----|---------|
 | `https://sidecup.cauchuyenlaptrinh.com` | `web` (nginx, cổng 80) | Link QR, link đơn trong tin Zalo. `/api/*`, `/ws/*` trả 404 ở Traefik; `/internal/*` trả 404 ở nginx. |
 | `https://sidecup-api.cauchuyenlaptrinh.com` | `api:8080` | REST `/api/*`, WebSocket `/ws/*`. `/internal*` trả 404 ở Traefik. Traefik kiểm `/readyz`. |
 
-- Bundle web được build với `VITE_API_ORIGIN=https://sidecup-api.cauchuyenlaptrinh.com` nên gọi API và mở WebSocket ở hostname api. API đặt `PUBLIC_BASE_URL` là hostname web (cookie `Secure`, Origin hợp lệ của WebSocket) và `CORS_ORIGINS` chỉ cho hostname web, có credentials. Hai hostname cùng site `cauchuyenlaptrinh.com` nên cookie phiên `SameSite=Lax` vẫn đi kèm.
-- Không service nào map cổng ra máy host (overlay ép `ports: !reset []` cho `postgres`, `api`, `web`). `postgres` chỉ ở mạng riêng của stack, có alias `sidecup-postgres` để không trùng tên với stack khác trên mạng `homelab`.
+- Bundle web được build với `VITE_API_ORIGIN=https://${API_DOMAIN}` nên gọi API và mở WebSocket ở hostname api. API đặt `PUBLIC_BASE_URL` là hostname web (cookie `Secure`, Origin hợp lệ của WebSocket) và `CORS_ORIGINS` chỉ cho hostname web, có credentials. Hai hostname phải cùng site (ví dụ cùng `cauchuyenlaptrinh.com`) để cookie phiên `SameSite=Lax` vẫn đi kèm.
+- Không service nào map cổng ra máy host (overlay ép `ports: !reset []` cho `postgres`, `api`, `web`). `postgres` chỉ ở mạng riêng của stack, có alias `sidecup-postgres` để không trùng tên với stack khác trên mạng `homelab`. Router, service và middleware Traefik có tiền tố `sidecup-${CUSTOMER:-prod}` nên nhiều stack chạy chung một Traefik.
 - Cùng bộ header bảo mật như Caddyfile; CSP `connect-src` mở cho `https://` và `wss://` của hostname api.
 
 Chuẩn bị ngoài repo này (repo không tạo các thứ sau):
@@ -44,8 +44,8 @@ Chuẩn bị ngoài repo này (repo không tạo các thứ sau):
 
 Các bước:
 
-1. `cp infra/.env.example infra/.env`, điền như [Triển khai lần đầu](#triển-khai-lần-đầu). Overlay tự đặt hostname, nhưng file production vẫn bắt buộc `DOMAIN` và `ACME_EMAIL` khi đọc cấu hình: đặt `DOMAIN=sidecup.cauchuyenlaptrinh.com`, giữ `ACME_EMAIL` bất kỳ. `chmod 600 infra/.env`.
-2. `make homelab-config` (kiểm tra cấu hình ghép, không in bí mật), rồi `make homelab-up`. Đổi hostname = sửa overlay rồi build lại web (origin API nhúng lúc build).
+1. `cp infra/.env.example infra/.env`, điền như [Triển khai lần đầu](#triển-khai-lần-đầu), thêm `DOMAIN=sidecup.cauchuyenlaptrinh.com` và `API_DOMAIN=sidecup-api.cauchuyenlaptrinh.com`. File production vẫn bắt buộc `ACME_EMAIL` khi đọc cấu hình: giữ giá trị bất kỳ. `chmod 600 infra/.env`. Stack cho khách hàng mới thì xem [Nhiều khách hàng](#nhiều-khách-hàng-mỗi-khách-một-stack).
+2. `make homelab-config` (kiểm tra cấu hình ghép, không in bí mật), rồi `make homelab-up`. Đổi hostname = sửa `DOMAIN`/`API_DOMAIN` rồi `make homelab-up` (origin API nhúng lúc build web).
 3. Kiểm tra:
    - `docker compose -f infra/docker-compose.prod.yml -f infra/docker-compose.homelab.yml --env-file infra/.env ps` → `postgres`, `api`, `web` healthy, không có `caddy`, cột PORTS chỉ có cổng container (không có `0.0.0.0:`).
    - `curl -fsS https://sidecup-api.cauchuyenlaptrinh.com/api/healthz` → `{"status":"ok"}`.
@@ -53,6 +53,31 @@ Các bước:
    - Đăng nhập `https://sidecup.cauchuyenlaptrinh.com/seller/login`; màn người bán không hiện banner "Kết nối chậm" (WebSocket tới hostname api qua được Cloudflare và Traefik).
 
 Cập nhật, lùi phiên bản, sao lưu, xem log: như các mục dưới, thay `make prod-up` bằng `make homelab-up` và thêm `-f infra/docker-compose.homelab.yml` sau `-f infra/docker-compose.prod.yml` trong lệnh `docker compose`. Luôn sao lưu trước `make homelab-up` khi bản mới có migration.
+
+## Nhiều khách hàng (mỗi khách một stack)
+
+Mỗi khách hàng (người bán) chạy một stack riêng: `api`, `web`, `postgres` và volume dữ liệu riêng, chung file compose và chung một Traefik. Không có dữ liệu dùng chung giữa các khách.
+
+| Khách | File env | Project docker | Web | API |
+|-------|----------|----------------|-----|-----|
+| (stack cũ) | `infra/.env` | `sidecup-prod` | `sidecup.cauchuyenlaptrinh.com` | `sidecup-api.cauchuyenlaptrinh.com` |
+| `tiendouong` | `infra/customers/tiendouong/.env` | `sidecup-tiendouong` | `tiendouong.sidecup.app` | `tiendouong-api.sidecup.app` |
+
+- `CUSTOMER` trong file env đặt tên project `sidecup-<khách>` (container, mạng, volume `sidecup-<khách>_pgdata`) và tiền tố router Traefik. Hai file env trùng `CUSTOMER` thì stack sau **ghi đè** stack trước, kể cả volume DB; `make` từ chối chạy khi `CUSTOMER` trong file khác tên thư mục.
+- File env nằm trong `.gitignore`, không commit. Mỗi khách có bí mật riêng (`POSTGRES_PASSWORD`, `SESSION_SECRET`, `NOTIFIER_TOKEN`, `ZALO_CREDENTIAL_KEY`, mật khẩu người bán) và tài khoản Zalo gửi tin riêng.
+- Kho ảnh R2 có thể dùng chung bucket với `R2_FOLDER=<khách>/products`. Token R2 không giới hạn được theo thư mục, nên stack nào cũng ghi được ảnh của khách khác: chấp nhận khi một người vận hành mọi stack; tách bucket và token khi khách tự giữ khoá.
+- Image web build riêng cho từng khách (tên người bán, origin API nhúng lúc build). Mỗi stack ~100–200 MB RAM lúc rảnh.
+
+Thêm khách mới `<khách>` (chữ thường, số, gạch ngang):
+
+1. `mkdir -p infra/customers/<khách> && cp infra/.env.example infra/customers/<khách>/.env && chmod 600 infra/customers/<khách>/.env`. Điền `CUSTOMER=<khách>`, `DOMAIN`, `API_DOMAIN` (cùng site), bí mật **mới** như [Triển khai lần đầu](#triển-khai-lần-đầu) và mục [Mật khẩu người bán](#mật-khẩu-người-bán). Không copy bí mật từ khách khác.
+2. Cloudflare Zero Trust: thêm hai public hostname vào tunnel, cả hai → `http://traefik:80`.
+3. `make homelab-config CUSTOMER=<khách>` rồi `make homelab-up CUSTOMER=<khách>`. API tự chạy migration trên DB trống.
+4. Kiểm tra như [Triển khai homelab](#triển-khai-homelab-traefik) bước 3 với hostname của khách. Trước khi DNS/tunnel sẵn sàng, kiểm qua Traefik trên máy: `curl -H 'Host: <API_DOMAIN>' http://127.0.0.1/api/healthz`.
+
+Vận hành từng khách: thêm `CUSTOMER=<khách>` vào mọi lệnh `make prod-*`/`homelab-*`, và dùng `--env-file infra/customers/<khách>/.env` thay `infra/.env` trong lệnh `docker compose` ở các mục dưới (cập nhật, sao lưu, xem log). Sao lưu từng khách ra file riêng, ví dụ `sidecup-<khách>-$(date +%F).dump`.
+
+Cập nhật mọi khách: sao lưu DB của từng khách, rồi `make homelab-up-all` (lần lượt `homelab-up` cho mỗi thư mục trong `infra/customers/`, dừng ở khách đầu tiên lỗi). Stack cũ đọc `infra/.env` không nằm trong vòng lặp: chạy `make homelab-up` riêng.
 
 ## Bot tìm kiếm và thẻ chia sẻ
 
