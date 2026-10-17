@@ -112,6 +112,7 @@ Cookie HttpOnly, SameSite=Lax, Secure khi `PUBLIC_BASE_URL` là https, hạn 30 
 | POST | `/api/seller/logout` | 204, xoá cookie |
 | GET | `/api/seller/me` | `{authenticated, expires_at}` |
 | GET | `/api/seller/orders?scope=open\|closed&updated_after=<rfc3339>` | `{orders, server_time}`. `open`: sent/accepted/delivering, cũ trước. `closed`: đóng từ đầu ngày. Không có `scope` + `updated_after`: mọi đơn đổi sau mốc, mới nhất trước. Tối đa 300 đơn. Mã hoá URL tham số thời gian (`+07:00`). |
+| GET | `/api/seller/orders?from=YYYY-MM-DD&to=YYYY-MM-DD&status=&partner_id=&cursor=` | Tab "Tất cả đơn": `{orders, next_cursor, server_time}`. Đơn đặt (`created_at`) trong `from`–`to` theo `APP_TZ`, tính cả hai đầu, tối đa 366 ngày; mọi trạng thái, mới nhất trước, 100 đơn một trang. `status` (một trạng thái) và `partner_id` không bắt buộc. Trang sau: gửi lại đúng bộ lọc kèm `cursor` = `next_cursor`; trang cuối `next_cursor` là `null`. Không dùng cùng `scope`/`updated_after`. Lỗi `422 VALIDATION` với `details.fields` ở `from`, `to`, `status`, `partner_id`, `cursor` hoặc `scope`. |
 | GET | `/api/seller/orders/{id}` | View người bán: view công khai trừ `eta_minutes, notify_zalo`, thêm `partner_id, qr_token, customer_phone, commission_rate, commission_amount` |
 | POST | `/api/seller/orders/{id}/transition` | `{to, expected_from, payment_method?, reason?}`; `payment_method ∈ {cash, transfer}` bắt buộc khi `to=paid`, cấm khi khác |
 | GET | `/api/seller/orders/{id}/vietqr` | `{payload, amount, purpose, bank_bin, bank_account, bank_account_name}` |
