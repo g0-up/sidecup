@@ -1,4 +1,5 @@
-import { useQueryClient } from "@tanstack/react-query";
+import { useQueryClient, type QueryClient } from "@tanstack/react-query";
+import { todayISO } from "@/features/admin-reports/period";
 import { createContext, useCallback, useContext, useEffect, useMemo, useReducer, useRef, useState, type ReactNode } from "react";
 import { toast } from "sonner";
 import { errorMessage, isApiError } from "@/shared/api/errors";
@@ -8,7 +9,8 @@ import { isOpen } from "@/shared/lib/order-status";
 import { MSG, wsUrl } from "@/shared/realtime/messages";
 import type { SocketStatus } from "@/shared/realtime/socket-controller";
 import { useSocket } from "@/shared/realtime/use-socket";
-import { getOrder, listOrders, notifierKey, transition, type NotifierStatus, type TransitionBody } from "./api";
+import { getOrder, historyRootKey, listOrders, notifierKey, transition, type NotifierStatus, type TransitionBody } from "./api";
+import type { HistoryParams } from "./history-filter";
 import { boardReducer, initialBoard, type BoardAction, type BoardState } from "./store";
 
 interface BoardContextValue {
@@ -21,6 +23,16 @@ interface BoardContextValue {
   runTransition: (order: SellerOrder, body: Omit<TransitionBody, "expected_from">) => Promise<boolean>;
   refreshOrder: (id: string) => Promise<SellerOrder | null>;
   loadClosed: () => Promise<void>;
+}
+
+// Đơn mới chỉ rơi vào kỳ có hôm nay. Kỳ cũ không làm mới: tải lại mọi trang đã mở của nó là tốn công vô ích,
+// còn trạng thái đơn đang mở đã được phủ bản sống từ bảng đơn.
+function invalidateTodayHistory(qc: QueryClient) {
+  const today = todayISO();
+  return qc.invalidateQueries({
+    queryKey: historyRootKey,
+    predicate: (q) => ((q.queryKey[historyRootKey.length] as HistoryParams | undefined)?.to ?? "") >= today,
+  });
 }
 
 const BoardContext = createContext<BoardContextValue | null>(null);
@@ -78,6 +90,8 @@ export function SellerBoardProvider({ children }: { children: ReactNode }) {
     }
     void qc.invalidateQueries({ queryKey: notifierKey });
     void qc.invalidateQueries({ queryKey: settingsKey });
+    // Lúc mất kết nối hoặc chạy polling không có order.created: làm mới "Tất cả đơn" theo nhịp resync.
+    void invalidateTodayHistory(qc);
   }, [qc]);
 
   useEffect(() => {
@@ -89,6 +103,10 @@ export function SellerBoardProvider({ children }: { children: ReactNode }) {
     onMessage: (msg) => {
       switch (msg.type) {
         case MSG.orderCreated:
+          dispatch({ type: "message", msg });
+          // Đơn mới chèn vào đầu danh sách "Tất cả đơn"; đổi trạng thái thì danh sách tự phủ bản sống từ bảng.
+          void invalidateTodayHistory(qc);
+          break;
         case MSG.orderUpdated:
           dispatch({ type: "message", msg });
           break;

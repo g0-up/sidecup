@@ -1,11 +1,13 @@
 import { act, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { http, HttpResponse } from "msw";
 import { Outlet } from "react-router";
 import { beforeEach, describe, expect, it } from "vitest";
 import { db } from "@/mocks/db";
 import { setMockLoggedIn } from "@/mocks/seller-handlers";
 import type { SellerOrder } from "@/shared/api/orders";
 import { Toaster } from "@/shared/ui/sonner";
+import { server } from "@/test/msw-server";
 import { renderRoutes, SilentSocket, stubWebSocket, withQuery } from "@/test/render";
 import { SellerBoardProvider } from "../board-context";
 import * as board from "./board";
@@ -195,5 +197,92 @@ describe("bảng đơn người bán", () => {
     seed("i", "sent", "III999");
     await user.click(screen.getByRole("button", { name: "Thử lại ngay" }));
     expect(await screen.findByRole("article", { name: "Đơn III999" })).toBeInTheDocument();
+  });
+
+  describe("tab Tất cả đơn", () => {
+    async function openHistory() {
+      const user = userEvent.setup();
+      renderBoard();
+      await user.click(await screen.findByRole("tab", { name: "Tất cả đơn" }));
+      return user;
+    }
+
+    it("mặc định hiện mọi đơn hôm nay, kể cả đơn đã đóng, có link tới chi tiết", async () => {
+      seed("h1", "sent", "HIS001");
+      seed("h2", "rejected", "HIS002");
+      const old = seed("h3", "paid", "HIS003");
+      old.created_at = new Date(Date.now() - 86_400_000).toISOString();
+      await openHistory();
+      const link = await screen.findByRole("link", { name: "#HIS001" });
+      expect(link).toHaveAttribute("href", "/seller/orders/h1");
+      expect(screen.getByText("Đã từ chối")).toBeInTheDocument();
+      expect(screen.queryByText("#HIS003")).not.toBeInTheDocument();
+      expect(screen.getByRole("button", { name: "Kỳ sau" })).toBeDisabled();
+    });
+
+    it("Kỳ trước chuyển sang hôm qua, Kỳ sau quay lại", async () => {
+      seed("h1", "paid", "HIS001");
+      seed("h2", "paid", "HIS002").created_at = new Date(Date.now() - 86_400_000).toISOString();
+      const user = await openHistory();
+      await screen.findByText("#HIS001");
+      await user.click(screen.getByRole("button", { name: "Kỳ trước" }));
+      expect(await screen.findByText("#HIS002")).toBeInTheDocument();
+      expect(screen.queryByText("#HIS001")).not.toBeInTheDocument();
+      await user.click(screen.getByRole("button", { name: "Kỳ sau" }));
+      expect(await screen.findByText("#HIS001")).toBeInTheDocument();
+    });
+
+    it("lọc theo trạng thái, không còn đơn thì báo trống", async () => {
+      seed("h1", "paid", "HIS001");
+      seed("h2", "rejected", "HIS002");
+      const user = await openHistory();
+      await screen.findByText("#HIS001");
+      await user.click(screen.getByRole("combobox", { name: "Trạng thái" }));
+      await user.click(await screen.findByRole("option", { name: "Đã từ chối" }));
+      await waitFor(() => expect(screen.queryByText("#HIS001")).not.toBeInTheDocument());
+      expect(screen.getByText("#HIS002")).toBeInTheDocument();
+      await user.click(screen.getByRole("combobox", { name: "Trạng thái" }));
+      await user.click(await screen.findByRole("option", { name: "Không gặp khách" }));
+      expect(await screen.findByText("Không có đơn trong khoảng này")).toBeInTheDocument();
+    });
+
+    it("Tải thêm nối trang sau vào cuối danh sách", async () => {
+      for (let i = 0; i < 105; i++) seed(`h${String(i).padStart(3, "0")}`, "paid", `P${String(i).padStart(5, "0")}`);
+      const user = await openHistory();
+      expect(await screen.findByText("Đã hiện 100 đơn")).toBeInTheDocument();
+      await user.click(screen.getByRole("button", { name: "Tải thêm" }));
+      expect(await screen.findByText("105 đơn")).toBeInTheDocument();
+      expect(screen.getByText("#P00000")).toBeInTheDocument();
+      expect(screen.queryByRole("button", { name: "Tải thêm" })).not.toBeInTheDocument();
+    });
+
+    it("trạng thái đổi qua WebSocket hiện ngay, đơn mới làm mới danh sách", async () => {
+      const o = seed("h1", "sent", "HIS001");
+      await openHistory();
+      await screen.findByText("#HIS001");
+      await waitFor(() => expect(SilentSocket.instances.length).toBeGreaterThan(0));
+      const ws = SilentSocket.instances[SilentSocket.instances.length - 1];
+      act(() => ws.emit("order.updated", { ...o, status: "accepted", updated_at: new Date(Date.now() + 1000).toISOString() }));
+      expect(await screen.findByText("Đang pha")).toBeInTheDocument();
+      const fresh = seed("h2", "sent", "HIS002");
+      act(() => ws.emit("order.created", fresh));
+      expect(await screen.findByText("#HIS002")).toBeInTheDocument();
+    });
+
+    it("lỗi tải thì báo lỗi và Thử lại tải được", async () => {
+      seed("h1", "paid", "HIS001");
+      const user = userEvent.setup();
+      renderBoard();
+      const tab = await screen.findByRole("tab", { name: "Tất cả đơn" });
+      server.use(
+        http.get("/api/seller/orders", () => HttpResponse.json({ error: { code: "INTERNAL", message: "Máy chủ lỗi" } }, { status: 500 }), {
+          once: true,
+        }),
+      );
+      await user.click(tab);
+      expect(await screen.findByRole("alert")).toHaveTextContent("Không tải được đơn: Máy chủ lỗi");
+      await user.click(screen.getByRole("button", { name: "Thử lại" }));
+      expect(await screen.findByText("#HIS001")).toBeInTheDocument();
+    });
   });
 });

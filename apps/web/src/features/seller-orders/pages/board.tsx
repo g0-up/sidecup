@@ -6,6 +6,8 @@ import { Button } from "@/shared/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/shared/ui/tabs";
 import { useSellerBoard } from "../board-context";
 import { OrderCard } from "../components/order-card";
+import { OrderHistory } from "../components/order-history";
+import { defaultHistoryFilter } from "../history-filter";
 import { closedSince, isLate, openColumns, startOfDayVN, type BoardState } from "../store";
 
 const COLUMNS = [
@@ -13,6 +15,8 @@ const COLUMNS = [
   { key: "accepted", title: "Đang pha" },
   { key: "delivering", title: "Đang mang ra" },
 ] as const;
+
+const tabClass = "h-11 px-3 max-sm:px-2 max-sm:leading-tight max-sm:whitespace-normal";
 
 type ColumnKey = (typeof COLUMNS)[number]["key"];
 type Columns = ReturnType<typeof openColumns>;
@@ -28,6 +32,8 @@ export function Component() {
   const { state, dispatch, loadError, retryLoad, loadClosed } = useSellerBoard();
   const [tab, setTab] = useState("open");
   const [column, setColumn] = useState<ColumnKey | null>(null);
+  // Bộ lọc "Tất cả đơn" giữ ở đây để qua tab khác rồi quay lại vẫn còn kỳ đã chọn.
+  const [history, setHistory] = useState(() => defaultHistoryFilter());
   const cols = openColumns(state);
   const openCount = cols.sent.length + cols.accepted.length + cols.delivering.length;
   const closed = closedSince(state, startOfDayVN(Date.now()));
@@ -59,12 +65,16 @@ export function Component() {
         }}
       >
         <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-          <TabsList className="group-data-[orientation=horizontal]/tabs:h-auto">
-            <TabsTrigger value="open" className="h-11 px-3">
+          {/* Ba tab trên màn 360px: thanh tab giãn hết bề ngang, nhãn dài xuống dòng thay vì tràn ngang. */}
+          <TabsList className="group-data-[orientation=horizontal]/tabs:h-auto max-sm:w-full">
+            <TabsTrigger value="open" className={tabClass}>
               Đang mở ({openCount})
             </TabsTrigger>
-            <TabsTrigger value="closed" className="h-11 px-3">
+            <TabsTrigger value="closed" className={tabClass}>
               Đã đóng hôm nay
+            </TabsTrigger>
+            <TabsTrigger value="all" className={tabClass}>
+              Tất cả đơn
             </TabsTrigger>
           </TabsList>
           {state.unseen.length > 0 && (
@@ -107,6 +117,10 @@ export function Component() {
               <OrderCard key={o.id} order={o} clock={state.clock} />
             ))}
           </div>
+        </TabsContent>
+
+        <TabsContent value="all">
+          <OrderHistory filter={history} onFilterChange={setHistory} />
         </TabsContent>
       </Tabs>
     </div>

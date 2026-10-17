@@ -2,6 +2,7 @@ import { http, HttpResponse } from "msw";
 import type { SellerOrder } from "@/shared/api/orders";
 import type { SettingsUpdate } from "@/shared/api/settings";
 import type { ZaloLinkState } from "@/shared/api/zalo";
+import { todayISO } from "@/features/admin-reports/period";
 import { db } from "./db";
 
 const err = (status: number, code: string, message: string, details?: Record<string, unknown>) =>
@@ -14,6 +15,29 @@ export function setMockLoggedIn(v: boolean) {
 }
 
 const OPEN = ["sent", "accepted", "delivering"];
+
+const HISTORY_PAGE_SIZE = 100;
+
+// historyPage mô phỏng chế độ from–to của API: ngày đặt theo giờ Việt Nam, mới nhất trước, con trỏ "created_at,id".
+function historyPage(url: URL) {
+  const from = url.searchParams.get("from") ?? "";
+  const to = url.searchParams.get("to") ?? "";
+  if (!from || !to || to < from) return err(422, "VALIDATION", "Dữ liệu chưa hợp lệ", { fields: { to: "Ngày kết thúc phải sau ngày bắt đầu" } });
+  const status = url.searchParams.get("status");
+  const partnerId = url.searchParams.get("partner_id");
+  const cursor = url.searchParams.get("cursor");
+  const key = (o: SellerOrder) => `${o.created_at},${o.id}`;
+  const list = (db.orders as SellerOrder[])
+    .filter((o) => {
+      const day = todayISO(new Date(o.created_at));
+      return day >= from && day <= to && (!status || o.status === status) && (!partnerId || o.partner_id === partnerId);
+    })
+    .sort((a, b) => (key(a) < key(b) ? 1 : -1))
+    .filter((o) => !cursor || key(o) < cursor);
+  const page = list.slice(0, HISTORY_PAGE_SIZE);
+  const next = list.length > HISTORY_PAGE_SIZE ? key(page[page.length - 1]) : null;
+  return HttpResponse.json({ orders: page, next_cursor: next, server_time: new Date().toISOString() });
+}
 
 // Ảnh PNG 1x1 thay cho mã QR thật của Zalo.
 const MOCK_QR_PNG = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
@@ -44,6 +68,7 @@ export const sellerHandlers = [
     const g = guard();
     if (g) return g;
     const url = new URL(request.url);
+    if (url.searchParams.has("from") || url.searchParams.has("to")) return historyPage(url);
     const scope = url.searchParams.get("scope");
     const after = url.searchParams.get("updated_after");
     let list = db.orders as SellerOrder[];

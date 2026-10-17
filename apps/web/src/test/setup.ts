@@ -26,6 +26,26 @@ if (typeof globalThis.ResizeObserver === "undefined") {
   };
 }
 
+// Radix Select mở danh sách bằng pointer capture và cuộn tới mục đang chọn; jsdom không có hai hàm này.
+if (typeof Element !== "undefined" && !Element.prototype.hasPointerCapture) {
+  Element.prototype.hasPointerCapture = () => false;
+  Element.prototype.releasePointerCapture = () => {};
+}
+if (typeof Element !== "undefined" && !Element.prototype.scrollIntoView) {
+  Element.prototype.scrollIntoView = () => {};
+}
+
+// jsdom thay AbortController/AbortSignal toàn cục nhưng Request vẫn của Node, chỉ nhận AbortSignal của Node:
+// query truyền signal (TanStack) hay điều hướng react-router sẽ ném TypeError. Trong test bỏ signal khỏi Request;
+// TanStack vẫn bỏ kết quả của query đã huỷ nên hành vi trang không đổi. Hệ quả: request trong test không bao giờ
+// bị huỷ thật, nên test về huỷ request (abort) phải kiểm ở tầng khác, không dựa vào fetch.
+const NodeRequest = globalThis.Request;
+globalThis.Request = class extends NodeRequest {
+  constructor(input: RequestInfo | URL, init?: RequestInit) {
+    super(input, init?.signal ? { ...init, signal: undefined } : init);
+  }
+};
+
 beforeAll(() => server.listen({ onUnhandledRequest: "error" }));
 afterEach(() => {
   cleanup();

@@ -1,6 +1,7 @@
 import { query, request } from "@/shared/api/http";
 import type { SellerOrder } from "@/shared/api/orders";
 import type { OrderStatus } from "@/shared/lib/order-status";
+import type { HistoryParams } from "./history-filter";
 
 export interface OrderList {
   orders: SellerOrder[];
@@ -11,6 +12,21 @@ export type SellerOrderResponse = SellerOrder & { server_time: string };
 
 export function listOrders(params: { scope?: "open" | "closed"; updatedAfter?: string }) {
   return request<OrderList>(`/api/seller/orders${query({ scope: params.scope, updated_after: params.updatedAfter })}`);
+}
+
+export interface OrderHistoryPage extends OrderList {
+  next_cursor: string | null;
+}
+
+export const historyRootKey = ["seller", "orders", "history"] as const;
+
+export function historyKey(params: HistoryParams) {
+  return [...historyRootKey, params] as const;
+}
+
+// listOrderHistory là tab "Tất cả đơn": đơn đặt trong from–to (giờ Việt Nam), mới nhất trước, 100 đơn một trang.
+export function listOrderHistory(params: HistoryParams, cursor: string | undefined, signal?: AbortSignal) {
+  return request<OrderHistoryPage>(`/api/seller/orders${query({ ...params, cursor })}`, { signal });
 }
 
 export function getOrder(id: string) {
