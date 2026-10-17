@@ -41,7 +41,7 @@ func (s *Service) Commission(ctx context.Context, q Query) (CommissionReport, er
 			ranges[r] = append(ranges[r], p.ID)
 		}
 	} else {
-		r, err := ParseRange(q.From, q.To, s.clock.Location())
+		r, err := clock.ParseDateRange(q.From, q.To, s.clock.Location())
 		if err != nil {
 			return CommissionReport{}, err
 		}
@@ -107,7 +107,7 @@ func (s *Service) Funnel(ctx context.Context, q Query) (FunnelReport, error) {
 		r = Range{From: today.AddDate(0, 0, -(defaultFunnelDays - 1)), To: today}
 	} else {
 		var err error
-		if r, err = ParseRange(q.From, q.To, s.clock.Location()); err != nil {
+		if r, err = clock.ParseDateRange(q.From, q.To, s.clock.Location()); err != nil {
 			return FunnelReport{}, err
 		}
 	}
@@ -139,7 +139,7 @@ func (s *Service) ListAdjustments(ctx context.Context, q Query) ([]AdjustmentVie
 		r = Resolve(p.PayoutPeriod, q.Period, s.clock.Now(), s.clock.Location())
 	} else {
 		var err error
-		if r, err = ParseRange(q.From, q.To, s.clock.Location()); err != nil {
+		if r, err = clock.ParseDateRange(q.From, q.To, s.clock.Location()); err != nil {
 			return nil, err
 		}
 	}

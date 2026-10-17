@@ -4,7 +4,9 @@ import (
 	"context"
 	"encoding/json"
 	"testing"
+	"time"
 
+	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -62,5 +64,23 @@ func TestNotifiesZaloNeedsPhoneAndLiveLink(t *testing.T) {
 			s := &Service{zalo: tc.zalo}
 			assert.Equal(t, tc.want, s.publicView(context.Background(), &Order{CustomerPhone: tc.phone}, 5).NotifyZalo)
 		})
+	}
+}
+
+func TestCursorRoundTripKeepsMicroseconds(t *testing.T) {
+	loc, err := time.LoadLocation("Asia/Ho_Chi_Minh")
+	require.NoError(t, err)
+	o := Order{ID: uuid.New(), CreatedAt: time.Date(2026, 10, 17, 9, 30, 0, 123456000, loc)}
+
+	raw := encodeCursor(o)
+	assert.Equal(t, "2026-10-17T02:30:00.123456Z,"+o.ID.String(), raw)
+	c, err := decodeCursor(raw)
+	require.NoError(t, err)
+	assert.True(t, c.CreatedAt.Equal(o.CreatedAt))
+	assert.Equal(t, o.ID, c.ID)
+
+	for _, bad := range []string{"", "abc", "2026-10-17T02:30:00Z", "2026-10-17," + o.ID.String(), "2026-10-17T02:30:00Z,not-a-uuid"} {
+		_, err := decodeCursor(bad)
+		assert.Error(t, err, bad)
 	}
 }

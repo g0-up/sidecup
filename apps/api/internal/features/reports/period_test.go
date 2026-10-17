@@ -41,20 +41,3 @@ func TestResolveMonth(t *testing.T) {
 	assert.Equal(t, Range{From: day(loc, 2026, 12, 1), To: day(loc, 2026, 12, 31)}, Resolve("month", PeriodPrevious, time.Date(2027, 1, 10, 0, 0, 0, 0, loc), loc), "kỳ trước vắt qua năm")
 	assert.Equal(t, Range{From: day(loc, 2026, 2, 1), To: day(loc, 2026, 2, 28)}, Resolve("month", PeriodPrevious, time.Date(2026, 3, 31, 0, 0, 0, 0, loc), loc))
 }
-
-func TestParseRange(t *testing.T) {
-	loc := vn(t)
-	r, err := ParseRange("2026-09-28", "2026-10-04", loc)
-	require.NoError(t, err)
-	from, to := r.Bounds()
-	assert.Equal(t, day(loc, 2026, 9, 28), from)
-	assert.Equal(t, day(loc, 2026, 10, 5), to)
-	assert.Equal(t, 7, r.Days())
-
-	_, err = ParseRange("2026-10-04", "2026-09-28", loc)
-	assert.Error(t, err)
-	_, err = ParseRange("28/09/2026", "2026-10-04", loc)
-	assert.Error(t, err)
-	_, err = ParseRange("2025-01-01", "2026-10-04", loc)
-	assert.Error(t, err)
-}

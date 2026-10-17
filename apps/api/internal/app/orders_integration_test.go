@@ -392,6 +392,144 @@ func TestRejectAndFailed(t *testing.T) {
 	assert.Equal(t, "INVALID_TRANSITION", r.ErrCode(t))
 }
 
+type historyPage struct {
+	Orders []struct {
+		ID        string    `json:"id"`
+		Status    string    `json:"status"`
+		PartnerID string    `json:"partner_id"`
+		CreatedAt time.Time `json:"created_at"`
+	} `json:"orders"`
+	NextCursor *string   `json:"next_cursor"`
+	ServerTime time.Time `json:"server_time"`
+}
+
+func (p historyPage) ids() []string {
+	out := make([]string, len(p.Orders))
+	for i, o := range p.Orders {
+		out[i] = o.ID
+	}
+	return out
+}
+
+func getHistory(t *testing.T, s *client, query string) historyPage {
+	t.Helper()
+	r := s.get("/api/seller/orders?" + query)
+	require.Equal(t, http.StatusOK, r.Code, string(r.Body))
+	assert.Equal(t, "no-store", r.Header.Get("Cache-Control"))
+	var p historyPage
+	r.JSON(t, &p)
+	return p
+}
+
+func TestSellerOrderHistory(t *testing.T) {
+	h := newHarness(t)
+	f := h.fixture()
+	other := testdb.SeedPartner(t, h.DB, testdb.PartnerOpts{Name: "Quán B"})
+	otherToken := testdb.SeedQR(t, h.DB, other, "TABLE00002", "Bàn 2")
+	cust, _ := h.customer()
+	s := h.seller()
+	placedAt := func(id string, at time.Time) {
+		require.NoError(t, h.DB.Exec("UPDATE orders SET created_at = ? WHERE id = ?", at, id).Error)
+	}
+
+	// Hai đầu khoảng tính theo giờ Việt Nam: [01/10 00:00, 01/11 00:00).
+	_, before := cust.placeOrder(f.Token, orderBody(line(f.Tea, 1)))
+	_, first := cust.placeOrder(f.Token, orderBody(line(f.Tea, 1)))
+	_, last := cust.placeOrder(otherToken, orderBody(line(f.Water, 1)))
+	_, after := cust.placeOrder(f.Token, orderBody(line(f.Tea, 1)))
+	placedAt(before, time.Date(2026, 9, 30, 23, 59, 59, 999999000, h.Loc))
+	placedAt(first, time.Date(2026, 10, 1, 0, 0, 0, 0, h.Loc))
+	placedAt(last, time.Date(2026, 10, 31, 23, 59, 59, 0, h.Loc))
+	placedAt(after, time.Date(2026, 11, 1, 0, 0, 0, 0, h.Loc))
+	require.Equal(t, http.StatusOK, transition(s, first, "sent", "rejected", nil).Code)
+
+	p := getHistory(t, s, "from=2026-10-01&to=2026-10-31")
+	assert.Equal(t, []string{last, first}, p.ids(), "mọi trạng thái, mới nhất trước, đúng biên ngày")
+	assert.Nil(t, p.NextCursor)
+	assert.False(t, p.ServerTime.IsZero())
+
+	p = getHistory(t, s, "from=2026-10-01&to=2026-10-31&status=rejected")
+	assert.Equal(t, []string{first}, p.ids())
+	p = getHistory(t, s, "from=2026-10-01&to=2026-10-31&partner_id="+other.String())
+	assert.Equal(t, []string{last}, p.ids())
+	p = getHistory(t, s, "from=2026-10-01&to=2026-10-31&partner_id="+uuid.NewString())
+	assert.Empty(t, p.ids(), "quán không tồn tại trả danh sách rỗng")
+	p = getHistory(t, s, "from=2026-09-30&to=2026-09-30")
+	assert.Equal(t, []string{before}, p.ids())
+
+	// 205 đơn trong tháng 12, 150 đơn trùng một created_at để ranh giới trang rơi giữa nhóm trùng.
+	tie := time.Date(2026, 12, 5, 10, 0, 0, 123456000, h.Loc)
+	clone := func(n int, at time.Time, step time.Duration, prefix string) {
+		require.NoError(t, h.DB.Exec(`INSERT INTO orders (code, qr_token, partner_id, partner_name, table_label, items, total,
+			status, client_id, idempotency_key, created_at, updated_at)
+			SELECT ? || g, qr_token, partner_id, partner_name, table_label, items, total,
+				'sent', client_id, gen_random_uuid()::text, ?::timestamptz + g * ? * interval '1 second', now()
+			FROM orders, generate_series(1, ?) g WHERE id = ?`,
+			prefix, at, int(step.Seconds()), n, after).Error)
+	}
+	clone(150, tie, 0, "TIE")
+	clone(55, time.Date(2026, 12, 20, 8, 0, 0, 0, h.Loc), time.Minute, "SEQ")
+
+	seen := map[string]bool{}
+	var sizes []int
+	query := "from=2026-12-01&to=2026-12-31"
+	cursor := ""
+	for {
+		q := query
+		if cursor != "" {
+			q += "&cursor=" + url.QueryEscape(cursor)
+		}
+		p := getHistory(t, s, q)
+		sizes = append(sizes, len(p.Orders))
+		for i, o := range p.Orders {
+			assert.False(t, seen[o.ID], "đơn %s bị lặp", o.ID)
+			seen[o.ID] = true
+			if i > 0 {
+				assert.False(t, o.CreatedAt.After(p.Orders[i-1].CreatedAt), "mới nhất trước")
+			}
+		}
+		if p.NextCursor == nil {
+			break
+		}
+		cursor = *p.NextCursor
+		require.Less(t, len(sizes), 5, "phân trang không dừng")
+	}
+	assert.Equal(t, []int{100, 100, 5}, sizes)
+	assert.Len(t, seen, 205)
+
+	for _, tc := range []struct{ query, field string }{
+		{"from=2026-10-01", "to"},
+		{"to=2026-10-01", "from"},
+		{"from=&to=", "from"},
+		{"from=2026-10-31&to=2026-10-01", "to"},
+		{"from=2025-01-01&to=2026-01-02", "to"},
+		{"from=01/10/2026&to=2026-10-31", "from"},
+		{"scope=open&from=2026-10-01&to=2026-10-31", "scope"},
+		{"updated_after=2026-10-01T00:00:00Z&from=2026-10-01&to=2026-10-31", "scope"},
+		{"from=2026-10-01&to=2026-10-31&status=open", "status"},
+		{"from=2026-10-01&to=2026-10-31&partner_id=abc", "partner_id"},
+		{"from=2026-10-01&to=2026-10-31&cursor=abc", "cursor"},
+	} {
+		r := s.get("/api/seller/orders?" + tc.query)
+		require.Equal(t, http.StatusUnprocessableEntity, r.Code, tc.query)
+		assert.Equal(t, "VALIDATION", r.ErrCode(t), tc.query)
+		var e struct {
+			Error struct {
+				Details struct {
+					Fields map[string]string `json:"fields"`
+				} `json:"details"`
+			} `json:"error"`
+		}
+		r.JSON(t, &e)
+		assert.Contains(t, e.Error.Details.Fields, tc.field, tc.query)
+	}
+
+	r := s.get("/api/seller/orders?scope=open")
+	require.Equal(t, http.StatusOK, r.Code)
+	assert.NotContains(t, r.Map(t), "next_cursor", "scope/updated_after giữ nguyên dạng phản hồi")
+	assert.Equal(t, http.StatusUnauthorized, h.client(nil).get("/api/seller/orders?from=2026-10-01&to=2026-10-31").Code)
+}
+
 func TestSchedulerCancelsExpiredSentOrders(t *testing.T) {
 	h := newHarness(t)
 	f := h.fixture()

@@ -234,6 +234,39 @@ func (s *Service) List(ctx context.Context, scope string, updatedAfter *time.Tim
 	return out, nil
 }
 
+type HistoryQuery struct {
+	From, To  string // YYYY-MM-DD theo APP_TZ, hai đầu đều bao gồm
+	Status    *Status
+	PartnerID *uuid.UUID
+	Cursor    *Cursor
+}
+
+// History trả một trang đơn đặt (created_at) trong khoảng ngày; next là con trỏ trang sau, nil ở trang cuối.
+func (s *Service) History(ctx context.Context, q HistoryQuery) ([]SellerView, *string, error) {
+	r, err := clock.ParseDateRange(q.From, q.To, s.clock.Location())
+	if err != nil {
+		return nil, nil, err
+	}
+	from, to := r.Bounds()
+	f := HistoryFilter{From: from, To: to, Status: q.Status, PartnerID: q.PartnerID, Before: q.Cursor}
+	// Đọc dư một dòng để biết còn trang sau mà không cần COUNT.
+	os, err := s.repo.History(ctx, s.db, f, historyPageSize+1)
+	if err != nil {
+		return nil, nil, err
+	}
+	var next *string
+	if len(os) > historyPageSize {
+		os = os[:historyPageSize]
+		c := encodeCursor(os[len(os)-1])
+		next = &c
+	}
+	out := make([]SellerView, len(os))
+	for i, o := range os {
+		out[i] = ToSeller(o)
+	}
+	return out, next, nil
+}
+
 // Cancel: khách chỉ huỷ được đơn của chính máy mình và chỉ khi còn `sent`.
 func (s *Service) Cancel(ctx context.Context, id uuid.UUID, clientID string) (PublicView, error) {
 	o, err := s.repo.Get(ctx, s.db, id)

@@ -2,10 +2,15 @@ package orders
 
 import (
 	"net/url"
+	"strings"
 	"time"
 
 	"github.com/google/uuid"
+
+	"sidecup/api/internal/platform/apperr"
 )
+
+var errBadCursor = apperr.Field("cursor", "Trang tiếp không hợp lệ, tải lại danh sách")
 
 // OrderView là phần đơn mà cả khách lẫn người bán đều thấy: không SĐT, không client_id.
 type OrderView struct {
@@ -87,6 +92,33 @@ type sellerResp struct {
 type listResp struct {
 	Orders     []SellerView `json:"orders"`
 	ServerTime time.Time    `json:"server_time"`
+}
+
+type historyResp struct {
+	Orders     []SellerView `json:"orders"`
+	NextCursor *string      `json:"next_cursor"`
+	ServerTime time.Time    `json:"server_time"`
+}
+
+// encodeCursor giữ created_at đủ micro giây: cắt bớt thì các đơn cùng mili giây bị bỏ qua khi sang trang.
+func encodeCursor(o Order) string {
+	return o.CreatedAt.UTC().Format(time.RFC3339Nano) + "," + o.ID.String()
+}
+
+func decodeCursor(raw string) (Cursor, error) {
+	i := strings.LastIndexByte(raw, ',')
+	if i < 0 {
+		return Cursor{}, errBadCursor
+	}
+	at, err := time.Parse(time.RFC3339Nano, raw[:i])
+	if err != nil {
+		return Cursor{}, errBadCursor
+	}
+	id, err := uuid.Parse(raw[i+1:])
+	if err != nil {
+		return Cursor{}, errBadCursor
+	}
+	return Cursor{CreatedAt: at, ID: id}, nil
 }
 
 type CreateReq struct {

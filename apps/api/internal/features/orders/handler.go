@@ -84,6 +84,12 @@ func (h *Handler) cancel(c *gin.Context) {
 }
 
 func (h *Handler) list(c *gin.Context) {
+	_, hasFrom := c.GetQuery("from")
+	_, hasTo := c.GetQuery("to")
+	if hasFrom || hasTo {
+		h.history(c)
+		return
+	}
 	scope := c.Query("scope")
 	if scope != "" && scope != "open" && scope != "closed" {
 		httpx.Fail(c, apperr.Field("scope", "Giá trị phải là open hoặc closed"))
@@ -107,6 +113,49 @@ func (h *Handler) list(c *gin.Context) {
 	}
 	c.Header("Cache-Control", "no-store")
 	httpx.OK(c, listResp{Orders: out, ServerTime: serverTime})
+}
+
+// history là chế độ "Tất cả đơn" của GET /orders: lọc theo ngày đặt, trạng thái, quán và phân trang con trỏ.
+func (h *Handler) history(c *gin.Context) {
+	_, hasScope := c.GetQuery("scope")
+	_, hasAfter := c.GetQuery("updated_after")
+	if hasScope || hasAfter {
+		httpx.Fail(c, apperr.Field("scope", "Không dùng scope hoặc updated_after khi lọc theo ngày"))
+		return
+	}
+	q := HistoryQuery{From: c.Query("from"), To: c.Query("to")}
+	if raw := c.Query("status"); raw != "" {
+		st := Status(raw)
+		if !st.Valid() {
+			httpx.Fail(c, apperr.Field("status", "Trạng thái không hợp lệ"))
+			return
+		}
+		q.Status = &st
+	}
+	if raw := c.Query("partner_id"); raw != "" {
+		id, err := uuid.Parse(raw)
+		if err != nil {
+			httpx.Fail(c, apperr.Field("partner_id", "Mã quán không hợp lệ"))
+			return
+		}
+		q.PartnerID = &id
+	}
+	if raw := c.Query("cursor"); raw != "" {
+		cur, err := decodeCursor(raw)
+		if err != nil {
+			httpx.Fail(c, err)
+			return
+		}
+		q.Cursor = &cur
+	}
+	serverTime := h.clock.Now()
+	out, next, err := h.svc.History(c.Request.Context(), q)
+	if err != nil {
+		httpx.Fail(c, err)
+		return
+	}
+	c.Header("Cache-Control", "no-store")
+	httpx.OK(c, historyResp{Orders: out, NextCursor: next, ServerTime: serverTime})
 }
 
 func (h *Handler) getSeller(c *gin.Context) {

@@ -59,6 +59,38 @@ func (Repository) List(ctx context.Context, tx *gorm.DB, f ListFilter) ([]Order,
 	return out, err
 }
 
+// Cursor là đơn cuối của trang trước theo thứ tự (created_at DESC, id DESC).
+type Cursor struct {
+	CreatedAt time.Time
+	ID        uuid.UUID
+}
+
+type HistoryFilter struct {
+	From, To  time.Time // nửa mở [From, To) trên created_at
+	Status    *Status
+	PartnerID *uuid.UUID
+	Before    *Cursor
+}
+
+const historyPageSize = 100
+
+// History đọc đơn đặt trong khoảng thời gian, mọi trạng thái, mới nhất trước; id phá hoà khi trùng created_at.
+func (Repository) History(ctx context.Context, tx *gorm.DB, f HistoryFilter, limit int) ([]Order, error) {
+	q := tx.WithContext(ctx).Where("created_at >= ? AND created_at < ?", f.From, f.To)
+	if f.Status != nil {
+		q = q.Where("status = ?", *f.Status)
+	}
+	if f.PartnerID != nil {
+		q = q.Where("partner_id = ?", *f.PartnerID)
+	}
+	if f.Before != nil {
+		q = q.Where("(created_at, id) < (?, ?)", f.Before.CreatedAt, f.Before.ID)
+	}
+	var out []Order
+	err := q.Order("created_at DESC, id DESC").Limit(limit).Find(&out).Error
+	return out, err
+}
+
 // ExpiredSent trả id các đơn `sent` tạo trước mốc cutoff (để scheduler tự huỷ).
 func (Repository) ExpiredSent(ctx context.Context, tx *gorm.DB, cutoff time.Time, limit int) ([]uuid.UUID, error) {
 	var ids []uuid.UUID
